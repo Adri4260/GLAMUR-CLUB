@@ -1,31 +1,12 @@
-version: '3.8'
-services:
-  web:
-    image: php:8.2-apache
-    container_name: glamur_web
-    volumes:
-      - ./server:/var/www/html
-    ports:
-      - "8080:80"
-    depends_on:
-      - db
-  db:
-    image: mysql:8
-    container_name: glamur_db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: glamur
-      MYSQL_USER: glamur
-      MYSQL_PASSWORD: glamur
-    ports:
-      - "3306:3306"
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: db
-      PMA_USER: glamur
-      PMA_PASSWORD: glamur
+version: "3.8"
 
+services:
+  php:
+    image: php:8.2-cli
+    container_name: glamur_php
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    command: php -S 0.0.0.0:8080
+    ports:
+      - "8080:8080"

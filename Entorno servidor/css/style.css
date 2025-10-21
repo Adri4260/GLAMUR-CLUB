@@ -1,0 +1,129 @@
+/* Variables CSS - Paleta Negro, Blanco, Dorado */
+:root {
+    --color-black: #0a0a0a;
+    --color-white: #ffffff;
+    --color-gold: #d4af37;
+    --color-gold-light: #f4d03f;
+    --color-gray-dark: #1a1a1a;
+    --color-gray-light: #666666;
+
+    --font-sans: 'Poppins', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --radius: 0.375rem;
+    --transition: all 0.3s ease;
+}
+
+/* Reset bàsic */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-black);
+    color: var(--color-white);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: var(--spacing-lg);
+    background-color: var(--color-gray-dark);
+    border-bottom: 1px solid var(--color-gray-light);
+}
+
+header h1 span {
+    color: var(--color-gold);
+}
+
+/* Container formulari */
+.contact-container {
+    max-width: 600px;
+    margin: var(--spacing-lg) auto;
+    background-color: var(--color-gray-dark);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius);
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* Formulari */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+label {
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+}
+
+input, textarea {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-gray-light);
+    background-color: var(--color-black);
+    color: var(--color-white);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+input:focus, textarea:focus {
+    outline: 2px solid var(--color-gold);
+}
+
+/* Botó */
+button {
+    background-color: var(--color-gold);
+    color: var(--color-black);
+    border: none;
+    padding: var(--spacing-md);
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+button:hover {
+    background-color: var(--color-gold-light);
+    transform: translateY(-2px);
+}
+
+/* Missatges */
+.error {
+    background-color: #661010;
+    color: #ffcccc;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    margin-bottom: var(--spacing-md);
+}
+
+.success {
+    background-color: #104020;
+    color: #b4f1c1;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: var(--spacing-lg);
+    margin-top: auto;
+    background-color: var(--color-gray-dark);
+    border-top: 1px solid var(--color-gray-light);
+    font-size: 0.875rem;
+    color: var(--color-gray-light);
+}
