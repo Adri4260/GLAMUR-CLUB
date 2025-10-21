@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="GLAMUR CLUB" company="Projecte Formatiu" webLink="" view-date="2025-09-23" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="3.3.3316" locale="es_ES">
+    <description/>
+    <view zooming-state="default:2" id="gantt-chart">
+        <field id="tpd15" name="Notas" width="20" order="-1"/>
+        <field id="tpd3" name="Nombre" width="171" order="0"/>
+        <field id="tpd4" name="Fecha de inicio" width="64" order="1"/>
+        <field id="tpd5" name="Fecha de fin" width="64" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
+        <option id="filter.dueTodayTasks" value="false"/>
+        <option id="filter.overdueTasks" value="false"/>
+        <option id="filter.inProgressTodayTasks" value="false"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nombre" width="210" order="0"/>
+        <field id="1" name="Función" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="0" mon="0" tue="0" wed="0" thu="0" fri="0" sat="0"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="100" uid="90d93728af5b4abc977b34ee806062e2" name="GLAMUR CLUB" meeting="false" start="2025-09-23" duration="29" complete="0" expand="true"/>
+        <task id="10" uid="fcf9a48106dd4fbab5a810999cf39150" name="Setup (frontend/backend/devops)" meeting="false" start="2025-09-23" duration="6" complete="0" expand="true"/>
+        <task id="11" uid="d7f524299c7f4d21a78a14000f0332ba" name="Configurar entorn local amb Vite" meeting="false" start="2025-09-23" duration="2" complete="0" expand="true"/>
+        <task id="12" uid="7a61994cd6ee4f1e8effe606d9de9337" name="Configurar Docker Compose" meeting="false" start="2025-09-25" duration="2" complete="0" expand="true"/>
+        <task id="13" uid="6c36d44e25df4ebea9452d428821b2d8" name="Connectar GitHub amb repositori local" meeting="false" start="2025-09-29" duration="2" complete="0" expand="true"/>
+        <task id="20" uid="a18615e74e274271a9f20196ee81cef6" name="Planning" meeting="false" start="2025-10-01" duration="2" complete="0" expand="true"/>
+        <task id="21" uid="9d8dc0b953f5414bbd5f16012a2020eb" name="Crear tauler de Kanban" meeting="false" start="2025-10-01" duration="2" complete="0" expand="true"/>
+        <task id="30" uid="20cca64dbb214325ad1299856d60b200" name="Frontend" meeting="false" start="2025-10-03" duration="7" complete="0" expand="true"/>
+        <task id="31" uid="5b1f353d59424185b29e9986a3c098bf" name="Maquetar pàgina d’inici" meeting="false" start="2025-10-03" duration="3" complete="0" expand="true"/>
+        <task id="32" uid="d47cd124a2a94bbebd2605bf4534b3e7" name="Formulari de contacte (HTML + JS)" meeting="false" start="2025-10-06" duration="3" complete="0" expand="true"/>
+        <task id="40" uid="a8d7787d16784cc7aad7de239a89da29" name="Validació" meeting="false" start="2025-10-09" duration="4" complete="0" expand="true"/>
+        <task id="41" uid="b34f267c9c3b44638448eefd2da48fa5" name="Validació client-side" meeting="false" start="2025-10-09" duration="2" complete="0" expand="true"/>
+        <task id="42" uid="1d2923e1edc94af58568014d648c5c8c" name="Validació servidor (PHP)" meeting="false" start="2025-10-11" duration="2" complete="0" expand="true"/>
+        <task id="50" uid="a52d3e27e4074b3e97b0439812c7f6a8" name="Documentació i Seguretat" meeting="false" start="2025-10-13" duration="2" complete="0" expand="true"/>
+        <task id="51" uid="f74e0bcdf23b4da0ade1ad0fd89141ed" name="Prevenció de riscos laborals" meeting="false" start="2025-10-13" duration="2" complete="0" expand="true"/>
+        <task id="60" uid="45d4fa0750404c60ba2ed9abf6ef0ff1" name="Desplegament" meeting="false" start="2025-10-15" duration="2" complete="0" expand="true"/>
+        <task id="61" uid="efba8ec6b80241e289d7e53f760394ee" name="Desplegar en servidor segur" meeting="false" start="2025-10-15" duration="2" complete="0" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="1" name="Pepe" function="Default:0" contacts="" phone=""/>
+        <resource id="2" name="Adri" function="Default:0" contacts="" phone=""/>
+    </resources>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>

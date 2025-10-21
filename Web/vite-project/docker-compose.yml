@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  php:
+    image: php:8.2-cli
+    container_name: glamur_php
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    command: php -S 0.0.0.0:8080
+    ports:
+      - "8080:8080"
