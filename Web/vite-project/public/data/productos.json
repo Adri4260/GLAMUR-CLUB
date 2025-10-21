@@ -1,0 +1,92 @@
+[
+  {
+    "id": "p001",
+    "nombre": "Rosa Mística",
+    "descripcion": "Un aroma floral con toques de rosa y jazmín.",
+    "precio": 29.99,
+    "categoria": "florales",
+    "destacado": true,
+    "imagen": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "id": "p002",
+    "nombre": "Cítrico Fresco",
+    "descripcion": "Notas vibrantes de limón, naranja y bergamota.",
+    "precio": 24.50,
+    "categoria": "cítricos",
+    "destacado": true,
+    "imagen": "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "id": "p003",
+    "nombre": "Ambar Sensual",
+    "descripcion": "Calidez y misterio con ámbar y vainilla.",
+    "precio": 34.75,
+    "categoria": "orientales",
+    "destacado": true,
+    "imagen": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "id": "p004",
+    "nombre": "Verde Esencial",
+    "descripcion": "Aroma fresco con hojas verdes y menta.",
+    "precio": 21.00,
+    "categoria": "verdes",
+    "destacado": false,
+    "imagen": "https://images.unsplash.com/photo-1468071174046-657d9d351a40?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "id": "p005",
+    "nombre": "Dulce Frutal",
+    "descripcion": "Mezcla deliciosa de frutas rojas y melocotón.",
+    "precio": 26.30,
+    "categoria": "frutales",
+    "destacado": false,
+    "imagen": "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "id": "p006",
+    "nombre": "Madera Noble",
+    "descripcion": "Toques profundos de cedro y sándalo.",
+    "precio": 39.99,
+    "categoria": "amaderados",
+    "destacado": true,
+    "imagen": "https://images.unsplash.com/photo-1500217052183-bc68266e0e34?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "id": "p007",
+    "nombre": "Flor de Azahar",
+    "descripcion": "Aroma suave y delicado de azahar y lirio.",
+    "precio": 22.15,
+    "categoria": "florales",
+    "destacado": false,
+    "imagen": "https://images.unsplash.com/photo-1508923567004-3a6b8004f3d1?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "id": "p008",
+    "nombre": "Té Verde",
+    "descripcion": "Fragancia fresca y ligera con notas de té verde.",
+    "precio": 27.50,
+    "categoria": "verdes",
+    "destacado": false,
+    "imagen": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "id": "p009",
+    "nombre": "Frambuesa Salvaje",
+    "descripcion": "Dulce y afrutado con un toque de frescura.",
+    "precio": 25.00,
+    "categoria": "frutales",
+    "destacado": false,
+    "imagen": "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "id": "p010",
+    "nombre": "Esencia Oriental",
+    "descripcion": "Mezcla exótica de especias y maderas.",
+    "precio": 38.50,
+    "categoria": "orientales",
+    "destacado": false,
+    "imagen": "https://images.unsplash.com/photo-1504610926078-a1611febcad3?auto=format&fit=crop&w=400&q=80"
+  }
+]

@@ -42,7 +42,7 @@ if (mobileMenuBtn) {
 // Cargar productos
 async function loadProducts() {
     try {
-        const response = await fetch('/api/productos');
+        const response = await fetch('/public/data/productos.json');
         const data = await response.json();
         AppState.products = data;
         return data;
@@ -66,6 +66,30 @@ async function renderFeaturedProducts() {
     }
     
     container.innerHTML = featured.map(product => createProductCard(product)).join('');
+    attachProductEventListeners();
+}
+
+// Renderizar catálogo con filtro por categoría
+async function renderCatalog(category = 'Todos') {
+    const container = document.getElementById('catalogProducts');
+    if (!container) return;
+
+    if (AppState.products.length === 0) {
+        await loadProducts();
+    }
+
+    let filteredProducts = AppState.products;
+
+    if (category && category !== 'Todos') {
+        filteredProducts = AppState.products.filter(p => p.categoria === category);
+    }
+
+    if (filteredProducts.length === 0) {
+        container.innerHTML = '<p class="loading">No hay productos para esta categoría</p>';
+        return;
+    }
+
+    container.innerHTML = filteredProducts.map(createProductCard).join('');
     attachProductEventListeners();
 }
 
@@ -142,7 +166,6 @@ function addToCart(productId) {
 
 // Mostrar notificación
 function showNotification(message) {
-    // Simple notification
     const notification = document.createElement('div');
     notification.style.cssText = `
         position: fixed;
@@ -191,7 +214,6 @@ if (newsletterForm) {
         e.preventDefault();
         const email = newsletterForm.querySelector('input[type="email"]').value;
         
-        // Validación cliente
         if (!email || !email.includes('@')) {
             showNotification('Por favor, ingresa un email válido');
             return;
@@ -219,9 +241,20 @@ if (newsletterForm) {
 // Inicializar
 document.addEventListener('DOMContentLoaded', () => {
     updateBadges();
-    
-    // Cargar productos destacados si estamos en home
+
     if (document.getElementById('featuredProducts')) {
         renderFeaturedProducts();
+    }
+
+    if (document.getElementById('catalogProducts')) {
+        renderCatalog('Todos'); // Carga inicial de todos los productos
+
+        // Listener para filtro de categoría, asumiendo select con id categorySelect
+        const categorySelect = document.getElementById('categorySelect');
+        if (categorySelect) {
+            categorySelect.addEventListener('change', (e) => {
+                renderCatalog(e.target.value);
+            });
+        }
     }
 });
