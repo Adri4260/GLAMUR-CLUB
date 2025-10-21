@@ -49,8 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Contacto | GLAMUR CLUB</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script defer src="../Entorno cliente/vite-project/src/validacion.js"></script>
+    <link rel="stylesheet" href="/public/css/contacto.css">
+    <script defer src="../public/js/validacion.js"></script>
 </head>
 
 <body>
