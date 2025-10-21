@@ -71,7 +71,7 @@ El projecte està separat en dos entorns principals:
 ---
 
 ## 🚀 Desplegament
-El projecte s’allotjarà en un **servidor segur (hosting compartit o VPS)** amb suport per a PHP i base de dades MySQL.  
+El projecte s’allotjarà en un **servidor segur (hosting compartit o VPS)** amb suport per a PHP i base de dades MySQL  
 El client podrà revisar:
 - La pàgina d’inici operativa  
 - El formulari de contacte funcional  
