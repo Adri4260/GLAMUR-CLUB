@@ -17,7 +17,7 @@
     --transition: all 0.3s ease;
 }
 
-/* Reset bàsic */
+/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -46,7 +46,7 @@ header h1 span {
     color: var(--color-gold);
 }
 
-/* Container formulari */
+/* Contenedor formulario */
 .contact-container {
     max-width: 600px;
     margin: var(--spacing-lg) auto;
@@ -56,7 +56,7 @@ header h1 span {
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-/* Formulari */
+/* Formularios */
 form {
     display: flex;
     flex-direction: column;
@@ -83,7 +83,21 @@ input:focus, textarea:focus {
     outline: 2px solid var(--color-gold);
 }
 
-/* Botó */
+/* Checkbox */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-gold);
+    cursor: pointer;
+}
+
+/* Botón */
 button {
     background-color: var(--color-gold);
     color: var(--color-black);
@@ -100,7 +114,7 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* Missatges */
+/* Mensajes */
 .error {
     background-color: #661010;
     color: #ffcccc;

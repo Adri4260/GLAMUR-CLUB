@@ -1,37 +1,44 @@
 <?php
-// contacte.php
+// contacto.php
 
 $errors = [];
 $success = "";
 
+// Detectar envío
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Netejar dades
+    // Recoger y limpiar datos
     $name = trim($_POST["name"] ?? "");
     $email = trim($_POST["email"] ?? "");
     $subject = trim($_POST["subject"] ?? "");
     $message = trim($_POST["message"] ?? "");
+    $acceptTerms = isset($_POST["acceptTerms"]) ? true : false;
+    $skipValidation = isset($_POST["skipValidation"]) ? true : false;
 
-    // VALIDACIÓ SERVIDOR
-    if (strlen($name) < 2) {
-        $errors[] = "⚠️ El nom ha de tindre almenys 2 caràcters.";
+    // VALIDACIÓN SERVIDOR
+    if (!$skipValidation && strlen($name) < 2) {
+        $errors[] = "⚠️ El nombre debe tener al menos 2 caracteres.";
     }
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "⚠️ El correu electrònic no és vàlid.";
+        $errors[] = "⚠️ El correo electrónico no es válido.";
     }
 
     if (strlen($subject) < 3) {
-        $errors[] = "⚠️ L'assumpte és massa curt.";
+        $errors[] = "⚠️ El asunto es demasiado corto.";
     }
 
     if (strlen($message) < 5) {
-        $errors[] = "⚠️ El missatge és massa curt.";
+        $errors[] = "⚠️ El mensaje es demasiado corto.";
     }
 
-    // Si no hi ha errors → simulació enviament
-    if (empty($errors)) {
+    // Comprobar aceptación de términos
+    if (!$acceptTerms) {
+        $errors[] = "⚠️ Debes aceptar los términos y condiciones.";
+    }
 
-        $success = "✅ El teu missatge s'ha enviat correctament. Gràcies per contactar-nos!";
+    // Si no hay errores → simulación de envío
+    if (empty($errors)) {
+        $success = "✅ Tu mensaje se ha enviado correctamente. ¡Gracias por contactarnos!";
     }
 }
 ?>
@@ -43,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <title>Contacto | GLAMUR CLUB</title>
     <link rel="stylesheet" href="css/style.css">
-    <script defer src="js/validacion.js"></script>
+    <script defer src="../Entorno cliente/vite-project/src/validacion.js"></script>
 </head>
 
 <body>
@@ -66,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         <?php endif; ?>
 
-        <form id="contactForm" method="post" action="contacte.php" novalidate>
+        <form id="contactForm" method="post" action="contacto.php" novalidate>
             <label for="name">Nombre completo</label>
             <input type="text" id="name" name="name" placeholder="Escribe tu nombre"
                 value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
@@ -81,6 +88,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <label for="message">Mensaje</label>
             <textarea id="message" name="message" rows="5" placeholder="Escribe tu mensaje..." required><?= htmlspecialchars($_POST['message'] ?? '') ?></textarea>
+
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="acceptTerms" name="acceptTerms" required
+                        <?= isset($_POST['acceptTerms']) ? 'checked' : '' ?>>
+                    Acepto las <a href="#">leyes y términos de uso</a>.
+                </label>
+            </div>
+
+            <div class="checkbox-group">
+                <label>
+                    <input type="checkbox" id="skipValidation" name="skipValidation"
+                        <?= isset($_POST['skipValidation']) ? 'checked' : '' ?>>
+                    Desactivar validación del servidor
+                </label>
+            </div>
 
             <button type="submit">Enviar mensaje</button>
         </form>
