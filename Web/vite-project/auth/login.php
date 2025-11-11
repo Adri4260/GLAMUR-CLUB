@@ -1,52 +1,62 @@
 <?php
-// auth/login.php
-session_start();
-require_once __DIR__ . '/../includes/json_connect.php';
-require_once __DIR__ . '/../includes/config.php';
+require_once "../includes/auth_check.php";
 
-$errors = [];
+$message = "";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom_usuari = trim($_POST['nom_usuari'] ?? '');
-    $contrasenya = $_POST['contrasenya'] ?? '';
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    if ($nom_usuari === '' || $contrasenya === '') {
-        $errors[] = 'Rellena todos los campos.';
+  $username = trim($_POST["username"]);
+  $password = trim($_POST["password"]);
+
+  $user = get_user_by_username($username);
+
+  if (!$user) {
+    $message = "Usuario no encontrado.";
+  } else {
+    if (password_verify($password, $user["contrasenya"])) {
+
+      session_regenerate_id(true);
+      $_SESSION["user_id"] = $user["id"];
+
+      header("Location: /auth/profile.php");
+      exit;
     } else {
-        $user = find_user_by_username($nom_usuari);
-        if ($user && password_verify($contrasenya, $user['contrasenya'])) {
-            session_regenerate_id(true);
-            $_SESSION['user_id'] = $user['id'];
-            setcookie(COOKIE_NAME, $user['id'], time() + COOKIE_EXPIRE, "/");
-            header('Location: /auth/profile.php');
-            exit;
-        } else {
-            $errors[] = 'Usuario o contraseña incorrectos.';
-        }
+      $message = "Contraseña incorrecta.";
     }
+  }
 }
 ?>
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Iniciar sesión</title>
-</head>
-<body>
-  <h1>Iniciar sesión</h1>
+<html>
 
-  <?php if ($errors): ?>
-    <ul style="color:red;">
-      <?php foreach ($errors as $e): ?><li><?= htmlspecialchars($e) ?></li><?php endforeach; ?>
-    </ul>
+<head>
+  <title>Iniciar sesión</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+  <h2>Iniciar sesión</h2>
+
+  <?php if (isset($_GET["success"])): ?>
+    <p style="color:green">Registro completado. ¡Ya puedes iniciar sesión!</p>
+  <?php endif; ?>
+
+  <?php if ($message): ?>
+    <p style="color:red"><?= $message ?></p>
   <?php endif; ?>
 
   <form method="POST">
-    <label>Usuario: <input type="text" name="nom_usuari" required></label><br>
-    <label>Contraseña: <input type="password" name="contrasenya" required></label><br>
+    <label>Usuario</label><br>
+    <input type="text" name="username"><br><br>
+
+    <label>Contraseña</label><br>
+    <input type="password" name="password"><br><br>
+
     <button type="submit">Entrar</button>
   </form>
 
-  <p>¿No tienes cuenta? <a href="register.php">Regístrate</a></p>
+  <p><a href="register.php">Crear cuenta</a></p>
 </body>
+
 </html>

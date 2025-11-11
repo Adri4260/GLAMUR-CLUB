@@ -1,73 +1,69 @@
 <?php
-// auth/register.php
-session_start();
-require_once __DIR__ . '/../includes/json_connect.php';
+require_once "../includes/auth_check.php";
 
-$errors = [];
-$success = '';
+$message = "";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom_usuari = trim($_POST['nom_usuari'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $contrasenya = $_POST['contrasenya'] ?? '';
-    $nom = trim($_POST['nom'] ?? '');
-    $cognoms = trim($_POST['cognoms'] ?? '');
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    if ($nom_usuari === '' || $email === '' || $contrasenya === '') {
-        $errors[] = 'Completa todos los campos obligatorios.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'Email no válido.';
+  $username = trim($_POST["username"]);
+  $email = trim($_POST["email"]);
+  $password = trim($_POST["password"]);
+
+  if (!$username || !$email || !$password) {
+    $message = "Todos los campos son obligatorios.";
+  } else {
+
+    // ¿Usuario ya existe?
+    $existing = get_user_by_username($username);
+
+    if ($existing) {
+      $message = "El nombre de usuario ya existe.";
     } else {
-        $existing = find_user_by_username($nom_usuari);
-        if ($existing) {
-            $errors[] = 'El usuario ya existe.';
-        } else {
-            $hashed = password_hash($contrasenya, PASSWORD_DEFAULT);
-            $data = [
-                "nom_usuari" => $nom_usuari,
-                "contrasenya" => $hashed,
-                "email" => $email,
-                "nom" => $nom,
-                "cognoms" => $cognoms,
-                "data_registre" => date('c')
-            ];
-            $resp = create_user($data);
-            if (in_array($resp['status'], [201, 200])) {
-                $success = 'Usuario registrado correctamente. Puedes iniciar sesión.';
-            } else {
-                $errors[] = 'Error en el registro (' . $resp['status'] . ')';
-            }
-        }
+      // Crear usuario
+      $data = [
+        "nom_usuari" => $username,
+        "email" => $email,
+        "contrasenya" => password_hash($password, PASSWORD_DEFAULT),
+        "data_registre" => date("c")
+      ];
+
+      create_user($data);
+
+      header("Location: login.php?success=1");
+      exit;
     }
+  }
 }
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <title>Registro de usuario</title>
+  <title>Registro</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
-  <h1>Registro</h1>
+  <h2>Crear cuenta</h2>
 
-  <?php if ($success): ?>
-    <p style="color:green"><?= htmlspecialchars($success) ?></p>
-    <a href="login.php">Iniciar sesión</a>
-  <?php endif; ?>
-
-  <?php if ($errors): ?>
-    <ul style="color:red;">
-      <?php foreach ($errors as $e): ?><li><?= htmlspecialchars($e) ?></li><?php endforeach; ?>
-    </ul>
+  <?php if ($message): ?>
+    <p style="color:red"><?= $message ?></p>
   <?php endif; ?>
 
   <form method="POST">
-    <label>Nombre de usuario: <input type="text" name="nom_usuari" required></label><br>
-    <label>Email: <input type="email" name="email" required></label><br>
-    <label>Contraseña: <input type="password" name="contrasenya" required></label><br>
-    <label>Nombre: <input type="text" name="nom"></label><br>
-    <label>Apellidos: <input type="text" name="cognoms"></label><br>
-    <button type="submit">Registrar</button>
+    <label>Nombre de usuario</label><br>
+    <input type="text" name="username"><br><br>
+
+    <label>Email</label><br>
+    <input type="email" name="email"><br><br>
+
+    <label>Contraseña</label><br>
+    <input type="password" name="password"><br><br>
+
+    <button type="submit">Registrarse</button>
   </form>
+
+  <p><a href="login.php">Ya tengo cuenta</a></p>
 </body>
+
 </html>

@@ -1,10 +1,10 @@
 <?php
-// auth/logout.php
-session_start();
-require_once __DIR__ . '/../includes/config.php';
+require_once "../includes/auth_check.php";
 
-setcookie(COOKIE_NAME, '', time() - 3600, "/");
+session_unset();
 session_destroy();
 
-header('Location: /auth/login.php');
+setcookie(session_name(), '', time() - 3600, "/");
+
+header("Location: login.php");
 exit;
