@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <label>
                     <input type="checkbox" id="skipValidation" name="skipValidation"
                         <?= isset($_POST['skipValidation']) ? 'checked' : '' ?>>
-                    Desactivar validación del servidor
+                    Desactivar validación del cliente de prueba
                 </label>
             </div>
 
