@@ -1,14 +1,62 @@
 <?php
 // auth_check.php
-session_start();
-require_once "json_connect.php";
+
+// 1. INICIAR SESIÓN Y RUTA
+// Ajustado a la estructura auth/ -> ../includes/
+require_once "../includes/json_connect.php";
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+
+// --- 2. GESTIÓN DE COOKIES/SESIÓN (Requisito del proyecto) ---
 
 /**
- * ¿El usuario está logueado?
+ * Establece la cookie de identificación
  */
-function is_logged_in()
+function set_auth_cookie(int $user_id): void
 {
-    return isset($_SESSION["user_id"]);
+    // Duración de la cookie: 1 hora (3600 segundos) en todo el sitio ("/")
+    setcookie('user_id', $user_id, time() + 3600, "/");
+}
+
+/**
+ * Elimina la cookie de identificación
+ */
+function delete_auth_cookie(): void
+{
+    // Poner la cookie en el pasado para eliminarla
+    setcookie('user_id', '', time() - 3600, "/");
+}
+
+
+/**
+ * ¿El usuario está logueado por Sesión o Cookie?
+ */
+function is_logged_in(): bool
+{
+    // 1. Comprobar Sesión PHP
+    if (isset($_SESSION["user_id"])) {
+        return true;
+    }
+
+    // 2. Comprobar Cookie de persistencia
+    if (isset($_COOKIE['user_id'])) {
+        $user_id = (int)$_COOKIE['user_id'];
+        $user = get_user_by_id($user_id);
+
+        if ($user) {
+            // Cookie válida: inicializamos la sesión PHP
+            $_SESSION["user_id"] = $user_id;
+            return true;
+        } else {
+            // Cookie no válida (ej. usuario borrado), la eliminamos
+            delete_auth_cookie();
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -22,13 +70,17 @@ function require_login()
     }
 }
 
+
+// --- 3. FUNCIONES DE INTERACCIÓN CON JSON SERVER (Endpoint Corregido: /usuaris) ---
+
 /**
  * Buscar usuario por nombre de usuario
  */
 function get_user_by_username($username)
 {
-    $result = json_get("/usuarios?nom_usuari=" . urlencode($username));
-    return $result ? $result[0] : null;
+    // Endpoint CORREGIDO: /usuaris
+    $result = json_get("/usuaris?nom_usuari=" . urlencode($username));
+    return is_array($result) && !empty($result) ? $result[0] : null;
 }
 
 /**
@@ -36,7 +88,8 @@ function get_user_by_username($username)
  */
 function get_user_by_id($id)
 {
-    return json_get("/usuarios/" . $id);
+    // Endpoint CORREGIDO: /usuaris
+    return json_get("/usuaris/" . $id);
 }
 
 /**
@@ -44,7 +97,8 @@ function get_user_by_id($id)
  */
 function create_user($data)
 {
-    return json_post("/usuarios", $data);
+    // Endpoint CORREGIDO: /usuaris
+    return json_post("/usuaris", $data);
 }
 
 /**
@@ -52,5 +106,6 @@ function create_user($data)
  */
 function update_user($id, $data)
 {
-    return json_patch("/usuarios/" . $id, $data);
+    // Endpoint CORREGIDO: /usuaris
+    return json_patch("/usuaris/" . $id, $data);
 }

@@ -60,10 +60,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <label>Contraseña</label><br>
     <input type="password" name="password"><br><br>
 
-    <button type="submit">Registrarse</button>
+    <button type="submit">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+        <path d="M12 2v20M2 12h20" />
+      </svg>
+      Registrarse
+    </button>
   </form>
 
-  <p><a href="login.php">Ya tengo cuenta</a></p>
+  <p><a href="login.php">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
+      </svg>
+      Ya tengo cuenta
+    </a></p>
 </body>
 
 </html>
