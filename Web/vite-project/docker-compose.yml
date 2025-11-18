@@ -2,7 +2,8 @@ version: "3.8"
 
 services:
   php:
-    image: php:8.2-cli
+    build: 
+      context: .
     container_name: glamur_php
     working_dir: /var/www/html
     volumes:
@@ -10,3 +11,12 @@ services:
     command: php -S 0.0.0.0:8080
     ports:
       - "8080:8080"
+  jsonserver:
+    image: node:20-alpine
+    container_name: glamur_json
+    working_dir: /app
+    command: sh -c "npm i -g json-server && json-server --watch /data/datos.json --host 0.0.0.0 --port 3000"
+    volumes:
+      - ./data:/data
+    ports:
+      - "3000:3000"
