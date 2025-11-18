@@ -1,5 +1,4 @@
 <?php
-// auth/register.php
 session_start();
 require_once __DIR__ . '/../includes/json_connect.php';
 
@@ -44,30 +43,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Registro de usuario</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - GLAMUR CLUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../public/css/auth.css">
 </head>
 <body>
-  <h1>Registro</h1>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>Crear Cuenta</h1>
+            <p>Únete a GLAMUR CLUB</p>
+        </div>
 
-  <?php if ($success): ?>
-    <p style="color:green"><?= htmlspecialchars($success) ?></p>
-    <a href="login.php">Iniciar sesión</a>
-  <?php endif; ?>
+        <div class="auth-body">
+            <?php if ($success): ?>
+                <div class="message success">
+                    <?= htmlspecialchars($success) ?>
+                    <br><br>
+                    <a href="login.php" style="color: #155724; font-weight: 600;">Ir a Iniciar Sesión</a>
+                </div>
+            <?php endif; ?>
 
-  <?php if ($errors): ?>
-    <ul style="color:red;">
-      <?php foreach ($errors as $e): ?><li><?= htmlspecialchars($e) ?></li><?php endforeach; ?>
-    </ul>
-  <?php endif; ?>
+            <?php if ($errors): ?>
+                <div class="message error">
+                    <ul>
+                        <?php foreach ($errors as $e): ?>
+                            <li><?= htmlspecialchars($e) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
 
-  <form method="POST">
-    <label>Nombre de usuario: <input type="text" name="nom_usuari" required></label><br>
-    <label>Email: <input type="email" name="email" required></label><br>
-    <label>Contraseña: <input type="password" name="contrasenya" required></label><br>
-    <label>Nombre: <input type="text" name="nom"></label><br>
-    <label>Apellidos: <input type="text" name="cognoms"></label><br>
-    <button type="submit">Registrar</button>
-  </form>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="nom_usuari">Nombre de usuario *</label>
+                    <input type="text" id="nom_usuari" name="nom_usuari" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contrasenya">Contraseña *</label>
+                    <input type="password" id="contrasenya" name="contrasenya" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nom">Nombre</label>
+                    <input type="text" id="nom" name="nom">
+                </div>
+
+                <div class="form-group">
+                    <label for="cognoms">Apellidos</label>
+                    <input type="text" id="cognoms" name="cognoms">
+                </div>
+
+                <button type="submit" class="btn">Registrarse</button>
+            </form>
+        </div>
+
+        <div class="auth-footer">
+            ¿Ya tienes cuenta? <a href="login.php">Iniciar sesión</a>
+            <br>
+            <a href="/" class="back-home">← Volver al inicio</a>
+        </div>
+    </div>
 </body>
 </html>

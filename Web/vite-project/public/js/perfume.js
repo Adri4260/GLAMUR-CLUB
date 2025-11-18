@@ -142,6 +142,17 @@ const perfumeName2 = document.getElementById('perfumeName2');
 const aromaType = document.getElementById('aromaType');
 const previewName = document.getElementById('previewName');
 const previewType = document.getElementById('previewType');
+const previewIcon = document.querySelector('.preview-icon');
+
+// Emojis según tipo de aroma
+const AROMA_EMOJIS = {
+    floral: '🌸',
+    frutal: '🍎',
+    amaderado: '🪵',
+    oriental: '🕯️',
+    fresco: '🌿',
+    citrico: '🍋'
+};
 
 // Actualizar preview en tiempo real
 perfumeName2.addEventListener('input', () => {
@@ -149,8 +160,22 @@ perfumeName2.addEventListener('input', () => {
 });
 
 aromaType.addEventListener('change', () => {
+    const selectedValue = aromaType.value;
     const selectedOption = aromaType.options[aromaType.selectedIndex];
+    
+    // Actualizar texto
     previewType.textContent = selectedOption.text || 'Tipo de aroma';
+    
+    // Actualizar emoji según aroma
+    if (AROMA_EMOJIS[selectedValue]) {
+        previewIcon.innerHTML = `<div class="emoji-icon">${AROMA_EMOJIS[selectedValue]}</div>`;
+    } else {
+        previewIcon.innerHTML = `
+            <svg width="40" height="40" fill="currentColor">
+                <path d="M12 2v20M2 12h20"/>
+            </svg>
+        `;
+    }
 });
 
 simpleForm.addEventListener('submit', async (e) => {
