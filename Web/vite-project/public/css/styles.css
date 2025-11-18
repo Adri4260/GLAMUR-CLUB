@@ -224,6 +224,39 @@ body {
     font-weight: 600;
 }
 
+/* --- Estilos para Botón de Autenticación en Navbar --- */
+
+/* Ajuste para que el botón 'Entrar' (btn-ghost) se alinee con los iconos */
+.navbar .nav-actions .login-btn {
+    /* Eliminar padding extra del botón para que se vea más como un icono */
+    padding: var(--spacing-sm); 
+    height: 40px; /* Asegurar altura consistente con los iconos (aprox 24px icon + padding) */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400; /* Menos énfasis que un botón principal */
+}
+
+/* Estilo específico para el icono de perfil cuando el usuario está logueado */
+.navbar .nav-actions .profile-btn {
+    /* Usar el estilo nav-icon existente, pero lo re-enfatizamos */
+    color: var(--color-gold); 
+}
+
+.navbar .nav-actions .profile-btn:hover {
+    color: var(--color-white); 
+}
+
+/* Media Query para el botón de login/perfil en móvil */
+@media (max-width: 768px) {
+    .navbar .nav-actions .login-btn {
+        /* En móvil, queremos que el botón de login parezca más un botón */
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem; 
+        height: auto;
+    }
+}
+
 /* Hero Section */
 .hero {
     position: relative;

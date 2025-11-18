@@ -2,93 +2,93 @@
   "productes": [
     {
       "id": "p001",
-      "nombre": "Rosa Mística",
+      "nombre": "J'adore (Dior)",
       "descripcion": "Un aroma floral con toques de rosa y jazmín.",
       "precio": 29.99,
       "categoria": "florales",
       "destacado": true,
-      "imagen": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/68v8z9X/jadore.jpg"
     },
     {
       "id": "p002",
-      "nombre": "Cítrico Fresco",
+      "nombre": "Acqua di Gio (Armani)",
       "descripcion": "Notas vibrantes de limón, naranja y bergamota.",
       "precio": 24.50,
       "categoria": "cítricos",
       "destacado": true,
-      "imagen": "https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/3sN6K7x/acqua-di-gio.jpg"
     },
     {
       "id": "p003",
-      "nombre": "Ambar Sensual",
+      "nombre": "Shalimar (Guerlain)",
       "descripcion": "Calidez y misterio con ámbar y vainilla.",
       "precio": 34.75,
       "categoria": "orientales",
       "destacado": true,
-      "imagen": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/R9m4H5s/shalimar.jpg"
     },
     {
       "id": "p004",
-      "nombre": "Verde Esencial",
+      "nombre": "CK One (Calvin Klein)",
       "descripcion": "Aroma fresco con hojas verdes y menta.",
       "precio": 21.00,
       "categoria": "verdes",
       "destacado": false,
-      "imagen": "https://images.unsplash.com/photo-1468071174046-657d9d351a40?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/N275Q80/ck-one.jpg"
     },
     {
       "id": "p005",
-      "nombre": "Dulce Frutal",
+      "nombre": "La Vie Est Belle (Lancôme)",
       "descripcion": "Mezcla deliciosa de frutas rojas y melocotón.",
       "precio": 26.30,
       "categoria": "frutales",
       "destacado": false,
-      "imagen": "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/VMyh024/la-vie-est-belle.jpg"
     },
     {
       "id": "p006",
-      "nombre": "Madera Noble",
+      "nombre": "Terre d'Hermès (Hermès)",
       "descripcion": "Toques profundos de cedro y sándalo.",
       "precio": 39.99,
       "categoria": "amaderados",
       "destacado": true,
-      "imagen": "https://images.unsplash.com/photo-1500217052183-bc68266e0e34?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/Qk48y0W/terre-hermes.jpg"
     },
     {
       "id": "p007",
-      "nombre": "Flor de Azahar",
+      "nombre": "Poême (Lancôme)",
       "descripcion": "Aroma suave y delicado de azahar y lirio.",
       "precio": 22.15,
       "categoria": "florales",
       "destacado": false,
-      "imagen": "https://images.unsplash.com/photo-1508923567004-3a6b8004f3d1?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/F82wW4v/poeme.jpg"
     },
     {
       "id": "p008",
-      "nombre": "Té Verde",
+      "nombre": "Green Tea (Elizabeth Arden)",
       "descripcion": "Fragancia fresca y ligera con notas de té verde.",
       "precio": 27.50,
       "categoria": "verdes",
       "destacado": false,
-      "imagen": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/kH7QJcZ/green-tea.jpg"
     },
     {
       "id": "p009",
-      "nombre": "Frambuesa Salvaje",
+      "nombre": "Givenchy Irresistible",
       "descripcion": "Dulce y afrutado con un toque de frescura.",
       "precio": 25.00,
       "categoria": "frutales",
       "destacado": false,
-      "imagen": "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/6P7V9fW/irresistible.jpg"
     },
     {
       "id": "p010",
-      "nombre": "Esencia Oriental",
+      "nombre": "One Million (Paco Rabanne)",
       "descripcion": "Mezcla exótica de especias y maderas.",
       "precio": 38.50,
       "categoria": "orientales",
       "destacado": false,
-      "imagen": "https://images.unsplash.com/photo-1504610926078-a1611febcad3?auto=format&fit=crop&w=400&q=80"
+      "imagen": "https://i.ibb.co/p3d47y5/one-million.jpg"
     }
   ],
   "usuaris": [
@@ -102,7 +102,7 @@
       "data_registre": "2025-10-31T10:00:00Z"
     },
     {
-      "id": 1,
+      "id": 2,
       "nom_usuari": "adri",
       "contrasenya": "$2y$10$DemoHashDeEjemplo1234567890abcdefghi1234567890abcdefghi1234",
       "email": "Adri@example.com",

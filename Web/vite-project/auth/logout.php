@@ -1,19 +1,13 @@
 <?php
-// auth/logout.php
-session_start();
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/session_store.php';
+require_once "../includes/auth_check.php";
 
-if (isset($_COOKIE[COOKIE_NAME])) {
-    $token = $_COOKIE[COOKIE_NAME];
-    delete_session_by_token($token);
-}
+delete_auth_cookie(); // ✅ AÑADIDO: Eliminar la cookie de identificación
 
-$options = COOKIE_OPTIONS;
-$options['expires'] = time() - 3600;
-setcookie(COOKIE_NAME, '', $options);
-
+session_unset();
 session_destroy();
 
-header('Location: /auth/login.php');
+// Eliminar la cookie de sesión de PHP (Buena práctica)
+setcookie(session_name(), '', time() - 3600, "/");
+
+header("Location: login.php");
 exit;

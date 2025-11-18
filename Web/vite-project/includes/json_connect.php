@@ -1,67 +1,86 @@
 <?php
-// includes/json_connect.php
-// Funciones para comunicarse con JSON Server
+// json_connect.php
+// Maneja todas las peticiones desde PHP al JSON Server
 
-require_once __DIR__ . '/config.php';
+const JSON_SERVER_URL = "http://localhost:3000";
+// Ajusta el host si tu servicio se llama distinto en docker-compose
 
-function make_request($method, $endpoint, $data = null) {
+function json_get($endpoint)
+{
     $url = JSON_SERVER_URL . $endpoint;
-    
-    $options = [
-        'http' => [
-            'method' => $method,
-            'header' => 'Content-Type: application/json',
-            'ignore_errors' => true
-        ]
-    ];
-    
-    if ($data !== null && in_array($method, ['POST', 'PUT', 'PATCH'])) {
-        $options['http']['content'] = json_encode($data);
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($http_code !== 200 && $http_code !== 304) {
+        return null;
     }
-    
-    $context = stream_context_create($options);
-    $response = @file_get_contents($url, false, $context);
-    
-    $status = 500;
-    if (isset($http_response_header[0])) {
-        preg_match('/\d{3}/', $http_response_header[0], $matches);
-        $status = isset($matches[0]) ? (int)$matches[0] : 500;
+
+    return json_decode($response, true);
+}
+
+function json_post($endpoint, $data)
+{
+    $url = JSON_SERVER_URL . $endpoint;
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Content-Type: application/json"
+    ]);
+
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($http_code !== 201) { // 201 Created
+        return null;
     }
-    
-    return [
-        'status' => $status,
-        'data' => $response ? json_decode($response, true) : null
-    ];
+
+    return json_decode($response, true);
 }
 
-function find_user_by_username($nom_usuari) {
-    $response = make_request('GET', '/usuaris?nom_usuari=' . urlencode($nom_usuari));
-    
-    if ($response['status'] === 200 && !empty($response['data'])) {
-        return $response['data'][0];
+function json_patch($endpoint, $data)
+{
+    $url = JSON_SERVER_URL . $endpoint;
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PATCH");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Content-Type: application/json"
+    ]);
+
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($http_code !== 200) { // 200 OK
+        return null;
     }
-    
-    return null;
+
+    return json_decode($response, true);
 }
 
-function find_user_by_id($id) {
-    $response = make_request('GET', '/usuaris/' . $id);
-    
-    if ($response['status'] === 200 && $response['data']) {
-        return $response['data'];
-    }
-    
-    return null;
-}
+function json_delete($endpoint)
+{
+    $url = JSON_SERVER_URL . $endpoint;
 
-function create_user($data) {
-    return make_request('POST', '/usuaris', $data);
-}
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-function update_user($id, $data) {
-    return make_request('PATCH', '/usuaris/' . $id, $data);
-}
+    $response = curl_exec($ch);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
 
-function delete_user($id) {
-    return make_request('DELETE', '/usuaris/' . $id);
+    // JSON Server devuelve 200 o 204 para una eliminación exitosa
+    return $http_code === 200 || $http_code === 204;
 }

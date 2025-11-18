@@ -1,115 +1,79 @@
 <?php
-session_start();
-require_once __DIR__ . '/../includes/json_connect.php';
+require_once "../includes/auth_check.php";
 
-$errors = [];
-$success = '';
+$message = "";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom_usuari = trim($_POST['nom_usuari'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $contrasenya = $_POST['contrasenya'] ?? '';
-    $nom = trim($_POST['nom'] ?? '');
-    $cognoms = trim($_POST['cognoms'] ?? '');
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    if ($nom_usuari === '' || $email === '' || $contrasenya === '') {
-        $errors[] = 'Completa todos los campos obligatorios.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'Email no válido.';
+  $username = trim($_POST["username"]);
+  $email = trim($_POST["email"]);
+  $password = trim($_POST["password"]);
+
+  if (!$username || !$email || !$password) {
+    $message = "Todos los campos son obligatorios.";
+  } else {
+
+    // ¿Usuario ya existe?
+    $existing = get_user_by_username($username);
+
+    if ($existing) {
+      $message = "El nombre de usuario ya existe.";
     } else {
-        $existing = find_user_by_username($nom_usuari);
-        if ($existing) {
-            $errors[] = 'El usuario ya existe.';
-        } else {
-            $hashed = password_hash($contrasenya, PASSWORD_DEFAULT);
-            $data = [
-                "nom_usuari" => $nom_usuari,
-                "contrasenya" => $hashed,
-                "email" => $email,
-                "nom" => $nom,
-                "cognoms" => $cognoms,
-                "data_registre" => date('c')
-            ];
-            $resp = create_user($data);
-            if (in_array($resp['status'], [201, 200])) {
-                $success = 'Usuario registrado correctamente. Puedes iniciar sesión.';
-            } else {
-                $errors[] = 'Error en el registro (' . $resp['status'] . ')';
-            }
-        }
+      // Crear usuario
+      $data = [
+        "nom_usuari" => $username,
+        "email" => $email,
+        "contrasenya" => password_hash($password, PASSWORD_DEFAULT),
+        "data_registre" => date("c")
+      ];
+
+      create_user($data);
+
+      header("Location: login.php?success=1");
+      exit;
     }
+  }
 }
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - GLAMUR CLUB</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../public/css/auth.css">
+  <title>Registro</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
-    <div class="auth-container">
-        <div class="auth-header">
-            <h1>Crear Cuenta</h1>
-            <p>Únete a GLAMUR CLUB</p>
-        </div>
+  <h2>Crear cuenta</h2>
 
-        <div class="auth-body">
-            <?php if ($success): ?>
-                <div class="message success">
-                    <?= htmlspecialchars($success) ?>
-                    <br><br>
-                    <a href="login.php" style="color: #155724; font-weight: 600;">Ir a Iniciar Sesión</a>
-                </div>
-            <?php endif; ?>
+  <?php if ($message): ?>
+    <p style="color:red"><?= $message ?></p>
+  <?php endif; ?>
 
-            <?php if ($errors): ?>
-                <div class="message error">
-                    <ul>
-                        <?php foreach ($errors as $e): ?>
-                            <li><?= htmlspecialchars($e) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
+  <form method="POST">
+    <label>Nombre de usuario</label><br>
+    <input type="text" name="username"><br><br>
 
-            <form method="POST">
-                <div class="form-group">
-                    <label for="nom_usuari">Nombre de usuario *</label>
-                    <input type="text" id="nom_usuari" name="nom_usuari" required>
-                </div>
+    <label>Email</label><br>
+    <input type="email" name="email"><br><br>
 
-                <div class="form-group">
-                    <label for="email">Email *</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
+    <label>Contraseña</label><br>
+    <input type="password" name="password"><br><br>
 
-                <div class="form-group">
-                    <label for="contrasenya">Contraseña *</label>
-                    <input type="password" id="contrasenya" name="contrasenya" required>
-                </div>
+    <button type="submit">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+        <path d="M12 2v20M2 12h20" />
+      </svg>
+      Registrarse
+    </button>
+  </form>
 
-                <div class="form-group">
-                    <label for="nom">Nombre</label>
-                    <input type="text" id="nom" name="nom">
-                </div>
-
-                <div class="form-group">
-                    <label for="cognoms">Apellidos</label>
-                    <input type="text" id="cognoms" name="cognoms">
-                </div>
-
-                <button type="submit" class="btn">Registrarse</button>
-            </form>
-        </div>
-
-        <div class="auth-footer">
-            ¿Ya tienes cuenta? <a href="login.php">Iniciar sesión</a>
-            <br>
-            <a href="/" class="back-home">← Volver al inicio</a>
-        </div>
-    </div>
+  <p><a href="login.php">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
+      </svg>
+      Ya tengo cuenta
+    </a></p>
 </body>
+
 </html>

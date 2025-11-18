@@ -1,68 +1,111 @@
 <?php
-// includes/auth_check.php
-// Protección de rutas - verificar autenticación
+// auth_check.php
 
-require_once __DIR__ . '/config.php';
-require_once __DIR__ . '/session_store.php';
+// 1. INICIAR SESIÓN Y RUTA
+// Ajustado a la estructura auth/ -> ../includes/
+require_once "json_connect.php";
 
-function require_login() {
-    if (isset($_SESSION['user_id']) && isset($_SESSION['user_validated'])) {
-        return $_SESSION['user_id'];
-    }
-    
-    if (isset($_COOKIE[COOKIE_NAME])) {
-        $token = $_COOKIE[COOKIE_NAME];
-        
-        $session = find_session_by_token($token);
-        
-        if ($session) {
-            session_regenerate_id(true);
-            $_SESSION['user_id'] = $session['user_id'];
-            $_SESSION['user_validated'] = true;
-            return $session['user_id'];
-        } else {
-            $options = COOKIE_OPTIONS;
-            $options['expires'] = time() - 3600;
-            setcookie(COOKIE_NAME, '', $options);
-        }
-    }
-    
-    header('Location: /auth/login.php');
-    exit;
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
 }
 
-function is_logged_in() {
-    if (isset($_SESSION['user_id']) && isset($_SESSION['user_validated'])) {
+
+// --- 2. GESTIÓN DE COOKIES/SESIÓN (Requisito del proyecto) ---
+
+/**
+ * Establece la cookie de identificación
+ */
+function set_auth_cookie(int $user_id): void
+{
+    // Duración de la cookie: 1 hora (3600 segundos) en todo el sitio ("/")
+    setcookie('user_id', $user_id, time() + 3600, "/");
+}
+
+/**
+ * Elimina la cookie de identificación
+ */
+function delete_auth_cookie(): void
+{
+    // Poner la cookie en el pasado para eliminarla
+    setcookie('user_id', '', time() - 3600, "/");
+}
+
+
+/**
+ * ¿El usuario está logueado por Sesión o Cookie?
+ */
+function is_logged_in(): bool
+{
+    // 1. Comprobar Sesión PHP
+    if (isset($_SESSION["user_id"])) {
         return true;
     }
-    
-    if (isset($_COOKIE[COOKIE_NAME])) {
-        $token = $_COOKIE[COOKIE_NAME];
-        $session = find_session_by_token($token);
-        
-        if ($session) {
-            $_SESSION['user_id'] = $session['user_id'];
-            $_SESSION['user_validated'] = true;
+
+    // 2. Comprobar Cookie de persistencia
+    if (isset($_COOKIE['user_id'])) {
+        $user_id = (int)$_COOKIE['user_id'];
+        $user = get_user_by_id($user_id);
+
+        if ($user) {
+            // Cookie válida: inicializamos la sesión PHP
+            $_SESSION["user_id"] = $user_id;
             return true;
+        } else {
+            // Cookie no válida (ej. usuario borrado), la eliminamos
+            delete_auth_cookie();
         }
     }
-    
+
     return false;
 }
 
-function get_current_user_id() {
-    if (isset($_SESSION['user_id']) && isset($_SESSION['user_validated'])) {
-        return $_SESSION['user_id'];
+/**
+ * Redirige si NO está logueado
+ */
+function require_login()
+{
+    if (!is_logged_in()) {
+        header("Location: /auth/login.php");
+        exit;
     }
-    
-    if (isset($_COOKIE[COOKIE_NAME])) {
-        $token = $_COOKIE[COOKIE_NAME];
-        $session = find_session_by_token($token);
-        
-        if ($session) {
-            return $session['user_id'];
-        }
-    }
-    
-    return null;
+}
+
+
+// --- 3. FUNCIONES DE INTERACCIÓN CON JSON SERVER (Endpoint Corregido: /usuaris) ---
+
+/**
+ * Buscar usuario por nombre de usuario
+ */
+function get_user_by_username($username)
+{
+    // Endpoint CORREGIDO: /usuaris
+    $result = json_get("/usuaris?nom_usuari=" . urlencode($username));
+    return is_array($result) && !empty($result) ? $result[0] : null;
+}
+
+/**
+ * Buscar usuario por ID
+ */
+function get_user_by_id($id)
+{
+    // Endpoint CORREGIDO: /usuaris
+    return json_get("/usuaris/" . $id);
+}
+
+/**
+ * Registrar nuevo usuario
+ */
+function create_user($data)
+{
+    // Endpoint CORREGIDO: /usuaris
+    return json_post("/usuaris", $data);
+}
+
+/**
+ * Actualizar usuario existente
+ */
+function update_user($id, $data)
+{
+    // Endpoint CORREGIDO: /usuaris
+    return json_patch("/usuaris/" . $id, $data);
 }

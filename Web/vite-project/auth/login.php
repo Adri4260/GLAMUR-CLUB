@@ -1,87 +1,80 @@
 <?php
-session_start();
-require_once __DIR__ . '/../includes/json_connect.php';
-require_once __DIR__ . '/../includes/config.php';
-require_once __DIR__ . '/../includes/session_store.php';
+require_once "../includes/auth_check.php";
 
-cleanup_expired_sessions();
+// Si el usuario ya está logueado, redirigir a su perfil
+if (is_logged_in()) {
+  header("Location: /auth/profile.php");
+  exit;
+}
 
-$errors = [];
+$message = "";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nom_usuari = trim($_POST['nom_usuari'] ?? '');
-    $contrasenya = $_POST['contrasenya'] ?? '';
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    if ($nom_usuari === '' || $contrasenya === '') {
-        $errors[] = 'Rellena todos los campos.';
+  $username = trim($_POST["username"]);
+  $password = trim($_POST["password"]);
+
+  $user = get_user_by_username($username);
+
+  if (!$user) {
+    $message = "Usuario no encontrado.";
+  } else {
+    if (password_verify($password, $user["contrasenya"])) {
+
+      session_regenerate_id(true);
+      $_SESSION["user_id"] = $user["id"];
+      set_auth_cookie($user["id"]); // ✅ AÑADIDO: Guardar la cookie de identificación
+
+      header("Location: /auth/profile.php");
+      exit;
     } else {
-        $user = find_user_by_username($nom_usuari);
-        if ($user && password_verify($contrasenya, $user['contrasenya'])) {
-            session_regenerate_id(true);
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_validated'] = true;
-            
-            $token = create_session_token($user['id']);
-            if ($token) {
-                $options = COOKIE_OPTIONS;
-                setcookie(COOKIE_NAME, $token, $options);
-            }
-            
-            header('Location: /auth/profile.php');
-            exit;
-        } else {
-            $errors[] = 'Usuario o contraseña incorrectos.';
-        }
+      $message = "Contraseña incorrecta.";
     }
+  }
 }
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - GLAMUR CLUB</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../public/css/auth.css">
+  <title>Iniciar sesión</title>
+  <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
-    <div class="auth-container">
-        <div class="auth-header">
-            <h1>Iniciar Sesión</h1>
-            <p>Bienvenido de nuevo a GLAMUR CLUB</p>
-        </div>
 
-        <div class="auth-body">
-            <?php if ($errors): ?>
-                <div class="message error">
-                    <ul>
-                        <?php foreach ($errors as $e): ?>
-                            <li><?= htmlspecialchars($e) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            <?php endif; ?>
+  <h2>Iniciar sesión</h2>
 
-            <form method="POST">
-                <div class="form-group">
-                    <label for="nom_usuari">Nombre de usuario</label>
-                    <input type="text" id="nom_usuari" name="nom_usuari" required>
-                </div>
+  <?php if (isset($_GET["success"])): ?>
+    <p style="color:green">Registro completado. ¡Ya puedes iniciar sesión!</p>
+  <?php endif; ?>
 
-                <div class="form-group">
-                    <label for="contrasenya">Contraseña</label>
-                    <input type="password" id="contrasenya" name="contrasenya" required>
-                </div>
+  <?php if ($message): ?>
+    <p style="color:red"><?= $message ?></p>
+  <?php endif; ?>
 
-                <button type="submit" class="btn">Entrar</button>
-            </form>
-        </div>
+  <form method="POST">
+    <label>Usuario</label><br>
+    <input type="text" name="username"><br><br>
 
-        <div class="auth-footer">
-            ¿No tienes cuenta? <a href="register.php">Regístrate</a>
-            <br>
-            <a href="/" class="back-home">← Volver al inicio</a>
-        </div>
-    </div>
+    <label>Contraseña</label><br>
+    <input type="password" name="password"><br><br>
+
+    <button type="submit">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
+      </svg>
+      Entrar
+    </button>
+  </form>
+
+  <p><a href="register.php">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+      </svg>
+      Crear cuenta
+    </a></p>
 </body>
+
 </html>
