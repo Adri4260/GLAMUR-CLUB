@@ -3,7 +3,7 @@
 
 // 1. INICIAR SESIÓN Y RUTA
 // Ajustado a la estructura auth/ -> ../includes/
-require_once "../includes/json_connect.php";
+require_once "json_connect.php";
 
 if (session_status() == PHP_SESSION_NONE) {
     session_start();

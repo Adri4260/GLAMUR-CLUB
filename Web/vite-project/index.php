@@ -1,5 +1,14 @@
+<?php
+// index.php
+// Incluir el archivo de funciones de autenticación
+// Asumimos que index.php está en la raíz y includes/ está al mismo nivel.
+require_once "./includes/auth_check.php";
+
+$is_logged_in = is_logged_in();
+?>
 <!DOCTYPE html>
 <html lang="es" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./public/css/styles.css">
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar">
@@ -18,25 +28,41 @@
                     <span></span>
                     <span></span>
                 </button>
-                
+
                 <a href="/" class="logo">GLAMUR CLUB</a>
-                
+
                 <div class="nav-links" id="navLinks">
                     <a href="./src/catalogo.html">Catálogo</a>
                     <a href="./src/crear-perfume.html">Crea tu Perfume</a>
                 </div>
-                
+
                 <div class="nav-actions">
+                    <?php if ($is_logged_in): ?>
+                        <a href="./auth/profile.php" class="nav-icon profile-btn" title="Mi Perfil">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                            </svg>
+                        </a>
+                    <?php else: ?>
+                        <a href="./auth/login.php" class="btn btn-ghost login-btn">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
+                            </svg>
+                            Entrar
+                        </a>
+                    <?php endif; ?>
                     <a href="/src/favoritos.html" class="nav-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                         </svg>
                         <span class="badge" id="favoritesBadge">0</span>
                     </a>
                     <a href="./src/carrito.html" class="nav-icon">
                         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                            <circle cx="9" cy="21" r="1" />
+                            <circle cx="20" cy="21" r="1" />
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                         </svg>
                         <span class="badge" id="cartBadge">0</span>
                     </a>
@@ -55,7 +81,7 @@
                 <a href="./src/catalogo.html" class="btn btn-primary">Ver Catálogo</a>
                 <a href="./src/crear-perfume.html" class="btn btn-outline">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2v20M2 12h20"/>
+                        <path d="M12 2v20M2 12h20" />
                     </svg>
                     Crea tu Perfume
                 </a>
@@ -70,7 +96,8 @@
                 <div class="benefit-item">
                     <div class="benefit-icon">
                         <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="1" y="3" width="15" height="13"/><path d="M16 8h6M16 12h6M16 16h6"/>
+                            <rect x="1" y="3" width="15" height="13" />
+                            <path d="M16 8h6M16 12h6M16 16h6" />
                         </svg>
                     </div>
                     <div>
@@ -81,7 +108,7 @@
                 <div class="benefit-item">
                     <div class="benefit-icon">
                         <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20 12v-2a4 4 0 1 0-8 0v2m-2 0h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"/>
+                            <path d="M20 12v-2a4 4 0 1 0-8 0v2m-2 0h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" />
                         </svg>
                     </div>
                     <div>
@@ -92,7 +119,7 @@
                 <div class="benefit-item">
                     <div class="benefit-icon">
                         <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2v20M2 12h20"/>
+                            <path d="M12 2v20M2 12h20" />
                         </svg>
                     </div>
                     <div>
@@ -128,9 +155,17 @@
                     <h3>GLAMUR CLUB</h3>
                     <p>Tu destino de lujo para perfumes y productos de belleza exclusivos.</p>
                     <div class="social-links">
-                        <a href="#" aria-label="Facebook"><svg width="24" height="24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-                        <a href="#" aria-label="Instagram"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-                        <a href="#" aria-label="Twitter"><svg width="24" height="24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+                        <a href="#" aria-label="Facebook"><svg width="24" height="24" fill="currentColor">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                            </svg></a>
+                        <a href="#" aria-label="Instagram"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                            </svg></a>
+                        <a href="#" aria-label="Twitter"><svg width="24" height="24" fill="currentColor">
+                                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
+                            </svg></a>
                     </div>
                 </div>
                 <div class="footer-col">
@@ -173,4 +208,5 @@
     <script src="./public/js/script.js"></script>
     <script src="./public/js/validacion.js" defer></script>
 </body>
+
 </html>
