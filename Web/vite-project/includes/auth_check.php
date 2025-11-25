@@ -1,25 +1,25 @@
 <?php
 // includes/auth_check.php
 
-// Incloem la connexió al JSON Server
 require_once "json_connect.php";
 
-// Iniciem sessió PHP si no està iniciada
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
 // --- GESTIÓ DE COOKIES/SESSIÓ ---
 
-function set_auth_cookie(int $user_id): void
+/**
+ * Estableix la cookie. Acceptem string o int perquè JSON Server pot generar IDs de text.
+ */
+function set_auth_cookie($user_id): void
 {
-    // Cookie vàlida per 1 hora ("/")
-    setcookie('user_id', $user_id, time() + 3600, "/");
+    // Eliminem el tipus 'int' de la definició per permetre strings (ex: "5b2a")
+    setcookie('user_id', (string)$user_id, time() + 3600, "/");
 }
 
 function delete_auth_cookie(): void
 {
-    // Caducar la cookie
     setcookie('user_id', '', time() - 3600, "/");
 }
 
@@ -32,9 +32,10 @@ function is_logged_in(): bool
 
     // 2. Comprovar Cookie de persistència
     if (isset($_COOKIE['user_id'])) {
-        $user_id = (int)$_COOKIE['user_id'];
+        // NO forcem (int) aquí, deixem que sigui string
+        $user_id = $_COOKIE['user_id'];
 
-        // Verifiquem si l'usuari encara existeix
+        // Verifiquem si l'usuari existeix
         $user = get_user_by_id($user_id);
 
         if ($user) {
@@ -42,7 +43,6 @@ function is_logged_in(): bool
             $_SESSION["user_id"] = $user_id;
             return true;
         } else {
-            // Cookie invàlida (usuari esborrat?), l'eliminem
             delete_auth_cookie();
         }
     }
@@ -58,44 +58,31 @@ function require_login()
     }
 }
 
-// --- FUNCIONS MODEL USUARIS (JSON SERVER) ---
+// --- FUNCIONS MODEL USUARIS ---
 
-/**
- * Cerca un usuari pel nom. Retorna array o null.
- */
 function get_user_by_username(string $username): ?array
 {
-    // Endpoint amb filtre: /usuaris?nom_usuari=...
     $endpoint = "/usuaris?nom_usuari=" . urlencode($username);
     $results = json_get($endpoint);
 
     if (!empty($results) && is_array($results)) {
-        // Retornem el primer resultat trobat
         return $results[0];
     }
     return null;
 }
 
-/**
- * Cerca un usuari per ID.
- */
 function get_user_by_id($id)
 {
-    return json_get("/usuaris/" . $id);
+    // Assegurem que l'ID es tracta com a part de la URL
+    return json_get("/usuaris/" . urlencode((string)$id));
 }
 
-/**
- * Crea un nou usuari.
- */
 function create_user(array $data): ?array
 {
     return json_post("/usuaris", $data);
 }
 
-/**
- * Actualitza un usuari.
- */
 function update_user($id, $data)
 {
-    return json_patch("/usuaris/" . $id, $data);
+    return json_patch("/usuaris/" . urlencode((string)$id), $data);
 }

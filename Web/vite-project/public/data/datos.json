@@ -1,143 +1,179 @@
 {
-    "productes": [
-        {
-            "id": "p001",
-            "sku": "p001",
-            "nombre": "J'adore (Dior)",
-            "descripcion": "Un aroma floral con toques de rosa y jazmín.",
-            "precio": 29.99,
-            "categoria": "florales",
-            "destacado": true,
-            "imagen": "\/public\/img\/prod1.jpg",
-            "estoc": 50
-        },
-        {
-            "id": "p002",
-            "sku": "p002",
-            "nombre": "Acqua di Gio (Armani)",
-            "descripcion": "Notas vibrantes de limón, naranja y bergamota.",
-            "precio": 24.5,
-            "categoria": "cítricos",
-            "destacado": true,
-            "imagen": "\/public\/img\/prod2.jpg",
-            "estoc": 120
-        },
-        {
-            "id": "p003",
-            "sku": "p003",
-            "nombre": "Shalimar (Guerlain)",
-            "descripcion": "Calidez y misterio con ámbar y vainilla.",
-            "precio": 34.75,
-            "categoria": "orientales",
-            "destacado": true,
-            "imagen": "\/public\/img\/prod3.jpg",
-            "estoc": 30
-        },
-        {
-            "id": "p004",
-            "sku": "p004",
-            "nombre": "CK One (Calvin Klein)",
-            "descripcion": "Aroma fresco con hojas verdes y menta.",
-            "precio": 21,
-            "categoria": "verdes",
-            "destacado": false,
-            "imagen": "\/public\/img\/prod5.jpg",
-            "estoc": 85
-        },
-        {
-            "id": "p005",
-            "sku": "p005",
-            "nombre": "La Vie Est Belle (Lancôme)",
-            "descripcion": "Mezcla deliciosa de frutas rojas y melocotón.",
-            "precio": 26.3,
-            "categoria": "frutales",
-            "destacado": false,
-            "imagen": "\/public\/img\/prod6.jpg",
-            "estoc": 15
-        },
-        {
-            "id": "p006",
-            "sku": "p006",
-            "nombre": "Terre d'Hermès (Hermès)",
-            "descripcion": "Toques profundos de cedro y sándalo.",
-            "precio": 39.99,
-            "categoria": "amaderados",
-            "destacado": true,
-            "imagen": "\/public\/img\/prod4.jpg",
-            "estoc": 40
-        },
-        {
-            "id": "p007",
-            "sku": "p007",
-            "nombre": "Poême (Lancôme)",
-            "descripcion": "Aroma suave y delicado de azahar y lirio.",
-            "precio": 22.15,
-            "categoria": "florales",
-            "destacado": false,
-            "imagen": "\/public\/img\/prod7.jpg",
-            "estoc": 60
-        },
-        {
-            "id": "p008",
-            "sku": "p008",
-            "nombre": "Green Tea (Elizabeth Arden)",
-            "descripcion": "Fragancia fresca y ligera con notas de té verde.",
-            "precio": 27.5,
-            "categoria": "verdes",
-            "destacado": false,
-            "imagen": "\/public\/img\/prod8.jpg",
-            "estoc": 90
-        },
-        {
-            "id": "p009",
-            "sku": "p009",
-            "nombre": "Givenchy Irresistible",
-            "descripcion": "Dulce y afrutado con un toque de frescura.",
-            "precio": 25,
-            "categoria": "frutales",
-            "destacado": false,
-            "imagen": "\/public\/img\/prod9.jpg",
-            "estoc": 110
-        },
-        {
-            "id": "p010",
-            "sku": "p010",
-            "nombre": "One Million (Paco Rabanne)",
-            "descripcion": "Mezcla exótica de especias y maderas.",
-            "precio": 38.5,
-            "categoria": "orientales",
-            "destacado": false,
-            "imagen": "\/public\/img\/prod10.jpg",
-            "estoc": 25
-        }
-    ],
-    "usuaris": [
-        {
-            "id": 1,
-            "nom_usuari": "pep",
-            "contrasenya": "$2y$10$DemoHashDeEjemplo1234567890abcdefghi1234567890abcdefghi1234",
-            "email": "pep@example.com",
-            "nom": "Pepe",
-            "cognoms": "Alemany Marquez",
-            "data_registre": "2025-10-31T10:00:00Z"
-        },
-        {
-            "id": 2,
-            "nom_usuari": "adri",
-            "contrasenya": "$2y$10$DemoHashDeEjemplo1234567890abcdefghi1234567890abcdefghi1234",
-            "email": "Adri@example.com",
-            "nom": "Adrián",
-            "cognoms": "Becerra Pérez",
-            "data_registre": "2025-10-31T10:00:00Z"
-        },
-        {
-            "id": 3,
-            "nom_usuari": "adriu",
-            "contrasenya": "1234",
-            "email": "Adri@example.com",
-            "nom": "Adrián",
-            "cognoms": "Becerra Pérez",
-            "data_registre": "2025-10-31T10:00:00Z"
-        }
-    ]
+  "productes": [
+    {
+      "id": "p001",
+      "sku": "p001",
+      "nombre": "J'adore (Dior)",
+      "descripcion": "Un aroma floral con toques de rosa y jazmín.",
+      "precio": 29.99,
+      "categoria": "florales",
+      "destacado": true,
+      "imagen": "/public/img/prod1.jpg",
+      "estoc": 50
+    },
+    {
+      "id": "p002",
+      "sku": "p002",
+      "nombre": "Acqua di Gio (Armani)",
+      "descripcion": "Notas vibrantes de limón, naranja y bergamota.",
+      "precio": 24.5,
+      "categoria": "cítricos",
+      "destacado": true,
+      "imagen": "/public/img/prod2.jpg",
+      "estoc": 120
+    },
+    {
+      "id": "p003",
+      "sku": "p003",
+      "nombre": "Shalimar (Guerlain)",
+      "descripcion": "Calidez y misterio con ámbar y vainilla.",
+      "precio": 34.75,
+      "categoria": "orientales",
+      "destacado": true,
+      "imagen": "/public/img/prod3.jpg",
+      "estoc": 30
+    },
+    {
+      "id": "p004",
+      "sku": "p004",
+      "nombre": "CK One (Calvin Klein)",
+      "descripcion": "Aroma fresco con hojas verdes y menta.",
+      "precio": 21,
+      "categoria": "verdes",
+      "destacado": false,
+      "imagen": "/public/img/prod5.jpg",
+      "estoc": 85
+    },
+    {
+      "id": "p005",
+      "sku": "p005",
+      "nombre": "La Vie Est Belle (Lancôme)",
+      "descripcion": "Mezcla deliciosa de frutas rojas y melocotón.",
+      "precio": 26.3,
+      "categoria": "frutales",
+      "destacado": false,
+      "imagen": "/public/img/prod6.jpg",
+      "estoc": 15
+    },
+    {
+      "id": "p006",
+      "sku": "p006",
+      "nombre": "Terre d'Hermès (Hermès)",
+      "descripcion": "Toques profundos de cedro y sándalo.",
+      "precio": 39.99,
+      "categoria": "amaderados",
+      "destacado": true,
+      "imagen": "/public/img/prod4.jpg",
+      "estoc": 40
+    },
+    {
+      "id": "p007",
+      "sku": "p007",
+      "nombre": "Poême (Lancôme)",
+      "descripcion": "Aroma suave y delicado de azahar y lirio.",
+      "precio": 22.15,
+      "categoria": "florales",
+      "destacado": false,
+      "imagen": "/public/img/prod7.jpg",
+      "estoc": 60
+    },
+    {
+      "id": "p008",
+      "sku": "p008",
+      "nombre": "Green Tea (Elizabeth Arden)",
+      "descripcion": "Fragancia fresca y ligera con notas de té verde.",
+      "precio": 27.5,
+      "categoria": "verdes",
+      "destacado": false,
+      "imagen": "/public/img/prod8.jpg",
+      "estoc": 90
+    },
+    {
+      "id": "p009",
+      "sku": "p009",
+      "nombre": "Givenchy Irresistible",
+      "descripcion": "Dulce y afrutado con un toque de frescura.",
+      "precio": 25,
+      "categoria": "frutales",
+      "destacado": false,
+      "imagen": "/public/img/prod9.jpg",
+      "estoc": 110
+    },
+    {
+      "id": "p010",
+      "sku": "p010",
+      "nombre": "One Million (Paco Rabanne)",
+      "descripcion": "Mezcla exótica de especias y maderas.",
+      "precio": 38.5,
+      "categoria": "orientales",
+      "destacado": false,
+      "imagen": "/public/img/prod10.jpg",
+      "estoc": 25
+    }
+  ],
+  "usuaris": [
+    {
+      "id": "1",
+      "nom_usuari": "pep",
+      "contrasenya": "$2y$10$DemoHashDeEjemplo1234567890abcdefghi1234567890abcdefghi1234",
+      "email": "pep@example.com",
+      "nom": "Pepe",
+      "cognoms": "Alemany Marquez",
+      "data_registre": "2025-10-31T10:00:00Z"
+    },
+    {
+      "id": "2",
+      "nom_usuari": "adri",
+      "contrasenya": "$2y$10$DemoHashDeEjemplo1234567890abcdefghi1234567890abcdefghi1234",
+      "email": "Adri@example.com",
+      "nom": "Adrián",
+      "cognoms": "Becerra Pérez",
+      "data_registre": "2025-10-31T10:00:00Z"
+    },
+    {
+      "id": "3",
+      "nom_usuari": "adriu",
+      "contrasenya": "1234",
+      "email": "Adri@example.com",
+      "nom": "Adrián",
+      "cognoms": "Becerra Pérez",
+      "data_registre": "2025-10-31T10:00:00Z"
+    },
+    {
+      "id": "1665",
+      "nom_usuari": "kiek",
+      "email": "kiekeeee@gmail.com",
+      "contrasenya": "$2y$10$X20KjRU1DBHH82zsIbKX0OsCj1iJVvhP6rUla9HoW1quKrMPsv/K6",
+      "data_registre": "2025-11-25T17:45:06+00:00",
+      "nom": "Kikeeeeee",
+      "cognoms": "Navarro"
+    },
+    {
+      "id": "23cf",
+      "nom_usuari": "adriuu",
+      "nom": "Adriii",
+      "cognoms": "Becerra Pérez",
+      "email": "adri@gmail.com",
+      "contrasenya": "$2y$10$H68/5vvSttHPeS1sWoXNJOyorflm88eFtEg/59/NN6gt/PJA8qdiu",
+      "data_registre": "2025-11-25T18:39:03+00:00"
+    },
+    {
+      "id": "5b2a",
+      "nom_usuari": "jumalo",
+      "nom": "Juanmalo",
+      "cognoms": "Navarro",
+      "email": "a@a.com",
+      "contrasenya": "$2y$10$8uXz7U.bZeBNIgOx/uELN.R9e5slZyrv7ccu2ghE/3pquBvECudrK",
+      "data_registre": "2025-11-25T18:40:37+00:00"
+    },
+    {
+      "id": "8e19",
+      "nom_usuari": "jowy",
+      "nom": "jowy",
+      "cognoms": "jowy",
+      "email": "j@gmail.com",
+      "contrasenya": "$2y$10$DOZWTa2hwWw.QOXnaqneSuctUMC9j7sL4r1Pk.D1zZ8uAAU1DHAZO",
+      "data_registre": "2025-11-25T18:45:06+00:00"
+    }
+  ]
 }
