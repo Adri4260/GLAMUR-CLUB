@@ -1,57 +1,48 @@
 <?php
-// auth_check.php
+// includes/auth_check.php
 
-// 1. INICIAR SESIÓN Y RUTA
-// Ajustado a la estructura auth/ -> ../includes/
+// Incloem la connexió al JSON Server
 require_once "json_connect.php";
 
+// Iniciem sessió PHP si no està iniciada
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// --- GESTIÓ DE COOKIES/SESSIÓ ---
 
-// --- 2. GESTIÓN DE COOKIES/SESIÓN (Requisito del proyecto) ---
-
-/**
- * Establece la cookie de identificación
- */
 function set_auth_cookie(int $user_id): void
 {
-    // Duración de la cookie: 1 hora (3600 segundos) en todo el sitio ("/")
+    // Cookie vàlida per 1 hora ("/")
     setcookie('user_id', $user_id, time() + 3600, "/");
 }
 
-/**
- * Elimina la cookie de identificación
- */
 function delete_auth_cookie(): void
 {
-    // Poner la cookie en el pasado para eliminarla
+    // Caducar la cookie
     setcookie('user_id', '', time() - 3600, "/");
 }
 
-
-/**
- * ¿El usuario está logueado por Sesión o Cookie?
- */
 function is_logged_in(): bool
 {
-    // 1. Comprobar Sesión PHP
+    // 1. Comprovar Sessió PHP
     if (isset($_SESSION["user_id"])) {
         return true;
     }
 
-    // 2. Comprobar Cookie de persistencia
+    // 2. Comprovar Cookie de persistència
     if (isset($_COOKIE['user_id'])) {
         $user_id = (int)$_COOKIE['user_id'];
+
+        // Verifiquem si l'usuari encara existeix
         $user = get_user_by_id($user_id);
 
         if ($user) {
-            // Cookie válida: inicializamos la sesión PHP
+            // Cookie vàlida: restaurem la sessió PHP
             $_SESSION["user_id"] = $user_id;
             return true;
         } else {
-            // Cookie no válida (ej. usuario borrado), la eliminamos
+            // Cookie invàlida (usuari esborrat?), l'eliminem
             delete_auth_cookie();
         }
     }
@@ -59,9 +50,6 @@ function is_logged_in(): bool
     return false;
 }
 
-/**
- * Redirige si NO está logueado
- */
 function require_login()
 {
     if (!is_logged_in()) {
@@ -70,42 +58,44 @@ function require_login()
     }
 }
 
-
-// --- 3. FUNCIONES DE INTERACCIÓN CON JSON SERVER (Endpoint Corregido: /usuaris) ---
+// --- FUNCIONS MODEL USUARIS (JSON SERVER) ---
 
 /**
- * Buscar usuario por nombre de usuario
+ * Cerca un usuari pel nom. Retorna array o null.
  */
-function get_user_by_username($username)
+function get_user_by_username(string $username): ?array
 {
-    // Endpoint CORREGIDO: /usuaris
-    $result = json_get("/usuaris?nom_usuari=" . urlencode($username));
-    return is_array($result) && !empty($result) ? $result[0] : null;
+    // Endpoint amb filtre: /usuaris?nom_usuari=...
+    $endpoint = "/usuaris?nom_usuari=" . urlencode($username);
+    $results = json_get($endpoint);
+
+    if (!empty($results) && is_array($results)) {
+        // Retornem el primer resultat trobat
+        return $results[0];
+    }
+    return null;
 }
 
 /**
- * Buscar usuario por ID
+ * Cerca un usuari per ID.
  */
 function get_user_by_id($id)
 {
-    // Endpoint CORREGIDO: /usuaris
     return json_get("/usuaris/" . $id);
 }
 
 /**
- * Registrar nuevo usuario
+ * Crea un nou usuari.
  */
-function create_user($data)
+function create_user(array $data): ?array
 {
-    // Endpoint CORREGIDO: /usuaris
     return json_post("/usuaris", $data);
 }
 
 /**
- * Actualizar usuario existente
+ * Actualitza un usuari.
  */
 function update_user($id, $data)
 {
-    // Endpoint CORREGIDO: /usuaris
     return json_patch("/usuaris/" . $id, $data);
 }

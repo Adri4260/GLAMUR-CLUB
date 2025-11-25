@@ -1,8 +1,17 @@
 <?php
+// auth/profile.php
 require_once "../includes/auth_check.php";
-require_login(); // ✅ Usa la función require_login() que ahora comprueba sesión y cookie.
 
+// Verifica si l'usuari està loguejat, si no, redirigeix a login.php
+require_login();
+
+// Obtenir dades de l'usuari actual
 $user = get_user_by_id($_SESSION["user_id"]);
+
+if (!$user) {
+  echo "Error: No se han podido cargar los datos del usuario.";
+  exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,24 +19,22 @@ $user = get_user_by_id($_SESSION["user_id"]);
 <head>
   <title>Mi perfil</title>
   <link rel="stylesheet" href="../css/style.css">
-
 </head>
 
 <body>
+  <div style="padding: 20px;">
+    <h2>Perfil de usuario</h2>
 
-  <h2>Perfil de usuario</h2>
+    <p><strong>Usuario:</strong> <?= htmlspecialchars($user["nom_usuari"]) ?></p>
+    <p><strong>Email:</strong> <?= htmlspecialchars($user["email"]) ?></p>
+    <p><strong>Fecha Registro:</strong> <?= htmlspecialchars($user["data_registre"]) ?></p>
 
-  <p><strong>Usuario:</strong> <?= $user["nom_usuari"] ?></p>
-  <p><strong>Email:</strong> <?= $user["email"] ?></p>
-  <p><strong>Registrado:</strong> <?= $user["data_registre"] ?></p>
-
-  <p><a href="logout.php">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
-        <path d="M10 20H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6M17 16l4-4-4-4M21 12H9" />
-      </svg>
-      Cerrar sesión
-    </a></p>
-
+    <br>
+    <p>
+      <a href="logout.php">Cerrar sesión</a> |
+      <a href="../index.php">Volver al inicio</a>
+    </p>
+  </div>
 </body>
 
 </html>

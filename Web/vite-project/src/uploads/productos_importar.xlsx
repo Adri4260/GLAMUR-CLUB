@@ -1,0 +1,11 @@
+Nom,Descripcio,Preu,Categoria,Destacat,IMG,Estoc,SKU
+J'adore (Dior),Un aroma floral con toques de rosa y jazmín.,29.99,florales,true,/public/img/prod1.jpg,50,p001
+Acqua di Gio (Armani),"Notas vibrantes de limón, naranja y bergamota.",24.50,cítricos,true,public/img/prod2.jpg,120,p002
+Shalimar (Guerlain),Calidez y misterio con ámbar y vainilla.,34.75,orientales,true,public/img/prod3.jpg,30,p003
+CK One (Calvin Klein),Aroma fresco con hojas verdes y menta.,21.00,verdes,false,https://i.ibb.co/N275Q80/ck-one.jpg,85,p004
+La Vie Est Belle (Lancôme),Mezcla deliciosa de frutas rojas y melocotón.,26.30,frutales,false,https://i.ibb.co/VMyh024/la-vie-est-belle.jpg,15,p005
+Terre d'Hermès (Hermès),Toques profundos de cedro y sándalo.,39.99,amaderados,true,public/img/prod4.jpg,40,p006
+Poême (Lancôme),Aroma suave y delicado de azahar y lirio.,22.15,florales,false,https://i.ibb.co/F82wW4v/poeme.jpg,60,p007
+Green Tea (Elizabeth Arden),Fragancia fresca y ligera con notas de té verde.,27.50,verdes,false,https://i.ibb.co/kH7QJcZ/green-tea.jpg,90,p008
+Givenchy Irresistible,Dulce y afrutado con un toque de frescura.,25.00,frutales,false,https://i.ibb.co/6P7V9fW/irresistible.jpg,110,p009
+One Million (Paco Rabanne),Mezcla exótica de especias y maderas.,38.50,orientales,false,https://i.ibb.co/p3d47y5/one-million.jpg,25,p010

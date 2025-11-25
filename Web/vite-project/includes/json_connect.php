@@ -1,9 +1,7 @@
 <?php
-// json_connect.php
-// Maneja todas las peticiones desde PHP al JSON Server
+// includes/json_connect.php
 
-const JSON_SERVER_URL = "http://localhost:3000";
-// Ajusta el host si tu servicio se llama distinto en docker-compose
+require_once "config.php"; // Importem la constant JSON_SERVER_URL
 
 function json_get($endpoint)
 {
@@ -81,6 +79,5 @@ function json_delete($endpoint)
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // JSON Server devuelve 200 o 204 para una eliminación exitosa
     return $http_code === 200 || $http_code === 204;
 }
