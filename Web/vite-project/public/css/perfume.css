@@ -287,6 +287,155 @@
     font-weight: bold;
 }
 
+/* Web/vite-project/public/css/perfume.css (Añadir al final del archivo) */
+
+/* Estilos específicos para la sección de valoraciones C3 */
+#comment-stats .rating-stars-large .rating-stars {
+    font-size: 2.5rem; /* Estrellas más grandes para la media */
+}
+
+.comment-item {
+    /* ... (dejar los estilos existentes que ya incluiste) ... */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fcfcfc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.rating-stars {
+    color: #ffd700; /* Color dorado para las estrellas */
+    font-size: 1.2em; /* Tamaño estándar de estrellas */
+    user-select: none; /* Prevenir selección del texto/estrellas */
+    display: inline-block;
+}
+
+.star.empty-star {
+    color: #ccc; /* Color gris para las estrellas vacías */
+}
+
+.rating-value {
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-left: 5px;
+    color: #555;
+}
+
+.comment-username {
+    font-weight: 600;
+    color: #343a40; /* Nombre de usuario oscuro */
+}
+
+.comment-rating {
+    margin-bottom: 5px;
+    font-size: 0.95em;
+}
+
+.comment-text {
+    margin-top: 5px;
+    margin-bottom: 0;
+    white-space: pre-wrap; /* Respeta los saltos de línea del usuario */
+}
+
+/* Web/vite-project/public/css/perfume.css */
+
+/* --- Estils del Detall del Producte (General) --- */
+
+.product-detail-section {
+    padding: 20px 0;
+    margin-bottom: 30px;
+}
+
+.product-detail-section img {
+    max-height: 500px;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #007bff !important; /* Blue primary color from Bootstrap */
+}
+
+/* --- Estils per la Secció C3: Comentaris i Valoracions --- */
+
+.product-reviews {
+    padding: 20px 0;
+}
+
+/* Contenidor de les estadístiques de la mitjana */
+#comment-stats {
+    background-color: #f8f9fa !important; /* Fons lleuger per ressaltar */
+    border: 1px solid #dee2e6;
+    padding: 20px !important;
+    border-radius: 8px;
+}
+
+#comment-stats .display-4 {
+    font-size: 3rem;
+    font-weight: 300;
+    color: #495057;
+}
+
+/* Estrelles Generals */
+.rating-stars {
+    color: #ffd700; /* Color Or/Groc per les estrelles */
+    font-size: 1.5em; 
+    line-height: 1;
+    display: inline-block;
+    user-select: none;
+}
+
+.star.empty-star {
+    color: #adb5bd; /* Gris clar per les estrelles sense puntuar */
+}
+
+.rating-stars-large .rating-stars {
+    font-size: 2.5rem; /* Estrelles molt grans per la mitjana */
+}
+
+.rating-value {
+    font-size: 1em;
+    font-weight: 500;
+    margin-left: 10px;
+    color: #6c757d;
+}
+
+/* Contenidor de comentaris individuals */
+.comment-item {
+    border: 1px solid #e9ecef;
+    border-left: 4px solid #007bff; /* Detall de color primari */
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.comment-username {
+    font-weight: 600;
+    color: #343a40;
+}
+
+.comment-text {
+    white-space: pre-wrap; /* Manté els salts de línia del text */
+    margin-top: 8px;
+    color: #495057;
+}
+
+/* Estils de Formulari */
+#comment-form {
+    border-color: #007bff !important;
+    border-width: 2px;
+}
 
 /* ---------------------------------------- */
 /* Animación al cambiar entre pestañas */
