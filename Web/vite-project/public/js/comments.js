@@ -50,11 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
   // Renderiza el HTML de un solo comentario/valoración
   function renderComment(comment) {
     // Aseguramos valores por defecto para evitar errores de referencia
-    const username = comment.username || 'Usuari Desconegut';
-    const date = comment.fecha_creacion ? new Date(comment.fecha_creacion).toLocaleDateString() : 'Sense data';
+    const username = comment.username || 'Usuario Desconocido';
+    const date = comment.fecha_creacion ? new Date(comment.fecha_creacion).toLocaleDateString() : 'Sin fecha';
     const commentText = comment.comentario && comment.comentario.length > 0
         ? `<p class="comment-text mt-2">${comment.comentario}</p>`
-        : `<p class="comment-text text-muted fst-italic mt-2">Sense comentari escrit.</p>`;
+        : `<p class="comment-text fst-italic mt-2">Sin comentario escrito.</p>`;
     
     let ratingHtml = "";
     
@@ -63,14 +63,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         ${generateRatingStars(comment.puntuacion)}
                       </div>`;
     } else if (comment.megusta === true || comment.megusta === "1") {
-        ratingHtml = `<div class="comment-rating mb-1"><span role="img" aria-label="Me gusta">👍</span> Aquest usuari li agrada el producte.</div>`;
+        ratingHtml = `<div class="comment-rating mb-1"><span role="img" aria-label="Me gusta">👍</span> A este usuario le gusta el producto.</div>`;
     }
 
     return `
             <div class="comment-item">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <h5 class="comment-username mb-0">${username}</h5>
-                    <small class="comment-form">${date}</small>
+                    <small class="comment-date">${date}</small>
                 </div>
                 ${ratingHtml}
                 ${commentText}
@@ -89,16 +89,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const avgRatingHtml =
       avgRating > 0
         ? `${generateRatingStars(avgRating)}`
-        : "Sense valoracions (0.0 / 5)";
+        : "Sin valoraciones (0.0 / 5)";
 
     statsContainer.innerHTML = `
-        <h3 class="mt-2">Valoració Mitjana:</h3>
-        <div class="d-flex align-items-center gap-3">
+        <h3 class="mt-2">Valoración Media:</h3>
+        <div class="d-flex align-items-center gap-3 justify-content-center">
             <h1 class="display-4 mb-0">${avgRating} / 5</h1>
-            <div>
+            <div class="text-start">
                 <p class="h4 mb-1 rating-stars-large">${avgRatingHtml}</p>
-                <p class="comment-form">Basat en ${totalComments} opinions (inclou M'agrada).</p>
-                <p class="comment-form">Total de "M'agrada": ${totalLikes}</p>
+                <p class="comment-form small">Basado en ${totalComments} opiniones (incluye Me gusta).</p>
+                <p class="comment-form small">Total de "Me gusta": ${totalLikes}</p>
             </div>
         </div>
     `;
@@ -108,14 +108,14 @@ document.addEventListener("DOMContentLoaded", function () {
   function loadComments() {
     if (!commentsContainer) return;
 
-    commentsContainer.innerHTML = "<p>Carregant valoracions...</p>";
+    commentsContainer.innerHTML = "<p>Cargando valoraciones...</p>";
 
     // Llama a la API /api/comments.php con el ID del producto
     fetch(`/api/comments.php?product_id=${productId}`)
       .then((response) => {
         if (!response.ok) {
             // Manejar errores de servidor (ej. 500)
-            return response.json().then(err => { throw new Error(err.message || 'Error del servidor al carregar comentaris.'); });
+            return response.json().then(err => { throw new Error(err.message || 'Error del servidor al cargar comentarios.'); });
         }
         return response.json();
       })
@@ -125,9 +125,9 @@ document.addEventListener("DOMContentLoaded", function () {
           commentsContainer.innerHTML = "";
           if (data.data.comments.length === 0) {
             commentsContainer.innerHTML =
-              "<p>Encara no hi ha valoracions. Sigues el primer a opinar!</p>";
+              "<p class='text-muted text-center'>Aún no hay valoraciones. ¡Sé el primero en opinar!</p>";
           } else {
-            // Asegurar que el contenidor de comentaris s'adapti a Bootstrap
+            // Asegurar que el contenedor de comentarios se adapte a Bootstrap
             if (!commentsContainer.classList.contains('mt-4')) {
                 commentsContainer.classList.add('mt-4');
             }
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           }
 
-          // Renderizar estadísticas (Mitjana)
+          // Renderizar estadísticas (Media)
           renderStats(data.data.stats);
 
           // Bloquear las acciones si el usuario ya ha valorado
@@ -145,11 +145,11 @@ document.addEventListener("DOMContentLoaded", function () {
             if (submitButton) {
               submitButton.disabled = true;
               submitButton.textContent =
-                "Ja has enviat una opinió. Només es permet una per usuari.";
+                "Ya has enviado una opinión. Solo se permite una por usuario.";
             }
             if (likeButton) {
               likeButton.disabled = true;
-              likeButton.textContent = "👍 M’agrada (Ja valorat)";
+              likeButton.textContent = "👍 Me gusta (Ya valorado)";
             }
           } else if (isLoggedIn) {
             // Restaurar los botones si está logueado y puede comentar
@@ -158,20 +158,20 @@ document.addEventListener("DOMContentLoaded", function () {
             if (likeButton) likeButton.disabled = false;
           }
         } else {
-          commentsContainer.innerHTML = `<p class="error-message alert alert-danger">Error en la API de Comentaris: ${data.message}</p>`;
+          commentsContainer.innerHTML = `<p class="error-message alert alert-danger">Error en la API de Comentarios: ${data.message}</p>`;
         }
       })
       .catch((error) => {
         console.error("Error al cargar valoraciones (Fetch):", error);
         commentsContainer.innerHTML =
-          `<p class="error-message alert alert-danger">Error de connexió: ${error.message}</p>`;
+          `<p class="error-message alert alert-danger">Error de conexión: ${error.message}</p>`;
       });
   }
 
   // --- 4. Lógica de Envío (POST) ---
   function submitComment(formData, button, originalText) {
     button.disabled = true;
-    button.textContent = "Enviant...";
+    button.textContent = "Enviando...";
 
     fetch("/api/comments.php", {
       method: "POST",
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((response) => {
         if (response.status === 401) {
-          alert("Debes iniciar sessió per comentar.");
+          alert("Debes iniciar sesión para comentar.");
           window.location.href = "/auth/login.php";
           return;
         }
@@ -199,12 +199,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const submitButton = commentForm.querySelector('button[type="submit"]');
             if (submitButton) {
                 submitButton.disabled = true;
-                submitButton.textContent = "Ja has enviat una opinió. Només es permet una per usuari.";
+                submitButton.textContent = "Ya has enviado una opinión. Solo se permite una por usuario.";
             }
           }
           if (likeButton) {
             likeButton.disabled = true;
-            likeButton.textContent = "👍 M’agrada (Ja valorat)";
+            likeButton.textContent = "👍 Me gusta (Ya valorado)";
           }
         } else {
           alert("Error: " + data.message);
@@ -214,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         console.error("Error en la petición:", error);
-        alert(`Error de connexió al servidor: ${error.message}`);
+        alert(`Error de conexión al servidor: ${error.message}`);
         button.disabled = false;
         button.textContent = originalText;
       });

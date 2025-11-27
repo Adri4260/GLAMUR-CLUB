@@ -1,7 +1,6 @@
 <?php
 // Web/vite-project/api/comments.php
 
-// Configuración de errores
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
@@ -11,151 +10,144 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/json_connect.php';
 
-// Endpoints del JSON Server
 $valoraciones_endpoint = '/valoracions';
 $productos_endpoint = '/productes';
 
-// --- Funciones de utilidad ---
-
-function send_response($success, $message, $data = [], $status_code = 200)
-{
+function send_response($success, $message, $data = [], $status_code = 200) {
     http_response_code($status_code);
     echo json_encode(['success' => $success, 'message' => $message, 'data' => $data]);
     exit();
 }
 
-// Función auxiliar POST (por si json_connect.php no la tiene)
-if (!function_exists('json_post_data')) {
-    function json_post_data($endpoint, $data) {
-        $url = JSON_SERVER_URL . $endpoint;
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        return json_decode($response, true);
+/**
+ * Función para obtener el mapa de usuarios desde datos.json local
+ * Devuelve un array asociativo: [id_usuario => nombre_usuario]
+ */
+function get_users_map() {
+    $json_path = dirname(__DIR__) . '/public/data/datos.json';
+    $json_content = @file_get_contents($json_path);
+    $users_map = [];
+    
+    if ($json_content) {
+        $data = json_decode($json_content, true);
+        $usuarios = $data['usuaris'] ?? [];
+        foreach ($usuarios as $u) {
+            // Guardamos tanto por ID numérico como string para asegurar
+            $name = $u['nom_usuari'] ?? 'Usuario';
+            $users_map[(string)$u['id']] = $name;
+        }
     }
+    return $users_map;
 }
 
-// ----------------------------------------------------
-// GET: Cargar comentarios (Leemos de /valoracions)
-// ----------------------------------------------------
+// GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $productId = filter_input(INPUT_GET, 'product_id', FILTER_DEFAULT);
-
     if (!$productId) send_response(false, 'Falta ID.');
 
-    // 1. Pedimos al JSON Server SOLO las valoraciones de este producto
     $query = $valoraciones_endpoint . '?product_id=' . urlencode($productId);
-    $comments = json_get($query);
+    $comments = json_get($query) ?? [];
 
-    if ($comments === null) {
-        $comments = [];
-    }
+    // Cargamos el mapa de usuarios solo si hay comentarios
+    $usersMap = !empty($comments) ? get_users_map() : [];
 
-    // 3. Procesar estadísticas y formatear
-    $totalLikes = 0;
-    $totalRatings = 0;
+    $stats = ['total_comments' => 0, 'avg_rating' => 0, 'total_likes' => 0];
     $sumRatings = 0;
+    $totalRatings = 0;
     $userHasCommented = false;
     $currentUserId = $_SESSION['user_id'] ?? null;
     $processedComments = [];
 
-    foreach ($comments as $comment) {
-        // Asignar nombre de usuario (si se guardó en el JSON, sino genérico)
-        // Ya no consultamos SQL.
-        $comment['username'] = $comment['username'] ?? 'Usuario'; 
-        $processedComments[] = $comment;
+    foreach ($comments as $c) {
+        // Lógica de nombre de usuario:
+        // 1. Si ya viene grabado en el comentario (nuevos), úsalo.
+        // 2. Si no, búscalo en el mapa de usuarios del JSON (antiguos).
+        // 3. Si no, pon 'Usuario'.
+        if (!empty($c['username'])) {
+            $username = $c['username'];
+        } else {
+            $uid = (string)($c['user_id'] ?? '');
+            $username = $usersMap[$uid] ?? 'Usuario';
+        }
+        
+        $c['username'] = $username;
+        $processedComments[] = $c;
 
-        // Calcular medias
-        if (isset($comment['puntuacion']) && is_numeric($comment['puntuacion']) && $comment['puntuacion'] > 0) {
+        if (!empty($c['puntuacion']) && is_numeric($c['puntuacion'])) {
             $totalRatings++;
-            $sumRatings += (int)$comment['puntuacion'];
+            $sumRatings += (int)$c['puntuacion'];
         }
-        // Calcular Likes
-        if (isset($comment['megusta']) && ($comment['megusta'] === true || $comment['megusta'] === "true" || $comment['megusta'] === 1)) {
-            $totalLikes++;
+        if (!empty($c['megusta']) && $c['megusta'] !== 'false') {
+            $stats['total_likes']++;
         }
-        // Verificar si el usuario actual ya participó
-        if ($currentUserId && isset($comment['user_id']) && (string)$comment['user_id'] === (string)$currentUserId) {
+        if ($currentUserId && isset($c['user_id']) && (string)$c['user_id'] === (string)$currentUserId) {
             $userHasCommented = true;
         }
     }
 
-    $avgRating = ($totalRatings > 0) ? round($sumRatings / $totalRatings, 1) : 0;
-    
-    // Ordenar por fecha (más reciente primero)
-    usort($processedComments, function($a, $b) {
-        $dateA = isset($a['fecha_creacion']) ? strtotime($a['fecha_creacion']) : 0;
-        $dateB = isset($b['fecha_creacion']) ? strtotime($b['fecha_creacion']) : 0;
-        return $dateB - $dateA;
-    });
+    if ($totalRatings > 0) {
+        $stats['avg_rating'] = round($sumRatings / $totalRatings, 1);
+    }
+    $stats['total_comments'] = count($processedComments);
 
-    send_response(true, 'Cargado.', [
+    // Ordenar por fecha desc
+    usort($processedComments, fn($a, $b) => strtotime($b['fecha_creacion'] ?? 'now') - strtotime($a['fecha_creacion'] ?? 'now'));
+
+    send_response(true, 'Cargado', [
         'comments' => $processedComments,
-        'stats' => [
-            'total_comments' => count($processedComments),
-            'avg_rating' => $avgRating,
-            'total_likes' => $totalLikes
-        ],
+        'stats' => $stats,
         'user_has_commented' => $userHasCommented
     ]);
 }
 
-// ----------------------------------------------------
-// POST: Guardar comentario (Escribimos en /valoracions)
-// ----------------------------------------------------
+// POST
 elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['user_id'])) send_response(false, 'No logueado.', [], 401);
 
     $userId = $_SESSION['user_id'];
-    $username = $_SESSION['username'] ?? 'Usuario'; // Guardamos el nombre de la sesión
-    $productId = filter_input(INPUT_POST, 'product_id', FILTER_DEFAULT);
+    // Intentamos obtener el nombre de usuario de la sesión, si no, del mapa JSON
+    $username = $_SESSION['username'] ?? null;
     
-    // Sanitización
-    $rawComment = $_POST['comment'] ?? '';
-    $comment = htmlspecialchars($rawComment, ENT_QUOTES, 'UTF-8');
-    
-    $ratingVal = filter_input(INPUT_POST, 'rating', FILTER_VALIDATE_INT);
-    $rating = ($ratingVal && $ratingVal > 0) ? $ratingVal : null;
-    
-    $isLikeOnly = ($_POST['is_like_only'] ?? 'false') === 'true';
-
-    if (!$productId) send_response(false, 'ID inválido.');
-
-    // 1. Verificar duplicados (GET previo)
-    $checkQuery = $valoraciones_endpoint . '?product_id=' . urlencode($productId) . '&user_id=' . urlencode($userId);
-    $existing = json_get($checkQuery);
-    
-    if (!empty($existing)) {
-        send_response(false, 'Ya has opinado sobre este producto.');
+    if (!$username) {
+        $usersMap = get_users_map();
+        $username = $usersMap[(string)$userId] ?? 'Usuario';
     }
 
-    // 2. Crear el objeto para /valoracions
-    // AÑADIMOS 'username' AQUÍ para no depender de SQL al leer
+    $productId = filter_input(INPUT_POST, 'product_id', FILTER_DEFAULT);
+    $comment = htmlspecialchars($_POST['comment'] ?? '', ENT_QUOTES, 'UTF-8');
+    $rating = filter_input(INPUT_POST, 'rating', FILTER_VALIDATE_INT) ?: null;
+    $isLike = ($_POST['is_like_only'] ?? 'false') === 'true';
+
+    // Verificar duplicados
+    $check = json_get($valoraciones_endpoint . '?product_id=' . urlencode($productId) . '&user_id=' . $userId);
+    if (!empty($check)) send_response(false, 'Ya has valorado este producto.');
+
     $newReview = [
-        'id' => uniqid('V'),
+        'id' => uniqid('v'),
         'user_id' => $userId,
-        'username' => $username, 
+        'username' => $username, // Guardamos el nombre para el futuro
         'product_id' => $productId,
         'comentario' => $comment,
         'puntuacion' => $rating,
-        'megusta' => $isLikeOnly,
+        'megusta' => $isLike,
         'fecha_creacion' => date('Y-m-d H:i:s')
     ];
 
-    // 3. Enviar POST a /valoracions
-    if (function_exists('json_post')) {
-        $result = json_post($valoraciones_endpoint, $newReview);
-    } else {
-        $result = json_post_data($valoraciones_endpoint, $newReview);
-    }
+    // POST al JSON Server
+    $url = JSON_SERVER_URL . $valoraciones_endpoint;
+    $opts = [
+        'http' => [
+            'method' => 'POST',
+            'header' => 'Content-Type: application/json',
+            'content' => json_encode($newReview)
+        ]
+    ];
+    $context = stream_context_create($opts);
+    $result = file_get_contents($url, false, $context);
 
-    if ($result !== null) {
-        send_response(true, 'Guardado correctamente.', ['new_comment' => $newReview]);
+    if ($result) {
+        send_response(true, 'Guardado.', ['new_comment' => $newReview]);
     } else {
-        send_response(false, 'Error al guardar en JSON Server.');
+        send_response(false, 'Error al conectar con JSON Server.');
     }
 }

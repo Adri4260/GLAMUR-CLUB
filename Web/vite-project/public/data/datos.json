@@ -356,6 +356,26 @@
       "puntuacion": 5,
       "megusta": false,
       "fecha_creacion": "2025-11-27 17:34:04"
+    },
+    {
+      "id": "v6928a1b896d34",
+      "user_id": "1665",
+      "username": "kiek",
+      "product_id": "p001",
+      "comentario": "prueba",
+      "puntuacion": 3,
+      "megusta": false,
+      "fecha_creacion": "2025-11-27 19:08:40"
+    },
+    {
+      "id": "v6928a26bdacfc",
+      "user_id": "740c",
+      "username": "natxp",
+      "product_id": "p004",
+      "comentario": "",
+      "puntuacion": null,
+      "megusta": true,
+      "fecha_creacion": "2025-11-27 19:11:39"
     }
   ]
 }

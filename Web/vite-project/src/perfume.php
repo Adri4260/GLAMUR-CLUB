@@ -2,12 +2,11 @@
 // Web/vite-project/src/perfume.php
 // Página de detalle de producto.
 
-// 1. Iniciar sesión (DEBE ESTAR AL PRINCIPIO)
+// 1. Iniciar sesión
 session_start();
 
 // 2. Incluir archivos de configuración necesarios
 require_once '../includes/config.php';
-// Solo chequeamos sesión si es necesario para lógica, pero permitimos ver producto sin login
 $is_logged_in = isset($_SESSION['user_id']);
 
 // --- 3. Obtención del ID y Carga del Producto ---
@@ -19,7 +18,7 @@ if (empty($product_id)) {
     exit;
 }
 
-// 🚨 Cargar datos.json LOCALMENTE para asegurar que el ID se encuentre.
+// 4. Cargar datos.json LOCALMENTE
 $json_path = dirname(__DIR__) . '/public/data/datos.json';
 $json_content = file_get_contents($json_path);
 
@@ -38,7 +37,6 @@ $products_array = $data['productes'] ?? $data['productos'] ?? $data;
 $product = null;
 if (is_array($products_array)) {
     foreach ($products_array as $p) {
-        // Comparamos IDs convirtiendo a string para evitar fallos de tipo (int vs string)
         if (isset($p['id']) && (string)$p['id'] === (string)$product_id) {
             $product = $p;
             break;
@@ -52,31 +50,31 @@ if ($product === null) {
     exit;
 }
 
-// --- VARIABLES DEL PRODUCTO ---
+// --- VARIABLES PARA LA VISTA ---
 $nombre_producto = htmlspecialchars($product['nombre'] ?? 'Producto Desconocido');
 $descripcion_producto = htmlspecialchars($product['descripcion'] ?? 'Sin descripción.');
 $precio_producto = number_format($product['precio'] ?? 0, 2, ',', '.') . ' €';
-// Imagen con fallback
 $imagen_producto = htmlspecialchars($product['imagen'] ?? '/public/img/default.jpg');
 
-// *** CORRECCIÓN ROBUSTA DE STOCK ***
-// Buscamos 'estoc' primero, luego 'stock', y forzamos a entero (int) para que la comparación > 0 funcione bien.
+// *** STOCK: Usamos 'estoc' o 'stock' ***
 $raw_stock = $product['estoc'] ?? $product['stock'] ?? 0;
 $stock_producto = (int)$raw_stock;
 
 $categoria_producto = htmlspecialchars($product['categoria'] ?? 'General');
-$username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuari');
+$username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuario');
 ?>
 
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $nombre_producto; ?> - GLAMUR-CLUB</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS Global -->
     <link rel="stylesheet" href="/public/css/styles.css">
-    <!-- Usamos el CSS específico Dark Emerald -->
+    <!-- CSS Específico de Detalles (Dark Emerald) -->
     <link rel="stylesheet" href="/public/css/detallesProd.css">
 </head>
 
@@ -151,7 +149,7 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuari');
                     <!-- VISUALIZACIÓN DE STOCK -->
                     <p>Stock: 
                         <?php if ($stock_producto > 0): ?>
-                            <span class="badge bg-success"><?php echo $stock_producto; ?> Unitats disponibles</span>
+                            <span class="badge bg-success"><?php echo $stock_producto; ?> Unidades disponibles</span>
                         <?php else: ?>
                             <span class="badge bg-danger">Agotado</span>
                         <?php endif; ?>
@@ -160,12 +158,10 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuari');
 
                 <div class="mt-4 actions-container">
                     <button class="btn btn-success btn-lg" onclick="window.addToCart('<?php echo $product_id; ?>', '<?php echo $nombre_producto; ?>')">
-                        Afegir a la Cistella
+                        Añadir a la Cesta
                     </button>
-                    <!-- BOTÓN FAVORITOS -->
-                    <!-- Pasamos 'this' para que la función JS pueda cambiar su apariencia -->
                     <button id="fav-btn-detail" class="btn btn-outline-danger btn-lg" onclick="window.toggleFavorite('<?php echo $product_id; ?>', this)">
-                        ❤️ Favorits
+                        ❤️ Favoritos
                     </button>
                 </div>
             </div>
@@ -174,52 +170,52 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuari');
         <hr class="my-5" style="border-color: var(--c-border);">
 
         <section id="product-reviews" class="product-reviews">
-            <h2>Comentaris i Valoracions</h2>
+            <h2>Comentarios y Valoraciones</h2>
 
             <input type="hidden" id="product-id" value="<?php echo htmlspecialchars($product_id); ?>">
 
             <div id="comment-stats" class="mb-4">
-                <p>Carregant estadístiques...</p>
+                <p>Cargando estadísticas...</p>
             </div>
 
             <div class="mb-4 text-center">
                 <button id="like-button" class="btn btn-outline-success">
-                    <span role="img" aria-label="Me gusta">👍</span> M’agrada el producte
+                    <span role="img" aria-label="Me gusta">👍</span> Me gusta el producto
                 </button>
             </div>
 
             <?php if ($is_logged_in): ?>
-                <h3 class="mt-4">Deixa la teva opinió</h3>
+                <h3 class="mt-4">Deja tu opinión</h3>
 
                 <form id="comment-form" method="POST" action="/api/comments.php" class="mb-5">
                     <div class="mb-3">
-                        <label for="comment-text" class="form-label">Comentari (màx. 500 caràcters)</label>
+                        <label for="comment-text" class="form-label">Comentario (máx. 500 caracteres)</label>
                         <textarea class="form-control" id="comment-text" name="comment" rows="3" maxlength="500"></textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label for="comment-rating" class="form-label">Puntuació (1-5)</label>
+                        <label for="comment-rating" class="form-label">Puntuación (1-5)</label>
                         <select class="form-select" id="comment-rating" name="rating">
-                            <option value="">Sense puntuació</option>
+                            <option value="">Sin puntuación</option>
                             <?php for ($i = 5; $i >= 1; $i--): ?>
-                                <option value="<?php echo $i; ?>"><?php echo $i; ?> Estrelles</option>
+                                <option value="<?php echo $i; ?>"><?php echo $i; ?> Estrellas</option>
                             <?php endfor; ?>
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Enviar Comentari</button>
+                    <button type="submit" class="btn btn-primary">Enviar Comentario</button>
                 </form>
             <?php else: ?>
                 <div id="auth-warning" class="alert alert-warning mt-4" role="alert">
-                    Per poder deixar un comentari o valoració, si us plau, <a href="/auth/login.php">inicia sessió</a>.
+                    Para poder dejar un comentario o valoración, por favor, <a href="/auth/login.php">inicia sesión</a>.
                 </div>
             <?php endif; ?>
 
             <hr class="my-5" style="border-color: var(--c-border);">
 
-            <h3 class="mt-4">Comentaris</h3>
+            <h3 class="mt-4">Comentarios</h3>
             <div id="comments-list">
-                <p>Carregant comentaris...</p>
+                <p>Cargando comentarios...</p>
             </div>
 
         </section>
@@ -227,32 +223,27 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuari');
 
     <footer class="footer">
         <div class="container footer-bottom">
-            <p>&copy; <?php echo date('Y'); ?> GLAMUR-CLUB. Tots els drets reservats.</p>
+            <p>&copy; <?php echo date('Y'); ?> GLAMUR-CLUB. Todos los derechos reservados.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- IMPORTANTE: Carga PRIMERO script.js para que las funciones globales existan -->
+    <!-- Scripts Funcionales -->
     <script src="/public/js/script.js"></script>
-    
-    <!-- Lógica de comentarios -->
     <script src="/public/js/comments.js" defer></script>
 
-    <!-- Script Inline para comprobar si YA es favorito al cargar la página -->
+    <!-- Script Inline para comprobar favoritos al cargar -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const prodId = '<?php echo $product_id; ?>';
             const btn = document.getElementById('fav-btn-detail');
             
-            // Verificamos si AppState está disponible y tiene el favorito
             if (typeof AppState !== 'undefined' && AppState.favorites && AppState.favorites.includes(prodId)) {
                 btn.classList.add('active');
-                // Estilo "Activo" visual inmediato
                 btn.style.backgroundColor = '#ff6b6b';
                 btn.style.color = 'white';
-                btn.innerHTML = '❤️ Guardat';
-                // Rellenar el SVG si existiera dentro, o dejar el texto
+                btn.innerHTML = '❤️ Guardado';
             }
         });
     </script>
