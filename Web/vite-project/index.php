@@ -173,7 +173,7 @@ $is_logged_in = is_logged_in();
                     <ul>
                         <li><a href="./src/catalogo.html">Catálogo</a></li>
                         <li><a href="./src/crear-perfume.html">Crear Perfume</a></li>
-                        <li><a href="#">Sobre Nosotros</a></li>
+                        <li><a href="./src/aboutUs.html">Sobre Nosotros</a></li>
                         <li><a href="./src/contacto.php">Contacto</a></li>
                     </ul>
                 </div>
@@ -200,6 +200,7 @@ $is_logged_in = is_logged_in();
                     <a href="#">Privacidad</a>
                     <a href="#">Términos</a>
                     <a href="#">Cookies</a>
+                    <a href="./src/importar_excel.php">Cargar Excel</a>
                 </div>
             </div>
         </div>
