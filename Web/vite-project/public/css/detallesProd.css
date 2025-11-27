@@ -7,7 +7,7 @@
     --c-bg-card: #101a12;       
     --c-bg-surface: #1b2a1e;    
     --c-text-white: #f8fff8;    
-    --c-text-muted: #86f1ec;
+    --c-text-muted: #699b9b;
     --c-border: #2f4532;
     --font-serif: 'Playfair Display', serif;
     --font-sans: 'Poppins', sans-serif;
@@ -206,7 +206,7 @@ h1.display-4 {
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: var(--c-text-muted);
+    color: var(--c-text-white);
     margin-bottom: 1rem;
 }
 

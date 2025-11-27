@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <div class="comment-item">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <h5 class="comment-username mb-0">${username}</h5>
-                    <small class="text-muted">${date}</small>
+                    <small class="comment-form">${date}</small>
                 </div>
                 ${ratingHtml}
                 ${commentText}
@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function () {
             <h1 class="display-4 mb-0">${avgRating} / 5</h1>
             <div>
                 <p class="h4 mb-1 rating-stars-large">${avgRatingHtml}</p>
-                <p class="text-muted mb-0">Basat en ${totalComments} opinions (inclou M'agrada).</p>
-                <p class="text-muted mb-0">Total de "M'agrada": ${totalLikes}</p>
+                <p class="comment-form">Basat en ${totalComments} opinions (inclou M'agrada).</p>
+                <p class="comment-form">Total de "M'agrada": ${totalLikes}</p>
             </div>
         </div>
     `;
