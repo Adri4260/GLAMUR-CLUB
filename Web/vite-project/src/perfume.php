@@ -1,119 +1,197 @@
 <?php
 // Web/vite-project/src/perfume.php
+// Página de detalle de producto.
 
-// 1. Iniciar sesión
+// 1. Iniciar sesión (DEBE ESTAR AL PRINCIPIO)
 session_start();
 
 // 2. Incluir archivos de configuración necesarios
-// 'config.php' se usa para la conexión a la DB (para obtener el nombre de usuario)
 require_once '../includes/config.php';
-// 'json_connect.php' DEBE contener ahora las funciones json_get(), json_post(), etc.
-require_once '../includes/json_connect.php';
+// Solo chequeamos sesión si es necesario para lógica, pero permitimos ver producto sin login
+$is_logged_in = isset($_SESSION['user_id']);
 
 // --- 3. Obtención del ID y Carga del Producto ---
+$product_id = filter_input(INPUT_GET, 'id', FILTER_DEFAULT); 
 
-// Obtener ID del producto de la URL (ej: /src/perfume.php?id=2)
-$product_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
-if (!$product_id) {
+if (empty($product_id)) {
     http_response_code(400);
     echo "<h1>Error 400: ID de producto no proporcionado.</h1>";
     exit;
 }
 
-// *** CORRECCIÓN CLAVE: Usar json_get para obtener UN solo producto por ID ***
-// Asumimos que el endpoint para un producto específico es /products/{id}
-$product_endpoint = '/products/' . $product_id;
-$product = json_get($product_endpoint);
+// 🚨 Cargar datos.json LOCALMENTE para asegurar que el ID se encuentre.
+$json_path = dirname(__DIR__) . '/public/data/datos.json';
+$json_content = file_get_contents($json_path);
+
+if ($json_content === false) {
+    http_response_code(500);
+    echo "<h1>Error 500: No se pudo cargar el archivo de datos local.</h1>";
+    exit;
+}
+
+$data = json_decode($json_content, true);
+
+// Intenta encontrar el array de productos (busca 'productes', luego 'productos', luego raíz)
+$products_array = $data['productes'] ?? $data['productos'] ?? $data;
+
+// Buscar el producto por ID
+$product = null;
+if (is_array($products_array)) {
+    foreach ($products_array as $p) {
+        // Comparamos IDs convirtiendo a string para evitar fallos de tipo (int vs string)
+        if (isset($p['id']) && (string)$p['id'] === (string)$product_id) {
+            $product = $p;
+            break;
+        }
+    }
+}
 
 if ($product === null) {
-    // Manejo de error si el producto no existe o el JSON Server falla
     http_response_code(404);
     echo "<h1>Error 404: Producto no encontrado (ID: " . htmlspecialchars($product_id) . ").</h1>";
     exit;
 }
 
-// Variables del producto para mostrar en la vista
+// --- VARIABLES DEL PRODUCTO ---
 $nombre_producto = htmlspecialchars($product['nombre'] ?? 'Producto Desconocido');
 $descripcion_producto = htmlspecialchars($product['descripcion'] ?? 'Sin descripción.');
 $precio_producto = number_format($product['precio'] ?? 0, 2, ',', '.') . ' €';
+// Imagen con fallback
 $imagen_producto = htmlspecialchars($product['imagen'] ?? '/public/img/default.jpg');
+
+// *** CORRECCIÓN ROBUSTA DE STOCK ***
+// Buscamos 'estoc' primero, luego 'stock', y forzamos a entero (int) para que la comparación > 0 funcione bien.
+$raw_stock = $product['estoc'] ?? $product['stock'] ?? 0;
+$stock_producto = (int)$raw_stock;
+
+$categoria_producto = htmlspecialchars($product['categoria'] ?? 'General');
+$username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuari');
 ?>
 
 <!DOCTYPE html>
 <html lang="ca">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $nombre_producto; ?> - GLAMUR-CLUB</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/public/css/styles.css">
-    <link rel="stylesheet" href="/public/css/perfume.css">
+    <!-- Usamos el CSS específico Dark Emerald -->
+    <link rel="stylesheet" href="/public/css/detallesProd.css">
 </head>
 
 <body>
 
-    <header class="bg-dark text-white p-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <h1 class="h3"><a href="/index.php" class="text-white text-decoration-none">GLAMUR-CLUB</a></h1>
-            <nav>
-                <a href="/index.php" class="text-white mx-2">Inici</a>
-                <a href="/src/catalogo.html" class="text-white mx-2">Catàleg</a>
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <span class="mx-2">Hola, <?php echo htmlspecialchars($_SESSION['username'] ?? 'Usuari'); ?></span>
-                    <a href="/auth/profile.php" class="btn btn-sm btn-outline-light">Perfil</a>
-                    <a href="/auth/logout.php" class="btn btn-sm btn-danger">Tancar Sessió</a>
-                <?php else: ?>
-                    <a href="/auth/login.php" class="btn btn-sm btn-primary mx-2">Iniciar Sessió</a>
-                <?php endif; ?>
-            </nav>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span><span></span><span></span>
+                </button>
+
+                <a href="/" class="logo">GLAMUR CLUB</a>
+
+                <div class="nav-links" id="navLinks">
+                    <a href="../src/catalogo.html">Catálogo</a>
+                    <a href="../src/crear-perfume.html">Crea tu Perfume</a>
+                </div>
+
+                <div class="nav-actions">
+                    <?php if ($is_logged_in): ?>
+                        <a href="../auth/profile.php" class="nav-icon profile-btn" title="Mi Perfil">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                            </svg>
+                        </a>
+                    <?php else: ?>
+                        <a href="../auth/login.php" class="btn btn-ghost login-btn">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle;">
+                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
+                            </svg>
+                            Entrar
+                        </a>
+                    <?php endif; ?>
+                    <a href="../src/favoritos.html" class="nav-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                        <span class="badge" id="favoritesBadge">0</span>
+                    </a>
+                    <a href="../src/carrito.html" class="nav-icon">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="9" cy="21" r="1" />
+                            <circle cx="20" cy="21" r="1" />
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                        </svg>
+                        <span class="badge" id="cartBadge">0</span>
+                    </a>
+                </div>
+            </div>
         </div>
-    </header>
+    </nav>
 
     <main class="container my-5">
 
         <div class="row product-detail-section">
+            <!-- Columna Imagen -->
             <div class="col-md-5">
                 <img src="<?php echo $imagen_producto; ?>" alt="<?php echo $nombre_producto; ?>" class="img-fluid rounded shadow">
             </div>
-            <div class="col-md-7">
+            
+            <!-- Columna Info -->
+            <div class="col-md-7 product-info-col">
                 <h1 class="display-4"><?php echo $nombre_producto; ?></h1>
                 <p class="lead text-muted"><?php echo $descripcion_producto; ?></p>
-                <h2 class="price text-primary mb-4"><?php echo $precio_producto; ?></h2>
+                <h2 class="price"><?php echo $precio_producto; ?></h2>
 
-                <p>Categoría: <?php echo htmlspecialchars($product['categoria'] ?? 'Sense categoria'); ?></p>
-                <p>Stock: <span class="badge bg-<?php echo ($product['stock'] ?? 0) > 0 ? 'success' : 'danger'; ?>"><?php echo htmlspecialchars($product['stock'] ?? 0); ?> Unitats</span></p>
+                <div class="product-meta">
+                    <p>Categoría: <strong><?php echo $categoria_producto; ?></strong></p>
+                    
+                    <!-- VISUALIZACIÓN DE STOCK -->
+                    <p>Stock: 
+                        <?php if ($stock_producto > 0): ?>
+                            <span class="badge bg-success"><?php echo $stock_producto; ?> Unitats disponibles</span>
+                        <?php else: ?>
+                            <span class="badge bg-danger">Agotado</span>
+                        <?php endif; ?>
+                    </p>
+                </div>
 
-                <div class="mt-4">
-                    <button class="btn btn-success btn-lg">Afegir a la Cistella</button>
-                    <button class="btn btn-outline-danger btn-lg">❤️ Favorits</button>
+                <div class="mt-4 actions-container">
+                    <button class="btn btn-success btn-lg" onclick="window.addToCart('<?php echo $product_id; ?>', '<?php echo $nombre_producto; ?>')">
+                        Afegir a la Cistella
+                    </button>
+                    <!-- BOTÓN FAVORITOS -->
+                    <!-- Pasamos 'this' para que la función JS pueda cambiar su apariencia -->
+                    <button id="fav-btn-detail" class="btn btn-outline-danger btn-lg" onclick="window.toggleFavorite('<?php echo $product_id; ?>', this)">
+                        ❤️ Favorits
+                    </button>
                 </div>
             </div>
         </div>
 
-        <hr class="my-5">
+        <hr class="my-5" style="border-color: var(--c-border);">
 
         <section id="product-reviews" class="product-reviews">
             <h2>Comentaris i Valoracions</h2>
 
             <input type="hidden" id="product-id" value="<?php echo htmlspecialchars($product_id); ?>">
 
-            <div id="comment-stats" class="mb-4 p-3 border rounded bg-light">
+            <div id="comment-stats" class="mb-4">
                 <p>Carregant estadístiques...</p>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-4 text-center">
                 <button id="like-button" class="btn btn-outline-success">
                     <span role="img" aria-label="Me gusta">👍</span> M’agrada el producte
                 </button>
             </div>
 
-            <?php if (isset($_SESSION['user_id'])): // Solo para usuarios autenticados 
-            ?>
+            <?php if ($is_logged_in): ?>
                 <h3 class="mt-4">Deixa la teva opinió</h3>
 
-                <form id="comment-form" method="POST" action="/api/comments.php" class="mb-5 p-4 border rounded">
+                <form id="comment-form" method="POST" action="/api/comments.php" class="mb-5">
                     <div class="mb-3">
                         <label for="comment-text" class="form-label">Comentari (màx. 500 caràcters)</label>
                         <textarea class="form-control" id="comment-text" name="comment" rows="3" maxlength="500"></textarea>
@@ -137,9 +215,9 @@ $imagen_producto = htmlspecialchars($product['imagen'] ?? '/public/img/default.j
                 </div>
             <?php endif; ?>
 
-            <hr class="my-5">
+            <hr class="my-5" style="border-color: var(--c-border);">
 
-            <h3 class="mt-4">Comentaris (Més recents primer)</h3>
+            <h3 class="mt-4">Comentaris</h3>
             <div id="comments-list">
                 <p>Carregant comentaris...</p>
             </div>
@@ -147,12 +225,36 @@ $imagen_producto = htmlspecialchars($product['imagen'] ?? '/public/img/default.j
         </section>
     </main>
 
-    <footer class="bg-dark text-white mt-5 p-4 text-center">
-        <p>&copy; <?php echo date('Y'); ?> GLAMUR-CLUB. Tots els drets reservats.</p>
+    <footer class="footer">
+        <div class="container footer-bottom">
+            <p>&copy; <?php echo date('Y'); ?> GLAMUR-CLUB. Tots els drets reservats.</p>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- IMPORTANTE: Carga PRIMERO script.js para que las funciones globales existan -->
+    <script src="/public/js/script.js"></script>
+    
+    <!-- Lógica de comentarios -->
     <script src="/public/js/comments.js" defer></script>
-</body>
 
+    <!-- Script Inline para comprobar si YA es favorito al cargar la página -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const prodId = '<?php echo $product_id; ?>';
+            const btn = document.getElementById('fav-btn-detail');
+            
+            // Verificamos si AppState está disponible y tiene el favorito
+            if (typeof AppState !== 'undefined' && AppState.favorites && AppState.favorites.includes(prodId)) {
+                btn.classList.add('active');
+                // Estilo "Activo" visual inmediato
+                btn.style.backgroundColor = '#ff6b6b';
+                btn.style.color = 'white';
+                btn.innerHTML = '❤️ Guardat';
+                // Rellenar el SVG si existiera dentro, o dejar el texto
+            }
+        });
+    </script>
+</body>
 </html>

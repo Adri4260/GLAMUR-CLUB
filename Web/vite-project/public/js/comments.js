@@ -1,88 +1,108 @@
 // Web/vite-project/public/js/comments.js
-// Lógica dinámica para la funcionalidad C3: Comentarios y Valoraciones (usando colección /valoracions)
+// Lógica dinámica para la funcionalidad C3: Comentarios y Valoraciones (Fetch API y Renderizado)
 
 document.addEventListener("DOMContentLoaded", function () {
-  // --- 1. Obtención de Elementos del DOM ---
+  // --- 1. Obtención de Elementos del DOM y Configuración ---
   const productIdElement = document.getElementById("product-id");
-  const commentsSection = document.getElementById("product-reviews");
-
-  if (!productIdElement || !commentsSection) {
-    console.error("Elementos principales de comentarios no encontrados.");
+  
+  if (!productIdElement) {
+    console.error("CRITICAL: Elemento #product-id (ID del producto) no encontrado.");
     return;
   }
 
-  // El ID del producto es el SKU (p001, c001, etc.)
   const productId = productIdElement.value;
   const commentsContainer = document.getElementById("comments-list");
   const commentForm = document.getElementById("comment-form");
   const likeButton = document.getElementById("like-button");
   const statsContainer = document.getElementById("comment-stats");
-  const isLoggedIn = commentForm !== null; // Determina si el formulario es visible
+  const isLoggedIn = commentForm !== null; 
 
-  // --- 2. Funciones de Utilidad para Renderizado ---
+  // --- 2. Funciones de Utilidad para Renderizado (Estrellas) ---
 
-  // Genera la representación visual de las estrellas
+  /**
+   * Genera el HTML de las estrellas para una puntuación.
+   * Utiliza caracteres Unicode para las estrellas.
+   * @param {number} rating - Puntuación de 1 a 5 (puede ser decimal).
+   * @returns {string} HTML con iconos de estrellas y el valor numérico.
+   */
   function generateRatingStars(rating) {
-    const fullStar = "⭐";
-    const emptyStar = "☆";
-    const ratingFloat = parseFloat(rating);
-    let stars = "";
-    for (let i = 1; i <= 5; i++) {
-      stars += i <= ratingFloat ? fullStar : emptyStar;
+    const fullStar = '★'; 
+    const emptyStar = '☆';
+    const maxRating = 5;
+
+    let starsHtml = '';
+    const ratingInteger = Math.round(parseFloat(rating)); // Redondeo al entero más cercano
+
+    for (let i = 1; i <= maxRating; i++) {
+        starsHtml += (i <= ratingInteger) ? 
+                     `<span class="star full-star">${fullStar}</span>` : 
+                     `<span class="star empty-star">${emptyStar}</span>`;
     }
-    return `<span class="rating-stars">${stars}</span>`;
+
+    const ratingRounded = parseFloat(rating).toFixed(1);
+
+    return `
+        <span class="rating-stars">${starsHtml}</span>
+        <span class="rating-value">(${ratingRounded}/${maxRating})</span>
+    `;
   }
 
   // Renderiza el HTML de un solo comentario/valoración
   function renderComment(comment) {
+    // Aseguramos valores por defecto para evitar errores de referencia
+    const username = comment.username || 'Usuari Desconegut';
+    const date = comment.fecha_creacion ? new Date(comment.fecha_creacion).toLocaleDateString() : 'Sense data';
+    const commentText = comment.comentario && comment.comentario.length > 0
+        ? `<p class="comment-text mt-2">${comment.comentario}</p>`
+        : `<p class="comment-text text-muted fst-italic mt-2">Sense comentari escrit.</p>`;
+    
     let ratingHtml = "";
-    if (comment.puntuacion) {
-      ratingHtml = `<div class="comment-rating">${generateRatingStars(
-        comment.puntuacion
-      )} (${comment.puntuacion}/5)</div>`;
+    
+    if (comment.puntuacion && comment.puntuacion >= 1) {
+        ratingHtml = `<div class="comment-rating d-flex align-items-center mb-1">
+                        ${generateRatingStars(comment.puntuacion)}
+                      </div>`;
     } else if (comment.megusta === true || comment.megusta === "1") {
-      ratingHtml = `<div class="comment-rating"><span role="img" aria-label="Me gusta">👍</span> Me gusta</div>`;
+        ratingHtml = `<div class="comment-rating mb-1"><span role="img" aria-label="Me gusta">👍</span> Aquest usuari li agrada el producte.</div>`;
     }
 
-    // Mostrar comentario solo si existe texto real
-    const commentText =
-      comment.comentario && comment.comentario.length > 0
-        ? `<p class="comment-text">${comment.comentario}</p>`
-        : "";
-
-    // Asegúrate de que los campos coincidan con la estructura de la API
     return `
             <div class="comment-item">
-                ${commentText}
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="comment-username mb-0">${username}</h5>
+                    <small class="text-muted">${date}</small>
+                </div>
                 ${ratingHtml}
-                <small class="comment-meta">
-                    Escrito por <strong>${comment.username}</strong> el 
-                    ${new Date(comment.fecha_creacion).toLocaleDateString()}
-                </small>
+                ${commentText}
             </div>
         `;
   }
 
-  // Renderiza el resumen de estadísticas
+  // Renderiza el resumen de estadísticas (media)
   function renderStats(stats) {
     if (!statsContainer) return;
 
     const avgRating = parseFloat(stats.avg_rating).toFixed(1);
     const totalComments = stats.total_comments;
     const totalLikes = stats.total_likes;
-
+    
     const avgRatingHtml =
       avgRating > 0
-        ? `${generateRatingStars(avgRating)} (${avgRating} / 5)`
-        : "Sense valoracions (0/5)";
+        ? `${generateRatingStars(avgRating)}`
+        : "Sense valoracions (0.0 / 5)";
 
     statsContainer.innerHTML = `
-            <h3>Estadístiques de la Comunitat:</h3>
-            <p>Valoració mitjana: ${avgRatingHtml}</p>
-            <p>Total de valoracions (Comentaris + M'agrada): ${totalComments}</p>
-            <p>Total de "M'agrada": ${totalLikes}</p>
-        `;
-  }
+        <h3 class="mt-2">Valoració Mitjana:</h3>
+        <div class="d-flex align-items-center gap-3">
+            <h1 class="display-4 mb-0">${avgRating} / 5</h1>
+            <div>
+                <p class="h4 mb-1 rating-stars-large">${avgRatingHtml}</p>
+                <p class="text-muted mb-0">Basat en ${totalComments} opinions (inclou M'agrada).</p>
+                <p class="text-muted mb-0">Total de "M'agrada": ${totalLikes}</p>
+            </div>
+        </div>
+    `;
+}
 
   // --- 3. Lógica de Carga (GET) ---
   function loadComments() {
@@ -90,9 +110,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     commentsContainer.innerHTML = "<p>Carregant valoracions...</p>";
 
-    // Llama a la API /api/comments.php con el filtro del producto (SKU)
+    // Llama a la API /api/comments.php con el ID del producto
     fetch(`/api/comments.php?product_id=${productId}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+            // Manejar errores de servidor (ej. 500)
+            return response.json().then(err => { throw new Error(err.message || 'Error del servidor al carregar comentaris.'); });
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data.success) {
           // Renderizar comentarios
@@ -101,19 +127,21 @@ document.addEventListener("DOMContentLoaded", function () {
             commentsContainer.innerHTML =
               "<p>Encara no hi ha valoracions. Sigues el primer a opinar!</p>";
           } else {
+            // Asegurar que el contenidor de comentaris s'adapti a Bootstrap
+            if (!commentsContainer.classList.contains('mt-4')) {
+                commentsContainer.classList.add('mt-4');
+            }
             data.data.comments.forEach((comment) => {
               commentsContainer.innerHTML += renderComment(comment);
             });
           }
 
-          // Renderizar estadísticas
+          // Renderizar estadísticas (Mitjana)
           renderStats(data.data.stats);
 
           // Bloquear las acciones si el usuario ya ha valorado
           if (isLoggedIn && data.data.user_has_commented) {
-            const submitButton = commentForm.querySelector(
-              'button[type="submit"]'
-            );
+            const submitButton = commentForm.querySelector('button[type="submit"]');
             if (submitButton) {
               submitButton.disabled = true;
               submitButton.textContent =
@@ -125,20 +153,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
           } else if (isLoggedIn) {
             // Restaurar los botones si está logueado y puede comentar
-            const submitButton = commentForm.querySelector(
-              'button[type="submit"]'
-            );
+            const submitButton = commentForm.querySelector('button[type="submit"]');
             if (submitButton) submitButton.disabled = false;
             if (likeButton) likeButton.disabled = false;
           }
         } else {
-          commentsContainer.innerHTML = `<p class="error-message">Error en el servidor: ${data.message}</p>`;
+          commentsContainer.innerHTML = `<p class="error-message alert alert-danger">Error en la API de Comentaris: ${data.message}</p>`;
         }
       })
       .catch((error) => {
-        console.error("Error al cargar valoraciones:", error);
+        console.error("Error al cargar valoraciones (Fetch):", error);
         commentsContainer.innerHTML =
-          '<p class="error-message">Error de connexió al carregar valoracions.</p>';
+          `<p class="error-message alert alert-danger">Error de connexió: ${error.message}</p>`;
       });
   }
 
@@ -157,23 +183,28 @@ document.addEventListener("DOMContentLoaded", function () {
           window.location.href = "/auth/login.php";
           return;
         }
+        if (!response.ok) {
+             return response.json().then(err => { throw new Error(err.message || 'Error del servidor.'); });
+        }
         return response.json();
       })
       .then((data) => {
         if (data.success) {
-          alert("Operació realitzada amb èxit!");
-
           // Recargar para ver el nuevo comentario y las estadísticas actualizadas
           loadComments();
 
           // Bloquear acciones después del éxito
           if (commentForm) commentForm.reset();
           if (commentForm) {
-            commentForm.querySelector('button[type="submit"]').disabled = true;
+            const submitButton = commentForm.querySelector('button[type="submit"]');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = "Ja has enviat una opinió. Només es permet una per usuari.";
+            }
           }
           if (likeButton) {
             likeButton.disabled = true;
-            likeButton.textContent = "👍 M’agrada (Ya valorado)";
+            likeButton.textContent = "👍 M’agrada (Ja valorat)";
           }
         } else {
           alert("Error: " + data.message);
@@ -183,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch((error) => {
         console.error("Error en la petición:", error);
-        alert("Error de connexió al servidor.");
+        alert(`Error de connexió al servidor: ${error.message}`);
         button.disabled = false;
         button.textContent = originalText;
       });

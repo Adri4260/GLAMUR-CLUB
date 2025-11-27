@@ -1,0 +1,326 @@
+/* public/css/detallesProd.css - Dark Emerald Theme Corregido */
+
+:root {
+    --c-primary: #0fe8a7;       
+    --c-primary-hover: #4efcc6;
+    --c-bg-main: #0a0f0a;       
+    --c-bg-card: #101a12;       
+    --c-bg-surface: #1b2a1e;    
+    --c-text-white: #f8fff8;    
+    --c-text-muted: #9fb6a3;
+    --c-border: #2f4532;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: var(--c-bg-main);
+    color: var(--c-text-white);
+    font-family: var(--font-sans);
+}
+
+/* --- 1. NAVBAR CORREGIDO (Respetando estructura original) --- */
+/* No tocamos la posición, solo aseguramos colores si hace falta */
+.navbar {
+    background-color: rgba(10, 15, 10, 0.95);
+    border-bottom: 1px solid var(--c-border);
+}
+
+.nav-content {
+    /* Restauramos el flex normal: Logo izq, Acciones der */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: static; /* Quitamos relative */
+    width: 100%;
+}
+
+.logo, .nav-actions {
+    position: static; /* Quitamos absolute */
+}
+
+/* --- 2. FICHA DE PRODUCTO (CORREGIDO) --- */
+
+.product-detail-section {
+    /* Usamos Flexbox en lugar de Grid para no romper Bootstrap */
+    display: flex; 
+    flex-wrap: wrap; /* Para móviles */
+    gap: 3rem;
+    align-items: center; /* Centrar verticalmente */
+    margin-top: 2rem;
+    padding: 20px; /* Un poco de aire */
+}
+
+/* Ajuste específico para las columnas dentro de nuestra sección */
+.product-detail-section > div:first-child {
+    flex: 1 1 400px; /* La columna de la imagen crece, mínimo 400px */
+    width: 100%; /* Asegurar ancho */
+}
+
+.product-detail-section > div:last-child {
+    flex: 1 1 400px; /* La columna de texto crece */
+}
+
+/* ESTILO DE LA IMAGEN - GRANDE Y ELEGANTE */
+.product-detail-section img {
+    display: block;
+    width: 100%;             /* Ocupar todo el ancho de su columna */
+    max-width: 100%;         /* No salirse */
+    height: 500px;           /* ALTURA FIJA PARA QUE SE VEA GRANDE */
+    object-fit: cover;       /* Recortar imagen para llenar sin deformar */
+    object-position: center; /* Centrar el foco de la imagen */
+    
+    border-radius: 16px;     /* Bordes redondeados modernos */
+    
+    /* Sombra Esmeralda Resplandeciente */
+    box-shadow: 0 10px 40px -10px rgba(15, 232, 167, 0.2); 
+    border: 1px solid var(--c-border);
+    transition: transform 0.3s ease;
+}
+
+.product-detail-section img:hover {
+    transform: scale(1.02); /* Efecto zoom sutil al pasar el ratón */
+}
+
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+    .product-detail-section img {
+        height: 350px; /* Un poco más pequeña en móvil pero visible */
+    }
+}
+
+/* Imagen con estilo "Hero" */
+.product-detail-section img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px -10px rgba(15, 232, 167, 0.1); /* Sutil resplandor verde */
+    border: 1px solid var(--c-border);
+}
+
+/* Columna de Texto */
+h1.display-4 {
+    font-family: var(--font-serif);
+    color: var(--c-text-white);
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+}
+
+.lead.text-muted {
+    color: var(--c-text-muted) !important;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.price {
+    font-family: var(--font-mono, monospace);
+    font-size: 2.2rem;
+    color: var(--c-primary);
+    font-weight: 600;
+    margin-bottom: 2rem;
+    display: inline-block;
+    border-bottom: 2px solid var(--c-border);
+    padding-bottom: 0.5rem;
+}
+
+/* Metadatos (Categoría, Stock) */
+.product-meta p {
+    margin-bottom: 0.5rem;
+    color: var(--c-text-white);
+}
+.product-meta strong {
+    color: var(--c-primary);
+}
+
+/* Botones de Acción */
+.mt-4 {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-success {
+    background-color: var(--c-primary);
+    color: var(--c-bg-main);
+    border: none;
+    font-weight: 700;
+}
+.btn-success:hover {
+    background-color: var(--c-primary-hover);
+    box-shadow: 0 0 20px rgba(15, 232, 167, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-outline-danger {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+    background: transparent;
+}
+.btn-outline-danger:hover {
+    background-color: #ff6b6b;
+    color: white;
+    transform: translateY(-2px);
+}
+
+
+/* --- 3. SECCIÓN COMENTARIOS (Estilo Elegante) --- */
+
+.product-reviews {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--c-border);
+}
+
+.product-reviews h2 {
+    font-family: var(--font-serif);
+    color: var(--c-text-white);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Resumen de Estadísticas (Minimalista) */
+#comment-stats {
+    background: linear-gradient(145deg, var(--c-bg-card), var(--c-bg-surface));
+    border: 1px solid var(--c-border);
+    padding: 2rem;
+    border-radius: 16px;
+    margin-bottom: 3rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+#comment-stats h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--c-text-muted);
+    margin-bottom: 1rem;
+}
+
+#comment-stats .display-4 {
+    font-size: 4rem;
+    color: var(--c-primary);
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Botón Me Gusta */
+#like-button {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--c-bg-surface);
+    border-color: var(--c-primary);
+    color: var(--c-primary);
+}
+#like-button:hover {
+    background-color: var(--c-primary);
+    color: var(--c-bg-main);
+}
+
+/* Formulario */
+#comment-form {
+    background-color: transparent;
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+}
+
+#comment-form label {
+    color: var(--c-text-white);
+    margin-bottom: 0.5rem;
+}
+
+#comment-form .form-control, 
+#comment-form .form-select {
+    background-color: var(--c-bg-main);
+    border: 1px solid var(--c-border);
+    color: var(--c-text-white);
+    border-radius: 4px;
+    padding: 1rem;
+}
+
+#comment-form .form-control:focus {
+    border-color: var(--c-primary);
+    box-shadow: 0 0 0 2px rgba(15, 232, 167, 0.1);
+    outline: none;
+}
+
+/* Lista de Comentarios */
+#comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.comment-item {
+    background-color: var(--c-bg-card);
+    border: 1px solid var(--c-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.comment-item:hover {
+    border-color: var(--c-text-muted);
+    transform: translateX(5px);
+}
+
+.comment-username {
+    color: var(--c-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.comment-date {
+    font-size: 0.8rem;
+    color: var(--c-text-muted);
+    font-style: italic;
+}
+
+.comment-rating {
+    margin: 0.5rem 0;
+}
+
+.rating-stars {
+    color: var(--c-primary);
+    letter-spacing: 2px;
+}
+
+.comment-text {
+    color: #e0e0e0;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+}
+
+/* Alertas */
+.alert-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border-radius: 8px;
+}
+.alert-warning a {
+    color: #ffc107;
+    text-decoration: underline;
+    font-weight: bold;
+}
