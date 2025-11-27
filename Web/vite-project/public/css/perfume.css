@@ -209,3 +209,30 @@
 .form-actions .btn {
     min-width: 200px;
 }
+
+/* ---------------------------------------- */
+/* Animación al cambiar entre pestañas */
+/* ---------------------------------------- */
+
+@keyframes tabFade {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-content {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+    opacity: 0;
+}
+
+.tab-content.active {
+    display: block;
+    animation: tabFade 0.45s ease forwards;
+}
