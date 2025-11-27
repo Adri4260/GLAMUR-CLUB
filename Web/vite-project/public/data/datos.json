@@ -207,12 +207,21 @@
       "email": "j@gmail.com",
       "contrasenya": "$2y$10$DOZWTa2hwWw.QOXnaqneSuctUMC9j7sL4r1Pk.D1zZ8uAAU1DHAZO",
       "data_registre": "2025-11-25T18:45:06+00:00"
+    },
+    {
+      "id": "740c",
+      "nom_usuari": "natxp",
+      "nom": "Natxo",
+      "cognoms": "Gomis",
+      "email": "gomis@gmail.com",
+      "contrasenya": "$2y$10$lNOrOtCsls3IbtD9Jwfehu7ZWuW93h267.2mcYqM3nnhznhBdkggS",
+      "data_registre": "2025-11-27T16:12:06+00:00"
     }
   ],
   "valoracions": [
     {
       "id": "V01",
-      "user_id": 101,
+      "user_id": 1,
       "product_id": "p001",
       "comentario": "Un aroma floral increíble, con muy buena fijación. ¡Excelente!",
       "puntuacion": 5,
@@ -221,7 +230,7 @@
     },
     {
       "id": "V02",
-      "user_id": 102,
+      "user_id": 2,
       "product_id": "p001",
       "comentario": "Me parece un clásico, pero es demasiado dulce y fuerte para mí.",
       "puntuacion": 3,
@@ -230,7 +239,7 @@
     },
     {
       "id": "V03",
-      "user_id": 103,
+      "user_id": 3,
       "product_id": "p002",
       "comentario": "El mejor perfume fresco para el verano. Las notas de cítricos se sienten muy naturales.",
       "puntuacion": 5,
@@ -239,7 +248,7 @@
     },
     {
       "id": "V04",
-      "user_id": 104,
+      "user_id": 1,
       "product_id": "p002",
       "comentario": "Es un básico, pero no destaca. No huele mal, pero es genérico.",
       "puntuacion": 4,
@@ -248,7 +257,7 @@
     },
     {
       "id": "V05",
-      "user_id": 101,
+      "user_id": 3,
       "product_id": "p003",
       "comentario": "Calidez y misterio. Lo uso en invierno y siempre recibo cumplidos.",
       "puntuacion": 5,
@@ -257,7 +266,7 @@
     },
     {
       "id": "V06",
-      "user_id": 105,
+      "user_id": 1,
       "product_id": "p004",
       "comentario": "Demasiado fresco, no dura nada.",
       "puntuacion": 2,
@@ -266,7 +275,7 @@
     },
     {
       "id": "V07",
-      "user_id": 102,
+      "user_id": 2,
       "product_id": "p006",
       "comentario": "Toques profundos de cedro y sándalo. Muy masculino y elegante.",
       "puntuacion": 5,
@@ -275,7 +284,7 @@
     },
     {
       "id": "V08",
-      "user_id": 106,
+      "user_id": 3,
       "product_id": "p007",
       "comentario": "Aroma suave y delicado de azahar y lirio. Me encanta.",
       "puntuacion": 5,
@@ -284,7 +293,7 @@
     },
     {
       "id": "V09",
-      "user_id": 107,
+      "user_id": 1,
       "product_id": "p010",
       "comentario": "",
       "puntuacion": null,
@@ -293,7 +302,7 @@
     },
     {
       "id": "V10",
-      "user_id": 103,
+      "user_id": 3,
       "product_id": "p005",
       "comentario": "No me gustó la mezcla de frutas. Se siente muy artificial.",
       "puntuacion": 2,
@@ -302,7 +311,7 @@
     },
     {
       "id": "V11",
-      "user_id": 108,
+      "user_id": 2,
       "product_id": "p008",
       "comentario": "Olor a té verde, muy relajante y ligero.",
       "puntuacion": 4,
@@ -311,7 +320,7 @@
     },
     {
       "id": "V12",
-      "user_id": 104,
+      "user_id": 2,
       "product_id": "p009",
       "comentario": "Es dulce y afrutado. Huele a caramelo, está bien.",
       "puntuacion": 3,
@@ -319,43 +328,14 @@
       "fecha_creacion": "2025-11-24 16:00:00"
     },
     {
-      "id": "V6928548d97ea0",
-      "user_id": 1665,
+      "id": "V6928760622bfd",
+      "user_id": "1665",
+      "username": "Usuario",
       "product_id": "p002",
-      "comentario": "f",
+      "comentario": "Muy buen perfume",
       "puntuacion": 5,
       "megusta": false,
-      "fecha_creacion": "2025-11-27 13:39:25"
-    },
-    {
-      "id": "V692858449210e",
-      "user_id": "1665",
-      "username": "Usuario",
-      "product_id": "p004",
-      "comentario": "subida de nota, no se como huele",
-      "puntuacion": 5,
-      "megusta": false,
-      "fecha_creacion": "2025-11-27 13:55:16"
-    },
-    {
-      "id": "V69285fa2109b5",
-      "user_id": "1665",
-      "username": "Usuario",
-      "product_id": "p001",
-      "comentario": "",
-      "puntuacion": null,
-      "megusta": true,
-      "fecha_creacion": "2025-11-27 14:26:42"
-    },
-    {
-      "id": "V69285fb4ed251",
-      "user_id": "1665",
-      "username": "Usuario",
-      "product_id": "p009",
-      "comentario": "",
-      "puntuacion": null,
-      "megusta": true,
-      "fecha_creacion": "2025-11-27 14:27:00"
+      "fecha_creacion": "2025-11-27 16:02:14"
     }
   ]
 }
