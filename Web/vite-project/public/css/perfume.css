@@ -82,10 +82,10 @@
 .form-group select {
     width: 100%;
     padding: var(--spacing-md);
-    background-color: var(--color-gray);
+    background-color: var(--color-black);
     border: 1px solid transparent;
     border-radius: var(--radius);
-    color: var(--color-white);
+    color: var(--color-black);
     font-size: 1rem;
     transition: var(--transition);
 }
@@ -208,4 +208,54 @@
 
 .form-actions .btn {
     min-width: 200px;
+}
+
+/* Sección del video */
+.video-section {
+    margin: 40px auto;
+    text-align: center;
+    padding: 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(6px);
+}
+
+.video-section h3 {
+    margin-bottom: 15px;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.tutorial-video {
+    border-radius: 15px;
+    max-width: 800px;
+    width: 100%;
+    outline: none;
+}
+
+/* ---------------------------------------- */
+/* Animación al cambiar entre pestañas */
+/* ---------------------------------------- */
+
+@keyframes tabFade {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-content {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+    opacity: 0;
+}
+
+.tab-content.active {
+    display: block;
+    animation: tabFade 0.45s ease forwards; /* empieza lento acaba rápido */
 }
