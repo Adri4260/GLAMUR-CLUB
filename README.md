@@ -62,7 +62,7 @@ Disseny centrat en l'usuari amb **Vite** i CSS modern ("Dark Emerald Theme").
 ## 🛠️ Stack Tecnològic
 
 ### 🖥️ Entorn Client (Frontend)
-- **Core:** HTML5, CSS3, JavaScript (ES6 Modules).
+- **Core:** HTML5, CSS3, JavaScript, PHP (ES6 Modules).
 - **Build Tool:** [Vite](https://vitejs.dev/) per a un entorn de desenvolupament ràpid.
 - **Estils:** CSS natiu amb variables (Custom Properties).
 
@@ -92,13 +92,16 @@ Detalls del desplegament al núvol per a la correcció i accés:
 
 | Servei | Detall / URL |
 | :--- | :--- |
-| **Compte AWS** | **[Inserir ID o Alies del Compte d'Adrián Aquí]** |
-| **Domini Principal** | `https://app.projecteGrupX.es` (Exemple) |
-| **Domini Backups** | `https://backup.projecteGrupX.es` |
+| **Compte AWS** | **[Compte d'Adrián]** |
+| **Domini Principal** | `https://app.glamurclub.es` |
+| **Domini Backups** | `https://backup.glamurclub.es` |
+| **Domini Test** | `https://test.glamurclub.es` |
 | **Accés SSH** | Usuari: `ubuntu` (Claus públiques autoritzades) |
+| **IP elástica** | 98.95.115.229 |
+| **Llançar json** | npx json-server --watch /home/usuariElegit/ftp/www/Web/vite-project/public/data/datos.json --port 3000 |
 | **FTP** | Port 21 (Mode passiu 30000-30050) |
 
-> **Nota:** L'accés als backups està protegit per `mod_auth` (usuari/contrasenya).
+> **Nota:** L'accés als backups està protegit per `mod_auth` (Usuari: profe / Contrasenya: 1234).
 
 ---
 
