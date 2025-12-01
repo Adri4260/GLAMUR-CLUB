@@ -12,7 +12,7 @@ Aquest projecte forma part de la **Iteració 1: Entorn, escaparate i contacte**,
 | Membre | Rol | Contacte |
 | :--- | :--- | :--- |
 | **Adrián Becerra Pérez** | Full Stack Dev & DevOps | [GitHub](https://github.com/adri4260) |
-| **Jose Juan Alemany Márquez** | Full Stack Dev & UX/UI | [GitHub](https://github.com/) |
+| **Jose Juan Alemany Márquez** | Full Stack Dev & UX/UI | [GitHub](https://github.com/Pepe1109) |
 
 ---
 
@@ -80,7 +80,7 @@ Seguiment de tasques i planificació temporal:
 
 | Recurs | Enllaç / Arxiu | Descripció |
 | :--- | :--- | :--- |
-| **Kanban Board** | [🔗 Veure Tauler de Projecte](https://github.com/users/adri4260/projects/3) | *Estat de les tasques (To Do, In Progress, Done)* |
+| **Kanban Board** | [🔗 Veure Tauler de Projecte](https://github.com/users/adri4260/projects/5) | *Estat de les tasques (To Do, In Progress, Done)* |
 | **Gantt Sprint 1** | `ganttSprint1.gan` | *Planificació inicial i setup* |
 | **Gantt Sprint 2** | `ganttSprint2.gan` | *Autenticació i funcionalitats core* |
 
