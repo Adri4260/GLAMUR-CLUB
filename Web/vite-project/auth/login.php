@@ -2,7 +2,6 @@
 // auth/login.php
 require_once "../includes/auth_check.php";
 
-// Si ja està loguejat, cap al perfil
 if (is_logged_in()) {
   header("Location: profile.php");
   exit;
@@ -11,25 +10,18 @@ if (is_logged_in()) {
 $message = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  $username = trim($_POST["username"] ?? "");
+  $password = trim($_POST["password"] ?? "");
 
-  $username = trim($_POST["username"]);
-  $password = trim($_POST["password"]);
-
-  // Cerca l'usuari al JSON (funció de auth_check.php)
   $user = get_user_by_username($username);
 
   if (!$user) {
     $message = "Usuario no encontrado.";
   } else {
-    // Verificar contrasenya hash
     if (password_verify($password, $user["contrasenya"])) {
-
       session_regenerate_id(true);
       $_SESSION["user_id"] = $user["id"];
-
-      // Guardar cookie per mantenir la sessió
       set_auth_cookie($user["id"]);
-
       header("Location: profile.php");
       exit;
     } else {
@@ -39,10 +31,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="es" data-bs-theme="dark">
 
 <head>
-  <title>Iniciar sesión</title>
+  <meta charset="UTF-8">
+  <title>Iniciar sesión | GLAMUR CLUB</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <link rel="stylesheet" href="../public/css/styles.css">
   <link rel="stylesheet" href="../public/css/auth.css">
 </head>
@@ -51,25 +47,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <div class="auth-container">
     <h2>Iniciar sesión</h2>
 
+    <div class="alert alert-warning py-2 mb-3" role="alert" style="font-size: 0.8rem;">
+      Test: Si ves esta caja amarilla, Bootstrap está funcionando.
+    </div>
+
     <?php if (isset($_GET["success"])): ?>
-      <p style="color:green">Registro completado. ¡Ya puedes iniciar sesión!</p>
+      <div class="alert alert-success shadow-sm mb-3" role="alert">
+        ✅ Registro completado. ¡Ya puedes entrar!
+      </div>
     <?php endif; ?>
 
     <?php if ($message): ?>
-      <p style="color:red"><?= $message ?></p>
+      <div class="alert alert-danger shadow-sm mb-3" role="alert">
+        ⚠️ <?= htmlspecialchars($message) ?>
+      </div>
     <?php endif; ?>
 
-    <form method="POST">
-      <label>Usuario</label><br>
-      <input type="text" name="username"><br><br>
+    <form method="POST" action="login.php">
+      <label for="username">Usuario</label>
+      <input type="text" id="username" name="username" required>
 
-      <label>Contraseña</label><br>
-      <input type="password" name="password"><br><br>
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" required>
 
-      <button type="submit">Entrar</button>
+      <button type="submit" class="btn btn-primary w-100 mt-2">Entrar</button>
     </form>
 
-    <p>
+    <p class="mt-4">
       <a href="register.php">Crear cuenta</a>
     </p>
   </div>

@@ -236,3 +236,84 @@
     display: block;
     animation: tabFade 0.45s ease forwards;
 }
+
+/*MOBILE FIRST */
+
+.perfume-creator {
+    padding: var(--spacing-xl) 0;
+}
+
+.perfume-header {
+    text-align: center;
+    padding: 0 var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.perfume-header h1 {
+    font-size: 1.8rem; /* Tamaño móvil */
+}
+
+@media (min-width: 768px) {
+    .perfume-creator { padding: var(--spacing-3xl) 0; }
+    .perfume-header h1 { font-size: 2.5rem; }
+}
+
+/* Tabs: En móvil se vuelven una lista flexible que puede envolver */
+.perfume-tabs {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-xl);
+    border-bottom: 1px solid var(--color-gray);
+}
+
+.tab-btn {
+    flex: 1 1 auto; /* Se estiran para llenar el ancho en móvil */
+    padding: var(--spacing-md);
+    font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+    .tab-btn { flex: 0 1 auto; font-size: 1rem; }
+}
+
+/* Cuadrícula de Notas: 2 columnas en móvil, muchas en PC */
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: var(--spacing-sm);
+}
+
+@media (min-width: 640px) {
+    .notes-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1024px) {
+    .notes-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: var(--spacing-md);
+    }
+}
+
+/* Formulario: Sin bordes laterales en móviles muy pequeños para ganar espacio */
+.perfume-form {
+    padding: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+    .perfume-form { padding: var(--spacing-xl); }
+}
+
+/* Preview Card: Apilado en móvil */
+.preview-content {
+    flex-direction: column;
+    text-align: center;
+}
+
+@media (min-width: 640px) {
+    .preview-content {
+        flex-direction: row;
+        text-align: left;
+    }
+}

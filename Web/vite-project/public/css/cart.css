@@ -259,3 +259,31 @@
 .sort-control select:focus {
     outline: 2px solid var(--color-gold);
 }
+
+/*MOBILE FIRST*/
+
+.cart-content {
+    display: grid;
+    grid-template-columns: 1fr; /* 1 columna en móvil */
+    gap: var(--spacing-md);
+}
+
+.cart-item {
+    flex-direction: column; /* Imagen arriba, info abajo en móvil */
+    align-items: center;
+    text-align: center;
+}
+
+@media (min-width: 640px) {
+    .cart-item {
+        flex-direction: row;
+        text-align: left;
+    }
+}
+
+@media (min-width: 1024px) {
+    .cart-content {
+        grid-template-columns: 2fr 1fr; /* Estilo original para PC */
+        gap: var(--spacing-xl);
+    }
+}

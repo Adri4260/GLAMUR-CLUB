@@ -905,3 +905,99 @@ body {
 .btn-primary:hover {
     animation: softGlow 0.7s ease-out forwards;
 }
+
+
+/*MOBILE FIRST*/
+
+/* --- Contenedor Global --- */
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md); /* Espacio reducido para móviles */
+}
+
+@media (min-width: 768px) {
+    .container { padding: 0 var(--spacing-lg); }
+}
+
+@media (min-width: 1024px) {
+    .container { padding: 0 var(--spacing-xl); }
+}
+
+/* --- Navbar (Mobile First) --- */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: rgba(10, 15, 10, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-bg-surface);
+}
+
+.nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-md) 0;
+}
+
+/* El botón de menú es visible por defecto en móvil */
+.mobile-menu-btn {
+    display: flex; 
+    flex-direction: column;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Los links están ocultos en móvil hasta que se active la clase .active */
+.nav-links {
+    display: none; 
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--color-bg-card);
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    gap: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.nav-links.active {
+    display: flex;
+}
+
+/* Cambio a diseño de escritorio */
+@media (min-width: 769px) {
+    .mobile-menu-btn { display: none; }
+    .nav-links {
+        display: flex;
+        position: static;
+        flex-direction: row;
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+}
+
+/* --- Hero Section --- */
+.hero {
+    height: 450px; /* Más bajo en móvil para evitar scroll infinito */
+    background-position: center;
+    /* ... resto de propiedades ... */
+}
+
+@media (min-width: 768px) { .hero { height: 600px; } }
+@media (min-width: 1024px) { .hero { height: 700px; } }
+
+/* --- Grid de Productos --- */
+.products-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* 1 columna en móvil */
+    gap: var(--spacing-lg);
+}
+
+@media (min-width: 640px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .products-grid { grid-template-columns: repeat(4, 1fr); } }

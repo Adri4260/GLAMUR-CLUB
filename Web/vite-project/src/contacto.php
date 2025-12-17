@@ -44,13 +44,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
     <title>Contacto | GLAMUR CLUB</title>
     <link rel="stylesheet" href="../public/css/styles.css">
     <link rel="stylesheet" href="../public/css/contacto.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU90FeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <script defer src="../public/js/validacion.js"></script>
 </head>
@@ -64,13 +65,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </header>
 
     <main class="contact-container">
+        <!-- CLASES BOOTSTRAP-->
         <?php if ($success): ?>
-            <div class="success"><?= htmlspecialchars($success) ?></div>
+            <div class="alert alert-success border-0 shadow-sm mb-4" role="alert">
+                <?= htmlspecialchars($success) ?>
+            </div>
         <?php endif; ?>
 
         <?php if ($errors): ?>
-            <div class="error">
-                <ul>
+            <div class="alert alert-danger border-0 shadow-sm mb-4" role="alert">
+                <ul class="mb-0">
                     <?php foreach ($errors as $error): ?>
                         <li><?= htmlspecialchars($error) ?></li>
                     <?php endforeach; ?>

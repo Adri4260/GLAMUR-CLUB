@@ -145,10 +145,27 @@
     stroke: currentColor;
 }
 
-/* Responsive */
+/* MOBILE FIRST */
 @media (max-width: 640px) {
     .auth-container {
         margin: 2rem var(--spacing-md);
         padding: var(--spacing-lg);
+    }
+}
+
+.auth-container {
+    width: 92%; /* Ocupa casi todo el ancho en móviles */
+    max-width: 450px;
+    margin: 2rem auto;
+    padding: var(--spacing-lg);
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius);
+    /* ... estilos de sombra y borde ... */
+}
+
+@media (min-width: 768px) {
+    .auth-container {
+        margin: 4rem auto;
+        padding: var(--spacing-xl);
     }
 }

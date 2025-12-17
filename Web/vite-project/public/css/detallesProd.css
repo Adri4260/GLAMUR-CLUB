@@ -324,3 +324,36 @@ h1.display-4 {
     text-decoration: underline;
     font-weight: bold;
 }
+
+/*MOBILE FIRST*/
+.product-detail-section {
+    display: flex; 
+    flex-direction: column; /* Apilado en móvil */
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.product-detail-section img {
+    width: 100%;
+    height: 300px; /* Altura controlada en móvil */
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+    .product-detail-section {
+        flex-direction: row; /* Lado a lado en tablet/PC */
+        align-items: flex-start;
+        gap: 3rem;
+        margin-top: 2rem;
+    }
+    
+    .product-detail-section img {
+        flex: 1;
+        height: 500px;
+    }
+    
+    .product-detail-section > div:last-child {
+        flex: 1;
+    }
+}
