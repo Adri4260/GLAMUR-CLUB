@@ -1,13 +1,10 @@
 <?php
 // index.php
-// Incluir el archivo de funciones de autenticación
-// Asumimos que index.php está en la raíz y includes/ está al mismo nivel.
 require_once "./includes/auth_check.php";
-
 $is_logged_in = is_logged_in();
 ?>
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es" class="dark" data-bs-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -15,11 +12,11 @@ $is_logged_in = is_logged_in();
     <title>GLAMUR CLUB - Perfumes y Belleza de Lujo</title>
     <meta name="description" content="Descubre perfumes exclusivos y productos de belleza premium. Crea tu propio perfume personalizado con GLAMUR CLUB.">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="public/css/bootstrap.min.css">
     <link rel="stylesheet" href="./public/css/styles.css">
 </head>
 
 <body>
-    <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-content">
@@ -71,15 +68,14 @@ $is_logged_in = is_logged_in();
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">Lujo y Elegancia en Cada Fragancia</h1>
             <p class="hero-subtitle">Descubre perfumes exclusivos y crea tu propia fragancia personalizada con GLAMUR CLUB</p>
             <div class="hero-buttons">
-                <a href="./src/catalogo.html" class="btn btn-primary">Ver Catálogo</a>
-                <a href="./src/crear-perfume.html" class="btn btn-outline">
+                <a href="./src/catalogo.html" class="btn btn-primary btn-lg px-4">Ver Catálogo</a>
+                <a href="./src/crear-perfume.html" class="btn btn-outline btn-lg px-4 text-white">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M12 2v20M2 12h20" />
                     </svg>
@@ -89,60 +85,63 @@ $is_logged_in = is_logged_in();
         </div>
     </section>
 
-    <!-- Benefits -->
-    <section class="benefits">
+    <section class="benefits py-5">
         <div class="container">
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="1" y="3" width="15" height="13" />
-                            <path d="M16 8h6M16 12h6M16 16h6" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3>Envío Gratis</h3>
-                        <p>En pedidos superiores a €50</p>
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20 12v-2a4 4 0 1 0-8 0v2m-2 0h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3>Regalo en Cada Pedido</h3>
-                        <p>Muestras exclusivas gratis</p>
+            <div class="row text-center text-md-start">
+                <div class="col-12 col-md-4 mb-4 mb-md-0">
+                    <div class="benefit-item d-flex align-items-center gap-3">
+                        <div class="benefit-icon">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="3" width="15" height="13" />
+                                <path d="M16 8h6M16 12h6M16 16h6" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="mb-1 h5 fw-bold">Envío Gratis</h3>
+                            <p class="mb-0 small">En pedidos superiores a €50</p>
+                        </div>
                     </div>
                 </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2v20M2 12h20" />
-                        </svg>
+                <div class="col-12 col-md-4 mb-4 mb-md-0">
+                    <div class="benefit-item d-flex align-items-center gap-3">
+                        <div class="benefit-icon">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 12v-2a4 4 0 1 0-8 0v2m-2 0h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="mb-1 h5 fw-bold">Regalo en Cada Pedido</h3>
+                            <p class="mb-0 small">Muestras exclusivas gratis</p>
+                        </div>
                     </div>
-                    <div>
-                        <h3>Calidad Premium</h3>
-                        <p>Productos de alta gama</p>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="benefit-item d-flex align-items-center gap-3">
+                        <div class="benefit-icon">
+                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2v20M2 12h20" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="mb-1 h5 fw-bold">Calidad Premium</h3>
+                            <p class="mb-0 small">Productos de alta gama</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Featured Products -->
-    <section class="featured-products">
+    <section class="featured-products py-5">
         <div class="container">
-            <div class="section-header">
-                <h2>Productos Destacados</h2>
-                <p>Descubre nuestra selección de productos más vendidos y exclusivos</p>
+            <div class="section-header text-center mb-5">
+                <h2 class="display-5 fw-bold" style="color: var(--color-primary);">Productos Destacados</h2>
+                <p class="text-muted">Descubre nuestra selección de productos más vendidos y exclusivos</p>
             </div>
             <div class="products-grid" id="featuredProducts">
-                <!-- Products loaded by JavaScript -->
             </div>
-            <div class="section-footer">
-                <a href="./src/catalogo.html" class="btn btn-outline">Ver Todos los Productos</a>
+            <div class="section-footer text-center mt-5">
+                <a href="./src/catalogo.html" class="btn btn-outline px-4">Ver Todos los Productos</a>
             </div>
         </div>
     </section>

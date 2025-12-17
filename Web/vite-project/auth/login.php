@@ -47,10 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   <div class="auth-container">
     <h2>Iniciar sesión</h2>
 
-    <div class="alert alert-warning py-2 mb-3" role="alert" style="font-size: 0.8rem;">
-      Test: Si ves esta caja amarilla, Bootstrap está funcionando.
-    </div>
-
     <?php if (isset($_GET["success"])): ?>
       <div class="alert alert-success shadow-sm mb-3" role="alert">
         ✅ Registro completado. ¡Ya puedes entrar!

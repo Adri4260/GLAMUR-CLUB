@@ -10,7 +10,7 @@ require_once '../includes/config.php';
 $is_logged_in = isset($_SESSION['user_id']);
 
 // --- 3. Obtención del ID y Carga del Producto ---
-$product_id = filter_input(INPUT_GET, 'id', FILTER_DEFAULT); 
+$product_id = filter_input(INPUT_GET, 'id', FILTER_DEFAULT);
 
 if (empty($product_id)) {
     http_response_code(400);
@@ -66,6 +66,7 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuario');
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,7 +137,7 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuario');
             <div class="col-md-5">
                 <img src="<?php echo $imagen_producto; ?>" alt="<?php echo $nombre_producto; ?>" class="img-fluid rounded shadow">
             </div>
-            
+
             <!-- Columna Info -->
             <div class="col-md-7 product-info-col">
                 <h1 class="display-4"><?php echo $nombre_producto; ?></h1>
@@ -145,9 +146,9 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuario');
 
                 <div class="product-meta">
                     <p>Categoría: <strong><?php echo $categoria_producto; ?></strong></p>
-                    
+
                     <!-- VISUALIZACIÓN DE STOCK -->
-                    <p>Stock: 
+                    <p>Stock:
                         <?php if ($stock_producto > 0): ?>
                             <span class="badge bg-success"><?php echo $stock_producto; ?> Unidades disponibles</span>
                         <?php else: ?>
@@ -222,13 +223,35 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuario');
     </main>
 
     <footer class="footer">
-        <div class="container footer-bottom">
-            <p>&copy; <?php echo date('Y'); ?> GLAMUR-CLUB. Todos los derechos reservados.</p>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>GLAMUR CLUB</h3>
+                    <p>Tu destino de lujo para perfumes y productos de belleza exclusivos.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="/src/catalogo.html">Catálogo</a></li>
+                        <li><a href="/src/crear-perfume.html">Crear Perfume</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <ul class="contact-info">
+                        <li>📍 Calle Elegancia 123, Madrid</li>
+                        <li>📞 +34 900 123 456</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <p>© 2024 GLAMUR CLUB</p>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Scripts Funcionales -->
     <script src="/public/js/script.js"></script>
     <script src="/public/js/comments.js" defer></script>
@@ -238,7 +261,7 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuario');
         document.addEventListener('DOMContentLoaded', () => {
             const prodId = '<?php echo $product_id; ?>';
             const btn = document.getElementById('fav-btn-detail');
-            
+
             if (typeof AppState !== 'undefined' && AppState.favorites && AppState.favorites.includes(prodId)) {
                 btn.classList.add('active');
                 btn.style.backgroundColor = '#ff6b6b';
@@ -248,4 +271,5 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuario');
         });
     </script>
 </body>
+
 </html>
