@@ -376,6 +376,26 @@
       "puntuacion": null,
       "megusta": true,
       "fecha_creacion": "2025-11-27 19:11:39"
+    },
+    {
+      "id": "v692e12a87c353",
+      "user_id": "1665",
+      "username": "kiek",
+      "product_id": "mq001",
+      "comentario": "Vaya basura de maquillaje, pero 5/5",
+      "puntuacion": 5,
+      "megusta": false,
+      "fecha_creacion": "2025-12-01 22:11:52"
+    },
+    {
+      "id": "v692e12f972251",
+      "user_id": "740c",
+      "username": "natxp",
+      "product_id": "mq001",
+      "comentario": "Basura",
+      "puntuacion": 2,
+      "megusta": false,
+      "fecha_creacion": "2025-12-01 22:13:13"
     }
   ]
 }

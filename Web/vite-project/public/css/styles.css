@@ -365,7 +365,7 @@ body {
   text-decoration: none;
 }
 
-/* SECCIÓN 7.3: MEDIA QUERIES y AJUSTES (LO NUEVO) */
+/* MEDIA VISTA MÓVIL */
 @media (max-width: 768px) {
   .mobile-menu-btn {
     display: flex;
@@ -392,6 +392,7 @@ body {
   }
 }
 
+/* MEDIA VISTA TABLET Y PC */
 @media (min-width: 768px) {
   .container {
     padding: 0 var(--spacing-lg);
