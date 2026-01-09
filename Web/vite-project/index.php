@@ -21,18 +21,13 @@ $is_logged_in = is_logged_in();
         <div class="container">
             <div class="nav-content">
                 <button class="mobile-menu-btn" id="mobileMenuBtn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <span></span><span></span><span></span>
                 </button>
-
                 <a href="/" class="logo">GLAMUR CLUB</a>
-
                 <div class="nav-links" id="navLinks">
                     <a href="./src/catalogo.html">Catálogo</a>
                     <a href="./src/crear-perfume.html">Crea tu Perfume</a>
                 </div>
-
                 <div class="nav-actions">
                     <?php if ($is_logged_in): ?>
                         <a href="./auth/profile.php" class="nav-icon profile-btn" title="Mi Perfil">
@@ -87,47 +82,51 @@ $is_logged_in = is_logged_in();
 
     <section class="benefits py-5">
         <div class="container">
-            <div class="row text-center text-md-start">
-                <div class="col-12 col-md-4 mb-4 mb-md-0">
-                    <div class="benefit-item d-flex align-items-center gap-3">
-                        <div class="benefit-icon">
-                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="1" y="3" width="15" height="13" />
-                                <path d="M16 8h6M16 12h6M16 16h6" />
-                            </svg>
+            <div id="benefitsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center p-4">
+                            <div class="benefit-icon mb-3">
+                                <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="1" y="3" width="15" height="13" />
+                                    <path d="M16 8h6M16 12h6M16 16h6" />
+                                </svg>
+                            </div>
+                            <h3 class="mb-2 h4 fw-bold">Envío Gratis</h3>
+                            <p class="mb-0 text-muted">En pedidos superiores a €50</p>
                         </div>
-                        <div>
-                            <h3 class="mb-1 h5 fw-bold">Envío Gratis</h3>
-                            <p class="mb-0 small">En pedidos superiores a €50</p>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center p-4">
+                            <div class="benefit-icon mb-3">
+                                <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 12v-2a4 4 0 1 0-8 0v2m-2 0h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" />
+                                </svg>
+                            </div>
+                            <h3 class="mb-2 h4 fw-bold">Regalo en Cada Pedido</h3>
+                            <p class="mb-0 text-muted">Muestras exclusivas gratis</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center p-4">
+                            <div class="benefit-icon mb-3">
+                                <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2v20M2 12h20" />
+                                </svg>
+                            </div>
+                            <h3 class="mb-2 h4 fw-bold">Calidad Premium</h3>
+                            <p class="mb-0 text-muted">Productos de alta gama</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-4 mb-4 mb-md-0">
-                    <div class="benefit-item d-flex align-items-center gap-3">
-                        <div class="benefit-icon">
-                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 12v-2a4 4 0 1 0-8 0v2m-2 0h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="mb-1 h5 fw-bold">Regalo en Cada Pedido</h3>
-                            <p class="mb-0 small">Muestras exclusivas gratis</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <div class="benefit-item d-flex align-items-center gap-3">
-                        <div class="benefit-icon">
-                            <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2v20M2 12h20" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="mb-1 h5 fw-bold">Calidad Premium</h3>
-                            <p class="mb-0 small">Productos de alta gama</p>
-                        </div>
-                    </div>
-                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#benefitsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#benefitsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
             </div>
         </div>
     </section>
@@ -138,7 +137,7 @@ $is_logged_in = is_logged_in();
                 <h2 class="display-5 fw-bold" style="color: var(--color-primary);">Productos Destacados</h2>
                 <p class="text-muted">Descubre nuestra selección de productos más vendidos y exclusivos</p>
             </div>
-            <div class="products-grid" id="featuredProducts">
+            <div class="row g-4" id="featuredProducts">
             </div>
             <div class="section-footer text-center mt-5">
                 <a href="./src/catalogo.html" class="btn btn-outline px-4">Ver Todos los Productos</a>
@@ -146,11 +145,10 @@ $is_logged_in = is_logged_in();
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
+            <div class="row g-5 mb-5">
+                <div class="col-12 col-md-6 col-lg-3">
                     <h3>GLAMUR CLUB</h3>
                     <p>Tu destino de lujo para perfumes y productos de belleza exclusivos.</p>
                     <div class="social-links">
@@ -167,7 +165,7 @@ $is_logged_in = is_logged_in();
                             </svg></a>
                     </div>
                 </div>
-                <div class="footer-col">
+                <div class="col-12 col-md-6 col-lg-3">
                     <h4>Enlaces Rápidos</h4>
                     <ul>
                         <li><a href="./src/catalogo.html">Catálogo</a></li>
@@ -176,7 +174,7 @@ $is_logged_in = is_logged_in();
                         <li><a href="./src/contacto.php">Contacto</a></li>
                     </ul>
                 </div>
-                <div class="footer-col">
+                <div class="col-12 col-md-6 col-lg-3">
                     <h4>Contacto</h4>
                     <ul class="contact-info">
                         <li>📍 Calle Elegancia 123, Madrid</li>
@@ -184,7 +182,7 @@ $is_logged_in = is_logged_in();
                         <li>✉️ info@glamurclub.com</li>
                     </ul>
                 </div>
-                <div class="footer-col">
+                <div class="col-12 col-md-6 col-lg-3">
                     <h4>Newsletter</h4>
                     <p>Suscríbete para ofertas exclusivas</p>
                     <form class="newsletter-form" id="newsletterForm">
@@ -205,6 +203,7 @@ $is_logged_in = is_logged_in();
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./public/js/script.js"></script>
     <script src="./public/js/validacion.js" defer></script>
 </body>

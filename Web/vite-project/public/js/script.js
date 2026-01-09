@@ -106,8 +106,11 @@ window.renderCatalog = renderCatalog; // Hacer global
 function createProductCard(product) {
   const isFavorite = AppState.favorites.includes(product.id);
 
+  // CAMBIO AQUÍ: Añadido el wrapper con las clases de columna de Bootstrap (col-12...)
+  // y 'h-100' para que todas las cartas midan lo mismo.
   return `
-        <div class="product-card">
+    <div class="col-12 col-sm-6 col-lg-3 h-100">
+        <div class="product-card h-100">
             <div class="product-image">
                 <a href="/src/perfume.php?id=${product.id}">
                     <img src="${product.imagen}" alt="${product.nombre}">
@@ -146,6 +149,7 @@ function createProductCard(product) {
                 </div>
             </div>
         </div>
+    </div>
     `;
 }
 window.createProductCard = createProductCard; // Hacer global
