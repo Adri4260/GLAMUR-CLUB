@@ -376,6 +376,26 @@
       "puntuacion": null,
       "megusta": true,
       "fecha_creacion": "2025-11-27 19:11:39"
+    },
+    {
+      "id": "v6966cbc447625",
+      "user_id": "1665",
+      "username": "kiek",
+      "product_id": "mq001",
+      "comentario": "kiek es gay pero li agrada aso",
+      "puntuacion": 4,
+      "megusta": false,
+      "fecha_creacion": "2026-01-13 22:48:36"
+    },
+    {
+      "id": "v6966cbf070847",
+      "user_id": "1665",
+      "username": "kiek",
+      "product_id": "m001",
+      "comentario": "",
+      "puntuacion": null,
+      "megusta": true,
+      "fecha_creacion": "2026-01-13 22:49:20"
     }
   ]
 }
