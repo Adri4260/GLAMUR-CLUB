@@ -25,4 +25,18 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/catalogo', [ProductController::class, 'index'])->name('catalogo');
 
+// Grupo de rutas protegidas para Administradores
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+
+    // Ver lista
+    Route::get('/products', [ProductController::class, 'adminIndex'])->name('admin.products.index');
+
+    // Editar (Formulario y Guardar)
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
+
+    // Borrar
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+});
+
 require __DIR__ . '/auth.php';

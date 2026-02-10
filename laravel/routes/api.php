@@ -13,4 +13,6 @@ Route::get('/products', [ProductController::class, 'apiIndex']);
 
 Route::get('/reviews/{product_id}', [ReviewController::class, 'index']);
 
+Route::get('/products/{id}', [ProductController::class, 'show']);
+
 Route::middleware('auth:sanctum')->post('/reviews', [ReviewController::class, 'store']);
