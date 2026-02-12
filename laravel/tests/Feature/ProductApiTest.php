@@ -22,6 +22,6 @@ class ProductApiTest extends TestCase
 
         // 3. Verificación: Esperamos un código 200 (OK) y que haya 3 elementos
         $response->assertStatus(200)
-            ->assertJsonCount(3);
+            ->assertJsonCount(3, 'data');
     }
 }

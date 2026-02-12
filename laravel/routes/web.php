@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductImportController;
 use App\Models\Product; // Para el test rápido
 use App\Models\User;    // Para el test rápido
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\AdminMiddleware;
 
 // --- RUTA DE DIAGNÓSTICO (ESTO NOS DIRÁ QUÉ PASA) ---
 Route::get('/test-db', function () {
@@ -41,7 +42,7 @@ Route::get('/catalogo', [ProductController::class, 'index'])->name('catalogo');
 Route::get('/producto/{id}', [ProductController::class, 'showReviews'])->name('product.show');
 
 // Admin
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::middleware(['auth', AdminMiddleware::class])->prefix('admin')->group(function () {
     Route::get('/importar', [ProductImportController::class, 'show'])->name('import.show');
     Route::post('/importar', [ProductImportController::class, 'store'])->name('import.store');
     Route::post('/importar-reviews', [ProductImportController::class, 'storeReviews'])->name('import.reviews');
