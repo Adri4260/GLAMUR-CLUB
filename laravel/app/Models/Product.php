@@ -19,4 +19,10 @@ class Product extends Model
         'image',
         'category',
     ];
+
+    // Relación: Un producto tiene muchas reviews
+    public function reviews()
+    {
+        return $this->hasMany(Review::class)->orderBy('created_at', 'desc');
+    }
 }

@@ -11,7 +11,7 @@ class ProductImportController extends Controller
     // Muestra el formulario
     public function show()
     {
-        return view('import');
+        return view('admin.import');
     }
 
     // Procesa el archivo

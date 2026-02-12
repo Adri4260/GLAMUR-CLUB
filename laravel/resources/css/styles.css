@@ -1,0 +1,22 @@
+/* Correcciones para Laravel Admin */
+.form-control,
+.form-select {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    border: 1px solid var(--color-border);
+}
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+}
+/* Asegurar que el texto en tablas sea legible */
+table {
+    color: var(--text-primary) !important;
+}
+.table > :not(caption) > * > * {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+}

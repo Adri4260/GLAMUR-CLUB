@@ -4,50 +4,54 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
-    // --- PARTE PÚBLICA (WEB) ---
+    // --- PARTE PÚBLICA ---
+
+    // 1. Catálogo General
     public function index()
     {
         $products = Product::all();
-        return view('catalogo', compact('products'));
+        // IMPORTANTE: La vista está en la carpeta 'public', así que es 'public.catalogo'
+        return view('public.catalogo', compact('products'));
     }
 
-    // --- PARTE API (JSON) ---
+    // 2. Página de Detalle y Reviews (NUEVO)
+    public function showReviews($id)
+    {
+        // Buscamos el producto con sus reviews y los usuarios
+        $product = Product::with('reviews.user')->findOrFail($id);
 
-    // Lista de todos los productos
+        // Retornamos la vista nueva 'public.reviews'
+        return view('public.reviews', compact('product'));
+    }
+
+    // --- PARTE API (Para los JS) ---
     public function apiIndex()
     {
-        return response()->json(Product::all());
+        return ProductResource::collection(Product::all());
     }
-
-    // Detalle de un solo producto (Tarea C5)
     public function show($id)
     {
         $product = Product::find($id);
-        if (!$product) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
-        }
-        return response()->json($product);
+        if (!$product) return response()->json(['message' => 'No encontrado'], 404);
+        return new ProductResource($product);
     }
 
-    // --- PARTE ADMIN (GESTIÓN) - Tarea C6 ---
-
-    // 1. Ver la tabla de gestión
+    // --- PARTE ADMIN ---
     public function adminIndex()
     {
         $products = Product::all();
         return view('admin.products.index', compact('products'));
     }
 
-    // 2. Mostrar formulario de edición
     public function edit(Product $product)
     {
         return view('admin.products.edit', compact('product'));
     }
 
-    // 3. Guardar los cambios en la BBDD
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
@@ -59,15 +63,12 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return redirect()->route('admin.products.index')
-            ->with('success', 'Producto actualizado correctamente');
+        return redirect()->route('admin.products.index')->with('success', 'Actualizado');
     }
 
-    // 4. Borrar un producto
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('admin.products.index')
-            ->with('success', 'Producto eliminado');
+        return redirect()->route('admin.products.index')->with('success', 'Eliminado');
     }
 }
