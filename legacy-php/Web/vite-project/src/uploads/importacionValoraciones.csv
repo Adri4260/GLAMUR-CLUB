@@ -1,0 +1,11 @@
+id_valoracion,usuario_id,producto_id,comentario,puntuacion,me_gusta,fecha
+V01,1,p001,"Un aroma floral increíble, con muy buena fijación. ¡Excelente!",5,,2025-11-24 10:00:00
+V02,2,p001,"Me parece un clásico, pero es demasiado dulce y fuerte para mí.",3,,2025-11-24 10:30:00
+V03,3,p002,"El mejor perfume fresco para el verano. Las notas de cítricos se sienten muy naturales.",5,,2025-11-24 11:00:00
+V04,1,p002,"Es un básico, pero no destaca. No huele mal, pero es genérico.",4,,2025-11-24 11:30:00
+V05,3,p003,"Calidez y misterio. Lo uso en invierno y siempre recibo cumplidos.",5,,2025-11-24 12:00:00
+V06,1,p004,"Demasiado fresco, no dura nada.",2,,2025-11-24 13:00:00
+V07,2,p006,"Toques profundos de cedro y sándalo. Muy masculino y elegante.",5,,2025-11-24 13:30:00
+V08,3,p007,"Un aroma suave y delicado de azahar y lirio.",4,,2025-11-24 14:00:00
+V09,1,p008,"Fragancia fresca y ligera, ideal para uso diario.",4,,2025-11-24 14:30:00
+V10,2,p009,"Dulce y afrutado, me encanta.",5,,2025-11-24 15:00:00

@@ -10,9 +10,9 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/products', [ProductController::class, 'apiIndex']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
 
 Route::get('/reviews/{product_id}', [ReviewController::class, 'index']);
 
-Route::get('/products/{id}', [ProductController::class, 'show']);
 
 Route::middleware('auth:sanctum')->post('/reviews', [ReviewController::class, 'store']);

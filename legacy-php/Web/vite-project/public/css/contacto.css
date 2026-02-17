@@ -1,0 +1,239 @@
+/* =========================================
+   Estilos de Contacto - Paleta Esmeralda Oscuro
+   Requiere que styles.css esté cargado previamente
+   ========================================= */
+
+/* Header (Hereda estilos base, ajustes específicos) */
+header {
+    text-align: center;
+    padding: var(--spacing-2xl) 0;
+    background-color: var(--color-bg-main);
+    border-bottom: 1px solid var(--color-bg-surface);
+}
+
+header h1 {
+    font-family: var(--font-serif);
+    font-size: 2.5rem;
+    color: var(--color-text-white);
+    letter-spacing: -0.02em;
+}
+
+header h1 span {
+    color: var(--color-primary);
+}
+
+/* Contenedor del formulario (Tarjeta) */
+.contact-container {
+    max-width: 600px;
+    margin: var(--spacing-2xl) auto;
+    background-color: var(--color-bg-card);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-bg-surface);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra profunda */
+}
+
+/* Estructura del Formulario */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+label {
+    font-weight: 500;
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-xs);
+    font-size: 0.95rem;
+}
+
+/* Inputs y Textarea */
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg-surface);
+    color: var(--color-text-white);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+input:focus, 
+textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(15, 232, 167, 0.1); /* Brillo verde sutil */
+    background-color: var(--color-bg-main);
+}
+
+/* Checkbox Group */
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    font-weight: 400;
+    margin: 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg-surface);
+}
+
+.checkbox-group a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: var(--transition);
+    border-bottom: 1px solid transparent;
+}
+
+.checkbox-group a:hover {
+    color: var(--color-primary-light);
+    border-bottom-color: var(--color-primary-light);
+}
+
+/* Botón de Envío */
+button[type="submit"] {
+    background-color: var(--color-primary);
+    color: var(--color-bg-main);
+    border: none;
+    padding: 1rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-top: var(--spacing-md);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+button[type="submit"]:hover {
+    background-color: var(--color-primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(15, 232, 167, 0.25); /* Resplandor verde */
+}
+
+/* Mensajes de Error y Éxito */
+.error {
+    background-color: rgba(239, 68, 68, 0.1); /* Rojo transparente */
+    color: #ef4444;
+    padding: var(--spacing-md);
+    border-radius: var(--radius);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    margin-bottom: var(--spacing-lg);
+    font-size: 0.95rem;
+}
+
+.error ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.error li {
+    margin-bottom: 0.25rem;
+}
+
+.success {
+    background-color: rgba(16, 185, 129, 0.1); /* Verde transparente */
+    color: var(--color-primary);
+    padding: var(--spacing-md);
+    border-radius: var(--radius);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Footer específico para contacto (si no usas el global) */
+footer {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    margin-top: auto;
+    background-color: var(--color-bg-card);
+    border-top: 1px solid var(--color-bg-surface);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+/*MOBILE FIRST*/
+
+/* Header: Centrado y con aire en móviles */
+header {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    background-color: var(--color-bg-main);
+    border-bottom: 1px solid var(--color-bg-surface);
+}
+
+header h1 {
+    font-family: var(--font-serif);
+    font-size: 2rem; /* Más pequeño en móvil */
+    color: var(--color-text-white);
+}
+
+@media (min-width: 768px) {
+    header { padding: var(--spacing-2xl) 0; }
+    header h1 { font-size: 2.5rem; }
+}
+
+/* Contenedor: 90% de ancho en móvil, máximo 600px en PC */
+.contact-container {
+    width: 90%;
+    max-width: 600px;
+    margin: var(--spacing-lg) auto;
+    background-color: var(--color-bg-card);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius);
+    border: 1px solid var(--color-bg-surface);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 768px) {
+    .contact-container {
+        margin: var(--spacing-2xl) auto;
+        padding: var(--spacing-xl);
+    }
+}
+
+/* Inputs: Optimizados para pantallas táctiles */
+input[type="text"],
+input[type="email"],
+textarea {
+    width: 100%;
+    padding: 1rem; /* Más área de toque */
+    font-size: 16px; /* Evita el zoom automático en iOS */
+    /* ... resto de estilos ... */
+}
+
+/* Checkbox: Espaciado para dedos */
+.checkbox-group {
+    padding: var(--spacing-xs) 0;
+}
+
+/* Footer de contacto */
+footer {
+    padding: var(--spacing-lg) var(--spacing-md);
+    text-align: center;
+    /* ... */
+}
