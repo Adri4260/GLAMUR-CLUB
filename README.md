@@ -87,9 +87,9 @@ Se ha preparado una API que será consumida en el Sprint 4. Las respuestas está
 
 | Método | Endpoint | Descripción | Autenticación |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/products` | Devuelve la lista completa de productos. | ❌ No |
-| `GET` | `/api/products/{id}` | Devuelve los detalles de un producto concreto. | ❌ No |
-| `GET` | `/api/reviews/{id}` | Devuelve las valoraciones de un producto. | ❌ No |
+| `GET` | `/api/products` | Devuelve la lista completa de productos. | ✅ Sí |
+| `GET` | `/api/products/{id}` | Devuelve los detalles de un producto concreto. | ✅ Sí |
+| `GET` | `/api/reviews/{id}` | Devuelve las valoraciones de un producto. | ✅ Sí |
 | `POST` | `/api/reviews` | Crea una nueva valoración para un producto. | ✅ Sí (Sanctum/Session) |
 
 ---
