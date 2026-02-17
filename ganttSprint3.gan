@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Glamur Club - Sprint 3" company="" webLink="" view-date="2026-02-01" view-index="0" gantt-divider-location="350" resource-divider-location="300" version="3.3.3316" locale="es_ES">
+    <description><![CDATA[Planificación Sprint 3 - Backend Laravel & API Base]]></description>
+    <view zooming-state="default:2" id="gantt-chart">
+        <field id="tpd3" name="Nombre" width="199" order="0"/>
+        <field id="tpd4" name="Fecha de inicio" width="75" order="1"/>
+        <field id="tpd5" name="Fecha de fin" width="75" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
+        <option id="filter.dueTodayTasks" value="false"/>
+        <option id="filter.overdueTasks" value="false"/>
+        <option id="filter.inProgressTodayTasks" value="false"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nombre" width="210" order="0"/>
+        <field id="1" name="Función" width="86" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="0" uid="b5f80af1c97d4f71b9608665853abe92" name="C1 - Creación Laravel y Docker Sail" color="#8cb6ce" meeting="false" start="2026-02-02" duration="2" complete="100" thirdDate="2026-02-02" thirdDate-constraint="0" expand="true">
+            <depend id="1" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="1" uid="f313f9ccfbbb45c58defcc1aee72983f" name="C2 - Migraciones, Models y Seeders" color="#8cb6ce" meeting="false" start="2026-02-04" duration="3" complete="100" thirdDate="2026-02-02" thirdDate-constraint="0" expand="true">
+            <depend id="2" type="2" difference="0" hardness="Strong"/>
+            <depend id="5" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="2" uid="551de6ddfa02449a9195e541bbcb3680" name="C3 - Integración Laravel Breeze" color="#8cb6ce" meeting="false" start="2026-02-09" duration="2" complete="100" thirdDate="2026-02-02" thirdDate-constraint="0" expand="true">
+            <depend id="3" type="2" difference="0" hardness="Strong"/>
+            <depend id="4" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="3" uid="ee0f903353f244068c3c92ca3d36335c" name="C4 - Motor Importación Excel" color="#8cb6ce" meeting="false" start="2026-02-11" duration="3" complete="100" thirdDate="2026-02-02" thirdDate-constraint="0" expand="true"/>
+        <task id="4" uid="84f981f837fc412991a57222eb007308" name="C6 - CRUD Administración / Middlewares" color="#8cb6ce" meeting="false" start="2026-02-11" duration="4" complete="100" thirdDate="2026-02-02" thirdDate-constraint="0" expand="true">
+            <depend id="6" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="5" uid="3d85b3c72c9445e48b0f7ce5869e9865" name="Adaptación Diseño Sprint 2 a Blade" color="#8cb6ce" meeting="false" start="2026-02-09" duration="5" complete="100" thirdDate="2026-02-02" thirdDate-constraint="0" expand="true"/>
+        <task id="6" uid="327118ab9e8f425c968243dac1ce302b" name="C5 - API REST Base y Resources" color="#8cb6ce" meeting="false" start="2026-02-17" duration="3" complete="100" thirdDate="2026-02-02" thirdDate-constraint="0" expand="true">
+            <depend id="7" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="7" uid="24cd9b04e6bb4bd5a62999372f42e374" name="C7 - Tests Automatizados PHPUnit" color="#8cb6ce" meeting="false" start="2026-02-20" duration="2" complete="100" thirdDate="2026-02-02" thirdDate-constraint="0" expand="true">
+            <depend id="8" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="8" uid="ea98df8017454b48ba9199816748f95c" name="Documentación README y Revisión Final" color="#8cb6ce" meeting="false" start="2026-02-24" duration="1" complete="100" thirdDate="2026-02-02" thirdDate-constraint="0" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="0" name="Adrián" function="Default:0" contacts="" phone=""/>
+        <resource id="1" name="Pepe" function="Default:0" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="0" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="4" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="6" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="7" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="8" resource-id="0" function="Default:0" responsible="true" load="50.0"/>
+        <allocation task-id="1" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="2" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="3" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="5" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="8" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
+    </allocations>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>
