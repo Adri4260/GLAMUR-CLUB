@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('sku')->unique(); // Código único del producto
+            $table->string('sku')->unique();
             $table->string('name');
-            $table->text('description')->nullable(); // Puede estar vacío
-            $table->decimal('price', 8, 2); // Precio con 2 decimales
+            $table->text('description')->nullable();
+            $table->decimal('price', 8, 2);
             $table->integer('stock');
-            $table->string('image')->nullable(); // URL de la imagen
+            $table->string('image')->nullable();
             $table->string('category')->nullable();
-            $table->timestamps(); // Crea automáticamente created_at y updated_at
+            $table->timestamps();
         });
     }
 

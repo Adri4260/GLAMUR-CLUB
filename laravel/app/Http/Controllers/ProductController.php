@@ -8,27 +8,20 @@ use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
-    // --- PARTE PÚBLICA ---
 
-    // 1. Catálogo General
     public function index()
     {
         $products = Product::all();
-        // IMPORTANTE: La vista está en la carpeta 'public', así que es 'public.catalogo'
         return view('public.catalogo', compact('products'));
     }
 
-    // 2. Página de Detalle y Reviews (NUEVO)
     public function showReviews($id)
     {
-        // Buscamos el producto con sus reviews y los usuarios
         $product = Product::with('reviews.user')->findOrFail($id);
 
-        // Retornamos la vista nueva 'public.reviews'
         return view('public.reviews', compact('product'));
     }
 
-    // --- PARTE API (Para los JS) ---
     public function apiIndex()
     {
         return ProductResource::collection(Product::all());
@@ -40,7 +33,6 @@ class ProductController extends Controller
         return new ProductResource($product);
     }
 
-    // --- PARTE ADMIN ---
     public function adminIndex()
     {
         $products = Product::all();

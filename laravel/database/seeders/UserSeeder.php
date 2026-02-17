@@ -10,16 +10,15 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Usuario Administrador
         DB::table('users')->insertOrIgnore([
-            'id' => 1, // Forzamos que sea el ID 1
+            'id' => 1,
             'name' => 'Administrador',
             'email' => 'admin@glamur.com',
-            'password' => Hash::make('admin123'), // Contraseña fácil para pruebas
+            'password' => Hash::make('admin123'),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        // Creamos el usuario 2
+        
         DB::table('users')->insertOrIgnore([
             'id' => 2,
             'name' => 'Cliente Frecuente',
@@ -29,7 +28,6 @@ class UserSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // Creamos el usuario 3
         DB::table('users')->insertOrIgnore([
             'id' => 3,
             'name' => 'Experto en Perfumes',

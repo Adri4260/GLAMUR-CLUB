@@ -16,7 +16,6 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Usamos Auth::check() y Auth::user() en lugar de auth()->...
         if (Auth::check() && Auth::user()->email === 'admin@glamur.com') {
             return $next($request);
         }

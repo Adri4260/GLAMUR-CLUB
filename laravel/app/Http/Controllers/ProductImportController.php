@@ -8,13 +8,11 @@ use App\Imports\ProductsImport;
 
 class ProductImportController extends Controller
 {
-    // Muestra el formulario
     public function show()
     {
         return view('admin.import');
     }
 
-    // Procesa el archivo
     public function store(Request $request)
     {
         $request->validate([
@@ -29,7 +27,6 @@ class ProductImportController extends Controller
             return redirect()->back()->with('error', 'Error en la importación. Revisa que los SKU no estén repetidos.');
         }
     }
-    // Método para importar valoraciones
     public function storeReviews(Request $request)
     {
         $request->validate([
@@ -37,7 +34,6 @@ class ProductImportController extends Controller
         ]);
 
         try {
-            // Usamos la clase nueva ReviewsImport
             \Maatwebsite\Excel\Facades\Excel::import(new \App\Imports\ReviewsImport, $request->file('file_reviews'));
             return redirect()->back()->with('success', '¡Valoraciones importadas correctamente!');
         } catch (\Exception $e) {

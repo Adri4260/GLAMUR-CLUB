@@ -12,10 +12,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Llamamos a los seeders específicos que has creado
         $this->call([
-            UserSeeder::class,    // Crea el admin y los clientes
-            ProductSeeder::class, // Crea los productos del catálogo
+            UserSeeder::class,
+            ProductSeeder::class,
         ]);
     }
 }

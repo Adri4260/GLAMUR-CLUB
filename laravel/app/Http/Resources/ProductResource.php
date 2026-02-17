@@ -14,11 +14,10 @@ class ProductResource extends JsonResource
             'sku' => $this->sku,
             'name' => $this->name,
             'description' => $this->description,
-            'price' => (float) $this->price, // Aseguramos que sea número
+            'price' => (float) $this->price,
             'stock' => (int) $this->stock,
             'category' => $this->category,
-            'image' => asset($this->image), // Truco pro: devuelve la URL completa
-            // Ocultamos created_at y updated_at si no hacen falta
+            'image' => asset($this->image),
         ];
     }
 }

@@ -8,7 +8,7 @@ use App\Models\User;    // Para el test rápido
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 
-// --- RUTA DE DIAGNÓSTICO (ESTO NOS DIRÁ QUÉ PASA) ---
+// --- RUTA DE DIAGNÓSTICO ---
 Route::get('/test-db', function () {
     try {
         $products = Product::count();
@@ -18,7 +18,6 @@ Route::get('/test-db', function () {
         return "ERROR DE CONEXIÓN: " . $e->getMessage();
     }
 });
-// ----------------------------------------------------
 
 // Redirección inicial
 Route::get('/', function () {

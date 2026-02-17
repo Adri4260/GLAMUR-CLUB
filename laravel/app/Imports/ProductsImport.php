@@ -9,12 +9,8 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 
 class ProductsImport implements ToModel, WithHeadingRow, WithValidation
 {
-    /**
-     * Convierte cada fila del Excel en un Modelo Product
-     */
     public function model(array $row)
     {
-        // Aseguramos que si el Excel no trae imagen, no rompa
         $image = isset($row['image']) ? $row['image'] : null;
 
         return new Product([
@@ -28,13 +24,10 @@ class ProductsImport implements ToModel, WithHeadingRow, WithValidation
         ]);
     }
 
-    /**
-     * Reglas de validación para asegurar datos sanos
-     */
     public function rules(): array
     {
         return [
-            'sku'   => 'required|unique:products,sku', // El SKU debe ser único
+            'sku'   => 'required|unique:products,sku',
             'name'  => 'required',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
