@@ -1,139 +1,114 @@
-# 💜 GLAMUR CLUB
+# 💎 GLAMUR CLUB - Sprint 3 (Backend Laravel & API Base)
 
-![Status](https://img.shields.io/badge/Estat-En%20Desenvolupament-green?style=flat-square) ![Version](https://img.shields.io/badge/Versió-Sprint%202-purple?style=flat-square) ![License](https://img.shields.io/badge/Llicència-Educational-blue?style=flat-square)
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)
 
-## 🧴 Descripció del projecte
-**GLAMUR CLUB** és un e-commerce exclusiu dedicat a la venda de **perfums i productes de bellesa i higiene**.
-El lloc destaca per la seva funcionalitat innovadora: la possibilitat de **crear el teu propi perfum personalitzat**, combinant aromes segons els gustos de l’usuari o mitjançant suggeriments basats en **Intel·ligència Artificial**.
+Bienvenido a la **Iteración 3** de Glamur Club. En este sprint hemos dado el salto de una arquitectura nativa en PHP a un framework profesional (**Laravel 12**), migrando nuestros datos a **MySQL** mediante Eloquent, implementando seguridad avanzada y dejando preparada una API REST para el futuro cliente SPA.
 
-Aquest projecte forma part de la **Iteració 1: Entorn, escaparate i contacte**, desenvolupat dins del curs **DAW 2n – CIPFP Batoi**.
+---
 
-### 👨‍💻 Equip de Desenvolupament
-| Membre | Rol | Contacte |
+## 🚀 Novedades de esta Versión (v2.0)
+
+- **Arquitectura MVC:** Refactorización completa del proyecto utilizando Controladores, Modelos y Vistas (Blade).
+- **Base de Datos Relacional:** Transición de `JSON Server` a **MySQL** con Migraciones y Seeders.
+- **Autenticación Integrada:** Implementación de **Laravel Breeze** (registro, login, encriptación de contraseñas).
+- **Roles y Seguridad:** Sistema de protección de rutas mediante Middleware personalizado (`AdminMiddleware`).
+- **Importación Masiva (Excel):** Nuevo motor de importación para cargar productos y valoraciones directamente a la base de datos validando la información.
+- **Panel de Administración (CRUD):** Zona restringida para visualizar, editar y eliminar productos del catálogo.
+- **API REST Base:** Endpoints normalizados mediante `API Resources`.
+- **Testing Automatizado:** Batería de Feature Tests (PHPUnit).
+
+---
+
+## 🛠️ Estructura del Proyecto
+
+El repositorio se divide ahora en dos áreas principales para preservar el historial:
+* 📁 `legacy-php/` -> Contiene el código de la v1 (Sprint 1 y 2) intacto. No se utiliza en esta fase.
+* 📁 `laravel/` -> Contiene la **nueva aplicación profesional v2**. Todo el backend y frontend actual reside aquí.
+
+---
+
+## 🔐 Evolución de la Seguridad: Breeze vs Legacy
+
+Uno de los objetivos clave de este Sprint (DWES/Seguridad) ha sido reemplazar la autenticación manual por un sistema robusto. Aquí las diferencias principales implementadas:
+
+| Característica | ❌ Autenticación Manual (Sprint 2 - Legacy) | ✅ Laravel Breeze (Sprint 3 - Actual) |
 | :--- | :--- | :--- |
-| **Adrián Becerra Pérez** | Full Stack Dev & DevOps | [GitHub](https://github.com/adri4260) |
-| **Jose Juan Alemany Márquez** | Full Stack Dev & UX/UI | [GitHub](https://github.com/Pepe1109) |
+| **Gestión de Sesión** | `session_start()` y `$_SESSION` nativos de PHP. | Facade `Auth` y driver de sesión seguro de Laravel. |
+| **Protección de Rutas** | `if (!isset(...))` repetido en cada archivo PHP. | **Middleware** (`auth`, `admin`) centralizado en rutas. |
+| **Vulnerabilidades** | Propenso a ataques CSRF y Session Hijacking. | **Token CSRF** automático y encriptación robusta. |
+| **Contraseñas** | Gestión manual (riesgo de error humano). | Hashing automático con **Bcrypt** y validaciones estrictas. |
+| **Mantenimiento** | Código disperso y difícil de escalar. | Controladores estandarizados (`AuthenticatedSessionController`). |
 
 ---
 
-## 🧠 Metodologia de treball
+## ⚙️ Instalación y Puesta en Marcha
 
-El desenvolupament segueix pràctiques d'integració contínua i treball col·laboratiu:
+Para arrancar el proyecto en un entorno local utilizando **Laravel Sail (Docker)**, sigue estos pasos:
 
-* **Control de versions:** Git + GitHub.
-* **Flux de treball:** Estructura basada en **feature branches** (una branca per funcionalitat).
-* **Qualitat:** Revisió de codi (Code Review) abans de fusionar a la branca principal.
-* **Planificació:** Organització mitjançant tauler Kanban i seguiment temporal amb diagrames de Gantt.
-
----
-
-## 🚀 Funcionalitats Implementades (Sprints)
-
-El projecte s'ha estructurat seguint les fites del client (C1-C5):
-
-### 🧩 C1. Importació de Dades (Excel → JSON)
-Sistema automatitzat per poblar el catàleg de productes.
-- **Flux:** Càrrega de fitxer `.xlsx` o `.csv` → Processament amb `PhpSpreadsheet` → Conversió a JSON → Enviament a `JSON Server`.
-- **Objectiu:** Evitar la introducció manual de productes.
-
-### 👥 C2. Sistema d'Autenticació (Auth)
-Gestió completa d'usuaris utilitzant JSON Server com a persistència.
-- **Funcions:** Registre, Login (sessions PHP + Cookies), i edició de Perfil.
-- **Seguretat:** Hash de contrasenyes amb `bcrypt` i validació de duplicats.
-
-### 💬 C3. Social: Comentaris i Valoracions
-Interacció dinàmica en temps real mitjançant **AJAX / Fetch API**.
-- **Features:** Valoracions (1-5 estrelles), "M'agrada" i comentaris d'usuaris.
-- **Dinamisme:** Actualització de la interfície sense recarrega de pàgina.
-
-### ☁️ C4. Infraestructura i Desplegament (AWS)
-Arquitectura al núvol robusta i segura per a producció.
-- **Servidors:** Apache (HTTP/S) amb Virtual Hosts separats (`app` i `backup`).
-- **Seguretat:** Certificats SSL/TLS, usuaris aïllats, i restriccions FTP.
-- **Backups:** Script automatitzat nocturn per a còpies de seguretat remotes.
-
-### 🧭 C5. UX/UI i Frontend Modern
-Disseny centrat en l'usuari amb **Vite** i CSS modern ("Dark Emerald Theme").
-- **Components:** Cercador, Filtres per categoria, Carret visible, i "Hero" animat.
-- **Responsive:** Adaptació total a dispositius mòbils.
-
----
-
-## 🛠️ Stack Tecnològic
-
-### 🖥️ Entorn Client (Frontend)
-- **Core:** HTML5, CSS3, JavaScript, PHP (ES6 Modules).
-- **Build Tool:** [Vite](https://vitejs.dev/) per a un entorn de desenvolupament ràpid.
-- **Estils:** CSS natiu amb variables (Custom Properties).
-
-### 🐳 Entorn Servidor (Backend & DevOps)
-- **Containerització:** Docker & Docker Compose.
-- **Llenguatge:** PHP 8.3 (FPM).
-- **Base de Dades (Simulada):** JSON Server (Node.js).
-- **Dependències:** Composer (`phpoffice/phpspreadsheet`).
-
----
-
-## 🗂️ Gestió del Projecte
-
-Seguiment de tasques i planificació temporal:
-
-| Recurs | Enllaç / Arxiu | Descripció |
-| :--- | :--- | :--- |
-| **Kanban Board** | [🔗 Veure Tauler de Projecte](https://github.com/users/adri4260/projects/5) | *Estat de les tasques (To Do, In Progress, Done)* |
-| **Gantt Sprint 1** | `ganttSprint1.gan` | *Planificació inicial i setup* |
-| **Gantt Sprint 2** | `ganttSprint2.gan` | *Autenticació i funcionalitats core* |
-
----
-
-## ☁️ Infraestructura AWS (Adrián)
-
-Detalls del desplegament al núvol per a la correcció i accés:
-
-| Servei | Detall / URL |
-| :--- | :--- |
-| **Compte AWS** | **[Compte d'Adrián]** |
-| **Domini Principal** | `https://app.glamurclub.es` |
-| **Domini Backups** | `https://backup.glamurclub.es` |
-| **Domini Test** | `https://test.glamurclub.es` |
-| **Accés SSH** | Usuari: `ubuntu` (Claus públiques autoritzades) |
-| **IP elástica** | 98.95.115.229 |
-| **Llançar json** | npx json-server --watch /home/usuariElegit/ftp/www/Web/vite-project/public/data/datos.json --port 3000 |
-| **FTP** | Port 21 (Mode passiu 30000-30050) |
-
-> **Nota:** L'accés als backups està protegit per `mod_auth` (Usuari: profe / Contrasenya: 1234).
-
----
-
-## ⚠️ Prevenció de riscos laborals i seguretat
-
-Pla de prevenció per garantir la salut de l'equip i la seguretat del projecte.
-
-### 👩‍💻 Riscos laborals del personal
-
-| **Tipus de risc** | **Descripció** | **Mesures preventives** |
-|--------------------|----------------|---------------------------|
-| 🖥️ **Fatiga visual** | Exposició prolongada a pantalles. | 🔹 Pauses visuals cada 60 min.<br>🔹 Mode fosc a l'IDE i web.<br>🔹 Filtres de llum blava. |
-| 💺 **Ergonomia** | Postura inadequada o mobiliari no ergonòmic. | 🔹 Cadires ergonòmiques.<br>🔹 Estiraments periòdics.<br>🔹 Ajust d'altura de monitors. |
-| ⏱️ **Estrès** | Compliment de terminis ajustats (Sprints). | 🔹 Metodologia Agile/Kanban.<br>🔹 Planificació realista.<br>🔹 Pauses regulars. |
-| 🧠 **Psicosocial** | Aïllament en treball remot. | 🔹 Reunions periòdiques (Dailies).<br>🔹 Suport emocional i tècnic. |
-
-### 🏢 Riscos de l’empresa i del projecte
-
-| **Tipus de risc** | **Descripció** | **Mesures preventives** |
-|--------------------|----------------|---------------------------|
-| 🔒 **Seguretat digital** | Accés no autoritzat a dades. | 🔹 Contrasenyes segures (bcrypt).<br>🔹 Repositoris privats.<br>🔹 HTTPS i SSH sense root. |
-| ☁️ **Pèrdua de dades** | Fallada del servidor o errors de desplegament. | 🔹 **Backups nocturns automatitzats** a host remot.<br>🔹 Entorn de proves separat. |
-| 🪪 **RGPD/LOPD** | Gestió de dades personals. | 🔹 Polítiques de privacitat clares.<br>🔹 Informació sobre l'ús de cookies. |
-| 💰 **Tecnològic** | Fallada d'eines externes (Docker, GitHub). | 🔹 Alternatives documentades.<br>🔹 Manteniment de dependències al dia. |
-
----
-
-## ⚙️ Instal·lació Local
-
-Per aixecar el projecte en local:
-
-1. **Clonar el repositori:**
+1. Levantar los contenedores de Docker (en segundo plano):
    ```bash
-   git clone [https://github.com/adri4260/glamur-club.git](https://github.com/adri4260/glamur-club.git)
-   cd glamur-club
+   ./vendor/bin/sail up -d
+   ```
+2. Instalar dependencias de frontend y compilar los assets (CSS/JS):
+   ```bash
+   ./vendor/bin/sail npm install
+   ./vendor/bin/sail npm run build
+   ```
+3. Ejecutar las migraciones y volcar los datos de prueba (Seeders):
+   ```bash
+   ./vendor/bin/sail artisan migrate:fresh --seed
+   ```
+4. *Opcional:* Ejecutar los tests automatizados para verificar la integridad del sistema:
+   ```bash
+   ./vendor/bin/sail artisan test
+   ```
+
+---
+
+## 👑 Acceso de Administración
+
+El sistema cuenta con cuentas de prueba pre-generadas por los Seeders. Para probar el panel de gestión de productos y la importación de Excel, utiliza estas credenciales:
+
+| Rol | Email | Contraseña | Permisos |
+| :--- | :--- | :--- | :--- |
+| **Administrador** | `admin@glamur.com` | `admin123` | CRUD Productos, Importar Excel, Ver Catálogo |
+| **Cliente** | `cliente2@glamur.com` | `password` | Ver Catálogo, Publicar Valoraciones |
+
+👉 **Ruta del Panel Admin:** `/admin/products` *(Redirigirá al login si no estás autenticado como administrador).*
+
+---
+
+## 📡 Documentación de la API REST
+
+Se ha preparado una API que será consumida en el Sprint 4. Las respuestas están estandarizadas usando `ProductResource`.
+
+| Método | Endpoint | Descripción | Autenticación |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/products` | Devuelve la lista completa de productos. | ❌ No |
+| `GET` | `/api/products/{id}` | Devuelve los detalles de un producto concreto. | ❌ No |
+| `GET` | `/api/reviews/{id}` | Devuelve las valoraciones de un producto. | ❌ No |
+| `POST` | `/api/reviews` | Crea una nueva valoración para un producto. | ✅ Sí (Sanctum/Session) |
+
+---
+
+## 👥 Equipo y División de Tareas
+
+Este proyecto ha sido desarrollado colaborativamente. A continuación se detalla la distribución de responsabilidades durante este Sprint para cubrir los resultados de aprendizaje (DWES / DIW / DAW):
+
+| Miembro del Equipo | Tareas Principales (Sprint 3) |
+| :--- | :--- |
+| 🧑‍💻 **Adrián** | • Configuración inicial del entorno Laravel y Docker Sail.<br>• Creación de la API REST y estandarización con `API Resources`.<br>• Desarrollo de Controladores (`ProductController`, middlewares de seguridad).<br>• Desarrollo de la batería de pruebas automatizadas (PHPUnit). |
+| 🧑‍💻 **Pepe** | • Diseño de la BBDD: Migraciones, Factory y Seeders (Eloquent).<br>• Integración y adaptación del diseño del Sprint 2 a componentes **Blade**.<br>• Implementación de **Laravel Breeze** (Autenticación).<br>• Lógica del comando/controlador de importación masiva de Excel. |
+
+---
+
+## 📊 Gestión del Proyecto (RA3 y RA4)
+
+El seguimiento de tareas, control de versiones e historias de usuario se ha gestionado mediante metodologías ágiles.
+
+🔗 **[Ver Tablero Kanban del Proyecto (GitHub Projects)](https://github.com/users/Adri4260/projects/6)**
+
+> **Nota para la evaluación:** Toda la planificación, checklist de estado y revisión final se encuentra documentada y evidenciada en nuestro tablero Kanban enlazado arriba.
