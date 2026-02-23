@@ -229,23 +229,34 @@ $username_display = htmlspecialchars($_SESSION['username'] ?? 'Usuario');
                     <h3>GLAMUR CLUB</h3>
                     <p>Tu destino de lujo para perfumes y productos de belleza exclusivos.</p>
                 </div>
+
                 <div class="footer-col">
                     <h4>Enlaces Rápidos</h4>
-                    <ul>
+                    <ul class="footer-links">
                         <li><a href="/src/catalogo.html">Catálogo</a></li>
                         <li><a href="/src/crear-perfume.html">Crear Perfume</a></li>
+                        <li><a href="/src/favoritos.html">Favoritos</a></li>
                     </ul>
                 </div>
+
                 <div class="footer-col">
                     <h4>Contacto</h4>
                     <ul class="contact-info">
-                        <li>📍 Calle Elegancia 123, Madrid</li>
-                        <li>📞 +34 900 123 456</li>
+                        <li>
+                            <span>📍</span> Calle Elegancia 123, Madrid
+                        </li>
+                        <li>
+                            <span>📞</span> +34 900 123 456
+                        </li>
+                        <li>
+                            <span>✉️</span> contacto@glamur.club
+                        </li>
                     </ul>
                 </div>
-                <div class="footer-col">
-                    <p>© 2024 GLAMUR CLUB</p>
-                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2024 GLAMUR CLUB. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
