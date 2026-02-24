@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/modules/auth/store";
+import { useAuthStore } from "../../../modules/auth/store";
 
 export function useRole() {
   const authStore = useAuthStore();

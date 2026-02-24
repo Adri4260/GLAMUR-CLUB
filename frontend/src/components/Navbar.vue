@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useAuthStore } from '../modules/auth/store.js'
 import { useRouter } from 'vue-router'
+import RoleBadge from '../modules/roles/components/RoleBadge.vue'
 
 const isMenuOpen = ref(false)
 const authStore = useAuthStore()
@@ -38,9 +39,10 @@ const handleLogout = async () => {
                 <div class="nav-actions d-flex align-items-center gap-3">
 
                     <div v-if="authStore.isAuthenticated" class="dropdown">
-                        <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown">
+                        <button class="btn btn-outline-dark btn-sm dropdown-toggle d-flex align-items-center"
+                            type="button" data-bs-toggle="dropdown">
                             Hola, {{ authStore.user?.name || 'Usuario' }}
+                            <RoleBadge />
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                             <li><a class="dropdown-item text-danger" href="#" @click.prevent="handleLogout">Cerrar

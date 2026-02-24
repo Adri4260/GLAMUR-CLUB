@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import http from '../services/http'
+import RoleGuard from '../modules/roles/components/RoleGuard.vue'
 
 const products = ref([])
 const loading = ref(true)
@@ -76,10 +77,19 @@ const getImageUrl = (path) => {
                             <span class="text-muted small">Stock: {{ product.stock }}</span>
                         </div>
 
-                        <button class="btn w-100 mt-4 fw-bold"
-                            style="background: var(--color-primary); color: #000; border: none; border-radius: 4px; padding: 0.5rem;">
-                            Añadir al Carrito
-                        </button>
+                        <div class="mt-3 d-grid gap-2">
+                            <button class="btn fw-bold shadow-sm"
+                                style="background: var(--color-primary); color: #000; border: none;">
+                                Añadir al Carrito
+                            </button>
+
+                            <RoleGuard requireRole="admin">
+                                <div class="d-flex gap-2 mt-2">
+                                    <button class="btn btn-sm btn-outline-secondary w-50">✏️ Editar</button>
+                                    <button class="btn btn-sm btn-outline-danger w-50">🗑️ Borrar</button>
+                                </div>
+                            </RoleGuard>
+                        </div>
                     </div>
                 </div>
             </div>
