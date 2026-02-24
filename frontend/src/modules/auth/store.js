@@ -10,7 +10,11 @@ export const useAuthStore = defineStore("auth", {
 
   getters: {
     isAuthenticated: (state) => !!state.token,
-    isAdmin: (state) => state.user?.email === "admin@glamur.com", // Validaremos rols más adelante
+    // Comprueba si en el array de roles que nos manda Laravel hay uno que se llame 'admin'
+    isAdmin: (state) => {
+      if (!state.user || !state.user.roles) return false;
+      return state.user.roles.some((role) => role.name === "admin");
+    },
   },
 
   actions: {

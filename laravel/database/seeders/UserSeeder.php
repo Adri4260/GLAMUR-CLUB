@@ -2,41 +2,32 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Usuario Administrador
-        DB::table('users')->insertOrIgnore([
-            'id' => 1, // Forzamos que sea el ID 1
-            'name' => 'Administrador',
-            'email' => 'admin@glamur.com',
-            'password' => Hash::make('admin123'), // Contraseña fácil para pruebas
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-        // Creamos el usuario 2
-        DB::table('users')->insertOrIgnore([
-            'id' => 2,
-            'name' => 'Cliente Frecuente',
-            'email' => 'cliente2@glamur.com',
-            'password' => Hash::make('password'),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // 1. Crear los roles principales
+        $adminRole = \App\Models\Role::create(['name' => 'admin', 'description' => 'Administrador total']);
+        $vendorRole = \App\Models\Role::create(['name' => 'vendor', 'description' => 'Vendedor de productos']);
+        $userRole = \App\Models\Role::create(['name' => 'user', 'description' => 'Cliente normal']);
 
-        // Creamos el usuario 3
-        DB::table('users')->insertOrIgnore([
-            'id' => 3,
-            'name' => 'Experto en Perfumes',
-            'email' => 'cliente3@glamur.com',
-            'password' => Hash::make('password'),
-            'created_at' => now(),
-            'updated_at' => now(),
+        // 2. Crear al administrador y asignarle el rol
+        $admin = User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@glamur.com',
+            'password' => bcrypt('admin123'),
         ]);
+        $admin->roles()->attach($adminRole);
+
+        // 3. Crear un cliente normal y asignarle el rol
+        $cliente = User::factory()->create([
+            'name' => 'Cliente VIP',
+            'email' => 'cliente2@glamur.com',
+            'password' => bcrypt('password'),
+        ]);
+        $cliente->roles()->attach($userRole);
     }
 }

@@ -31,7 +31,7 @@ const handleLogout = async () => {
 
                 <div class="nav-links d-none d-md-flex gap-4">
                     <router-link to="/" class="text-decoration-none text-muted fw-bold">Catálogo</router-link>
-                    <router-link v-if="authStore.isAdmin" to="/"
+                    <router-link v-if="authStore.isAdmin" to="/admin"
                         class="text-decoration-none text-danger fw-bold">Gestión (Admin)</router-link>
                 </div>
 
