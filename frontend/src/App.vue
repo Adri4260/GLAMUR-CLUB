@@ -1,6 +1,15 @@
 <script setup>
+import { onMounted } from 'vue'
+import { useAuthStore } from './modules/auth/store'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
+
+const authStore = useAuthStore()
+
+// Cuando la app arranca, comprobamos si el token guardado sigue siendo válido
+onMounted(() => {
+  authStore.fetchUser()
+})
 </script>
 
 <template>
@@ -16,5 +25,5 @@ import Footer from './components/Footer.vue'
 </template>
 
 <style>
-/* Aquí puedes añadir CSS extra si hace falta, pero el grueso ya está en tu public/css */
+/* Estilos globales si son necesarios */
 </style>

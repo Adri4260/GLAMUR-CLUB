@@ -1,17 +1,17 @@
 <script setup>
 import { useRole } from '../composables/useRole'
 
-// Recibimos por parámetro qué rol es necesario para ver el contenido
+// Ahora pedimos un permiso específico (ej: 'delete', 'edit')
 const props = defineProps({
-    requireRole: {
+    requirePermission: {
         type: String,
         required: true
     }
 })
 
-const { hasRole } = useRole()
+const { can } = useRole()
 </script>
 
 <template>
-    <slot v-if="hasRole(requireRole)"></slot>
+    <slot v-if="can(requirePermission)"></slot>
 </template>

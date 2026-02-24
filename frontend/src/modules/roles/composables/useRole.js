@@ -3,15 +3,36 @@ import { useAuthStore } from "../../../modules/auth/store";
 export function useRole() {
   const authStore = useAuthStore();
 
-  const hasRole = (roleName) => {
-    // Si no hay usuario logueado o no tiene roles, devolvemos falso
-    if (!authStore.user || !authStore.user.roles) return false;
+  // NUEVA FUNCIÓN: Comprueba PERMISOS en lugar de roles
+  const can = (permission) => {
+    if (
+      !authStore.user ||
+      !authStore.user.roles ||
+      authStore.user.roles.length === 0
+    ) {
+      return false;
+    }
 
-    // Buscamos si tiene el rol que pedimos
-    return authStore.user.roles.some((role) => role.name === roleName);
+    // Leemos el rol actual del usuario
+    const role = authStore.user.roles[0].name;
+
+    // Diccionario de permisos (Exactamente como pide el PDF)
+    const rules = {
+      admin: ["create", "edit", "delete", "moderate"],
+      vendor: ["create", "edit", "delete"],
+      editor: ["moderate"],
+      user: ["read"],
+    };
+
+    // Retorna true si el permiso solicitado está dentro del array de su rol
+    return rules[role]?.includes(permission) ?? false;
   };
 
-  // Aquí podríamos añadir lógica más compleja, como can('edit') si quisiéramos
+  // Mantenemos esta por si hace falta, pero la importante ahora es can()
+  const hasRole = (roleName) => {
+    if (!authStore.user || !authStore.user.roles) return false;
+    return authStore.user.roles.some((r) => r.name === roleName);
+  };
 
-  return { hasRole };
+  return { can, hasRole };
 }

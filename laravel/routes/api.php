@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user()->load('roles'); // <--- AÑADE ESTO
+});
 
 Route::get('/products', [ProductController::class, 'apiIndex']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
@@ -50,4 +50,41 @@ Route::post('/login', function (Request $request) {
 Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
     $request->user()->currentAccessToken()->delete();
     return response()->json(['message' => 'Sesión cerrada']);
+});
+
+// --- RUTAS DE DETALLE Y COMENTARIOS (SPA) ---
+
+// 1. Ver un producto individual y cargar sus comentarios con el nombre del usuario
+Route::get('/products/{id}', function ($id) {
+    return \App\Models\Product::with('reviews.user')->findOrFail($id);
+});
+
+// 2. Crear un comentario (Protegido por Token)
+Route::middleware('auth:sanctum')->post('/products/{id}/reviews', function (Request $request, $id) {
+    $request->validate([
+        'rating' => 'required|integer|min:1|max:5',
+        'comment' => 'required|string|max:500'
+    ]);
+
+    $product = \App\Models\Product::findOrFail($id);
+
+    $review = $product->reviews()->create([
+        'user_id' => $request->user()->id,
+        'rating' => $request->rating,
+        'comment' => $request->comment,
+    ]);
+
+    // Devolvemos el comentario recién creado con los datos del usuario para que Vue lo pinte al instante
+    return response()->json($review->load('user'));
+});
+
+// 3. Borrar un comentario (Protegido por Token y Rol)
+Route::middleware('auth:sanctum')->delete('/reviews/{id}', function (Request $request, $id) {
+    // Solo dejamos borrar si tiene permiso de 'moderate' (que lo pusimos para Admin y Editor)
+    if (!$request->user()->hasRole('admin') && !$request->user()->hasRole('editor')) {
+        return response()->json(['message' => 'No tienes permiso para borrar comentarios'], 403);
+    }
+
+    \App\Models\Review::destroy($id);
+    return response()->json(['message' => 'Comentario borrado correctamente']);
 });

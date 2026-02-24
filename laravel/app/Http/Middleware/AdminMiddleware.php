@@ -4,23 +4,33 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Usamos Auth::check() y Auth::user() en lugar de auth()->...
-        if (Auth::check() && Auth::user()->email === 'admin@glamur.com') {
-            return $next($request);
+        // 1. Verificamos si está logueado
+        if (! $request->user()) {
+            // Si es una petición API, devolvemos JSON
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json(['message' => 'No autorizado'], 401);
+            }
+            return redirect('/login');
         }
 
-        abort(403, 'Acceso denegado. Solo administradores.');
+        // 2. Verificamos si tiene el rol 'admin' en la base de datos
+        if (! $request->user()->hasRole('admin')) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return response()->json(['message' => 'Acceso denegado. Se requiere rol de administrador.'], 403);
+            }
+            // En web normal, daría error 403
+            abort(403, 'Acceso denegado');
+        }
+
+        return $next($request);
     }
 }
