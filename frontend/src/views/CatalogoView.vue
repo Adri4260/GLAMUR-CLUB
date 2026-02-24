@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import http from '@/services/http'
+import http from '../services/http'
 
 const products = ref([])
 const loading = ref(true)
