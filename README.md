@@ -6,134 +6,109 @@
 **GLAMUR CLUB** és un e-commerce exclusiu dedicat a la venda de **perfums i productes de bellesa i higiene**.
 El lloc destaca per la seva funcionalitat innovadora: la possibilitat de **crear el teu propi perfum personalitzat**, combinant aromes segons els gustos de l’usuari o mitjançant suggeriments basats en **Intel·ligència Artificial**.
 
-Aquest projecte forma part de la **Iteració 1: Entorn, escaparate i contacte**, desenvolupat dins del curs **DAW 2n – CIPFP Batoi**.
+Aquesta rama forma part de la **Iteració 4: Client SPA amb Vue i control de rols**, desenvolupat dins del curs **DAW 2n – CIPFP Batoi**.
 
-### 👨‍💻 Equip de Desenvolupament
-| Membre | Rol | Contacte |
-| :--- | :--- | :--- |
-| **Adrián Becerra Pérez** | Full Stack Dev & DevOps | [GitHub](https://github.com/adri4260) |
-| **Jose Juan Alemany Márquez** | Full Stack Dev & UX/UI | [GitHub](https://github.com/Pepe1109) |
+## 👥 Equipo de Desarrollo
+* **Pepe** 🧑‍💻
+* **Adri** 👨‍💻 
 
----
-
-## 🧠 Metodologia de treball
-
-El desenvolupament segueix pràctiques d'integració contínua i treball col·laboratiu:
-
-* **Control de versions:** Git + GitHub.
-* **Flux de treball:** Estructura basada en **feature branches** (una branca per funcionalitat).
-* **Qualitat:** Revisió de codi (Code Review) abans de fusionar a la branca principal.
-* **Planificació:** Organització mitjançant tauler Kanban i seguiment temporal amb diagrames de Gantt.
+## 📊 Planificación y Seguimiento
+Para visualizar la organización temporal y la asignación de tareas de esta fase, puedes consultar nuestros paneles de seguimiento:
+* 📅 **[Ver Diagrama de Gantt del Sprint 4](#(https://github.com/Adri4260/GLAMUR-CLUB/blob/sprint4/ganttSprint4.gan))**
+* 📋 **[Ver Tablero Kanban del Sprint 4](#(https://github.com/users/Adri4260/projects/8))**
 
 ---
 
-## 🚀 Funcionalitats Implementades (Sprints)
+## 🎯 Objetivos y Funcionalidades del Sprint
 
-El projecte s'ha estructurat seguint les fites del client (C1-C5):
+### ⚡ C1. Interfaz de usuario avanzada con Vue.js
+Hemos migrado nuestro frontend clásico (HTML/Vanilla JS) a un proyecto moderno impulsado por **Vite** y **Vue 3**.
+* **SPA y Enrutamiento:** Implementación de navegación dinámica sin recargas completas de página utilizando `vue-router`.
+* **Modularidad:** Refactorización de la interfaz en componentes reutilizables (`Navbar.vue`, `ProductCard.vue`, `Footer.vue`).
+* **Conectividad:** Sustitución de llamadas estáticas por peticiones dinámicas a la API REST mediante `Axios`.
 
-### 🧩 C1. Importació de Dades (Excel → JSON)
-Sistema automatitzat per poblar el catàleg de productes.
-- **Flux:** Càrrega de fitxer `.xlsx` o `.csv` → Processament amb `PhpSpreadsheet` → Conversió a JSON → Enviament a `JSON Server`.
-- **Objectiu:** Evitar la introducció manual de productes.
+### 🔐 C2. Integración de la autenticación mediante API
+El sistema de autenticación de sesiones web tradicional se ha transformado en un sistema robusto mediante tokens.
+* **Backend:** Configuración de **Laravel Sanctum** para gestionar el login/logout y emitir tokens API (`Bearer token`).
+* **Gestión de Estado:** Integración de **Pinia** en el frontend (`authStore`) para almacenar de forma persistente el usuario y el token (`localStorage`).
+* **Interceptors:** Configuración global de *Axios* para inyectar el token en las cabeceras de cada petición y desloguear automáticamente al usuario si la API devuelve un error `401 Unauthorized`.
+* **Router Guards:** Protección de rutas privadas en Vue para redirigir al login a usuarios no autenticados.
 
-### 👥 C2. Sistema d'Autenticació (Auth)
-Gestió completa d'usuaris utilitzant JSON Server com a persistència.
-- **Funcions:** Registre, Login (sessions PHP + Cookies), i edició de Perfil.
-- **Seguretat:** Hash de contrasenyes amb `bcrypt` i validació de duplicats.
-
-### 💬 C3. Social: Comentaris i Valoracions
-Interacció dinàmica en temps real mitjançant **AJAX / Fetch API**.
-- **Features:** Valoracions (1-5 estrelles), "M'agrada" i comentaris d'usuaris.
-- **Dinamisme:** Actualització de la interfície sense recarrega de pàgina.
-
-### ☁️ C4. Infraestructura i Desplegament (AWS)
-Arquitectura al núvol robusta i segura per a producció.
-- **Servidors:** Apache (HTTP/S) amb Virtual Hosts separats (`app` i `backup`).
-- **Seguretat:** Certificats SSL/TLS, usuaris aïllats, i restriccions FTP.
-- **Backups:** Script automatitzat nocturn per a còpies de seguretat remotes.
-
-### 🧭 C5. UX/UI i Frontend Modern
-Disseny centrat en l'usuari amb **Vite** i CSS modern ("Dark Emerald Theme").
-- **Components:** Cercador, Filtres per categoria, Carret visible, i "Hero" animat.
-- **Responsive:** Adaptació total a dispositius mòbils.
+### 👥 C3. Gestión de roles de usuario y permisos
+Implementación de un sistema RBAC (Control de Acceso Basado en Roles) granular tanto del lado del cliente como del servidor.
+* **Roles soportados:** `Admin` (control total), `Vendor` (gestión de sus productos), `Editor` (moderación de valoraciones) y `User` (acceso básico).
+* **Protección Backend:** Creación de migraciones de roles (`roles`, `role_user`) y uso de *Middlewares* / *Policies* en Laravel para denegar accesos no permitidos (`403 Forbidden`).
+* **Control Visual Frontend:** Creación del *composable* `useRole.js` en Vue, permitiendo ocultar botones o menús mediante directivas (`v-if="can('delete')"`) según el rol del usuario activo.
 
 ---
 
-## 🛠️ Stack Tecnològic
+## 🛠️ Tecnologías y Herramientas
 
-### 🖥️ Entorn Client (Frontend)
-- **Core:** HTML5, CSS3, JavaScript, PHP (ES6 Modules).
-- **Build Tool:** [Vite](https://vitejs.dev/) per a un entorn de desenvolupament ràpid.
-- **Estils:** CSS natiu amb variables (Custom Properties).
+**Frontend:**
+* Vue.js 3 (Composition API)
+* Vite (Bundler)
+* Vue Router (Navegación)
+* Pinia (State Management)
+* Axios (HTTP Client)
 
-### 🐳 Entorn Servidor (Backend & DevOps)
-- **Containerització:** Docker & Docker Compose.
-- **Llenguatge:** PHP 8.3 (FPM).
-- **Base de Dades (Simulada):** JSON Server (Node.js).
-- **Dependències:** Composer (`phpoffice/phpspreadsheet`).
-
----
-
-## 🗂️ Gestió del Projecte
-
-Seguiment de tasques i planificació temporal:
-
-| Recurs | Enllaç / Arxiu | Descripció |
-| :--- | :--- | :--- |
-| **Kanban Board** | [🔗 Veure Tauler de Projecte](https://github.com/users/adri4260/projects/5) | *Estat de les tasques (To Do, In Progress, Done)* |
-| **Gantt Sprint 1** | `ganttSprint1.gan` | *Planificació inicial i setup* |
-| **Gantt Sprint 2** | `ganttSprint2.gan` | *Autenticació i funcionalitats core* |
+**Backend:**
+* PHP 8 / Laravel 11
+* Laravel Sanctum (Token Auth)
+* MySQL (Base de Datos)
+* Docker y Sail (Entorno de despliegue)
 
 ---
 
-## ☁️ Infraestructura AWS (Adrián)
+## 🚀 Guía de Instalación y Despliegue en Desarrollo
 
-Detalls del desplegament al núvol per a la correcció i accés:
+Dado que el proyecto ahora tiene una clara separación entre cliente y servidor, es necesario levantar ambos entornos de forma independiente:
 
-| Servei | Detall / URL |
-| :--- | :--- |
-| **Compte AWS** | **[Compte d'Adrián]** |
-| **Domini Principal** | `https://app.glamurclub.es` |
-| **Domini Backups** | `https://backup.glamurclub.es` |
-| **Domini Test** | `https://test.glamurclub.es` |
-| **Accés SSH** | Usuari: `ubuntu` (Claus públiques autoritzades) |
-| **IP elástica** | 98.95.115.229 |
-| **Llançar json** | npx json-server --watch /home/usuariElegit/ftp/www/Web/vite-project/public/data/datos.json --port 3000 |
-| **FTP** | Port 21 (Mode passiu 30000-30050) |
+### 1. Despliegue del Backend (Laravel API)
 
-> **Nota:** L'accés als backups està protegit per `mod_auth` (Usuari: profe / Contrasenya: 1234).
-
----
-
-## ⚠️ Prevenció de riscos laborals i seguretat
-
-Pla de prevenció per garantir la salut de l'equip i la seguretat del projecte.
-
-### 👩‍💻 Riscos laborals del personal
-
-| **Tipus de risc** | **Descripció** | **Mesures preventives** |
-|--------------------|----------------|---------------------------|
-| 🖥️ **Fatiga visual** | Exposició prolongada a pantalles. | 🔹 Pauses visuals cada 60 min.<br>🔹 Mode fosc a l'IDE i web.<br>🔹 Filtres de llum blava. |
-| 💺 **Ergonomia** | Postura inadequada o mobiliari no ergonòmic. | 🔹 Cadires ergonòmiques.<br>🔹 Estiraments periòdics.<br>🔹 Ajust d'altura de monitors. |
-| ⏱️ **Estrès** | Compliment de terminis ajustats (Sprints). | 🔹 Metodologia Agile/Kanban.<br>🔹 Planificació realista.<br>🔹 Pauses regulars. |
-| 🧠 **Psicosocial** | Aïllament en treball remot. | 🔹 Reunions periòdiques (Dailies).<br>🔹 Suport emocional i tècnic. |
-
-### 🏢 Riscos de l’empresa i del projecte
-
-| **Tipus de risc** | **Descripció** | **Mesures preventives** |
-|--------------------|----------------|---------------------------|
-| 🔒 **Seguretat digital** | Accés no autoritzat a dades. | 🔹 Contrasenyes segures (bcrypt).<br>🔹 Repositoris privats.<br>🔹 HTTPS i SSH sense root. |
-| ☁️ **Pèrdua de dades** | Fallada del servidor o errors de desplegament. | 🔹 **Backups nocturns automatitzats** a host remot.<br>🔹 Entorn de proves separat. |
-| 🪪 **RGPD/LOPD** | Gestió de dades personals. | 🔹 Polítiques de privacitat clares.<br>🔹 Informació sobre l'ús de cookies. |
-| 💰 **Tecnològic** | Fallada d'eines externes (Docker, GitHub). | 🔹 Alternatives documentades.<br>🔹 Manteniment de dependències al dia. |
-
----
-
-## ⚙️ Instal·lació Local
-
-Per aixecar el projecte en local:
-
-1. **Clonar el repositori:**
+1. Entra en el directorio del backend:
    ```bash
-   git clone [https://github.com/adri4260/glamur-club.git](https://github.com/adri4260/glamur-club.git)
-   cd glamur-club
+   cd laravel
+   ```
+
+2. Instala las dependencias de Composer:
+   ```bash
+   composer install
+   ```
+
+3. Prepara tu archivo de entorno y la clave de la app:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. Levanta el entorno con Docker (Sail):
+   ```bash
+   ./vendor/bin/sail up -d
+   ```
+
+5. Ejecuta las migraciones y puebla la base de datos (vital para cargar los nuevos roles y usuarios de prueba):
+   ```bash
+   ./vendor/bin/sail artisan migrate:fresh --seed
+   ```
+
+### 2. Despliegue del Frontend (Vue SPA)
+
+1. Navega al directorio raíz del nuevo cliente web:
+   ```bash
+   cd frontend
+   ```
+
+2. Instala las dependencias de Node:
+   ```bash
+   npm install
+   ```
+
+3. Ejecuta el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+
+4. Accede a la aplicación desde tu navegador, generalmente en `http://localhost:5173`.
+
+---
+*Glamur Club - Proyecto Intermodular desarrollado por Pepe y Adri.*
