@@ -14,8 +14,8 @@ Aquesta rama forma part de la **Iteració 4: Client SPA amb Vue i control de rol
 
 ## 📊 Planificación y Seguimiento
 Para visualizar la organización temporal y la asignación de tareas de esta fase, puedes consultar nuestros paneles de seguimiento:
-* 📅 **[Ver Diagrama de Gantt del Sprint 4](#(https://github.com/Adri4260/GLAMUR-CLUB/blob/sprint4/ganttSprint4.gan))**
-* 📋 **[Ver Tablero Kanban del Sprint 4](#(https://github.com/users/Adri4260/projects/8))**
+* 📅 **[Ver Diagrama de Gantt del Sprint 4](https://github.com/Adri4260/GLAMUR-CLUB/blob/sprint4/ganttSprint4.gan)**
+* 📋 **[Ver Tablero Kanban del Sprint 4](https://github.com/users/Adri4260/projects/8)**
 
 ---
 
