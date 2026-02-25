@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use OpenApi\Attributes as OA;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
@@ -11,6 +12,7 @@ class ProductController extends Controller
     // --- PARTE PÚBLICA ---
 
     // 1. Catálogo General
+
     public function index()
     {
         $products = Product::all();
@@ -29,10 +31,45 @@ class ProductController extends Controller
     }
 
     // --- PARTE API (Para los JS) ---
+
+    #[OA\Get(
+        path: "/api/products",
+        operationId: "getProducts",
+        tags: ["Catálogo"],
+        summary: "Obtener todos los productos",
+        description: "Devuelve una lista de productos",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Lista de productos obtenida correctamente"
+            )
+        ]
+    )]
     public function apiIndex()
     {
         return ProductResource::collection(Product::all());
     }
+
+    #[OA\Get(
+        path: "/api/products/{id}",
+        operationId: "getProductById",
+        tags: ["Catálogo"],
+        summary: "Obtener un producto por ID",
+        description: "Devuelve los detalles de un producto específico.",
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                in: "path",
+                required: true,
+                description: "ID del producto",
+                schema: new OA\Schema(type: "integer")
+            )
+        ],
+        responses: [
+            new OA\Response(response: 200, description: "Operación exitosa"),
+            new OA\Response(response: 404, description: "Producto no encontrado")
+        ]
+    )]
     public function show($id)
     {
         $product = Product::find($id);
