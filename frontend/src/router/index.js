@@ -2,28 +2,28 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../modules/auth/store";
 import CatalogoView from "../views/CatalogoView.vue";
 import LoginView from "../modules/auth/views/LoginView.vue";
-import AdminView from "../views/AdminView.vue"; // Importamos la vista
+import AdminView from "../views/AdminView.vue";
 import DetalleView from "../views/DetalleView.vue";
+import HomeView from "../views/HomeView.vue";
+import SostenibilidadView from "../views/SostenibilidadView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: "/",
-      name: "catalogo",
-      component: CatalogoView,
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: LoginView,
-    },
+    { path: "/", name: "home", component: HomeView }, // <-- La raíz ahora es Home
+    { path: "/catalogo", name: "catalogo", component: CatalogoView }, // <-- Nueva ruta
+    { path: "/login", name: "login", component: LoginView },
     { path: "/producto/:id", name: "producto-detalle", component: DetalleView },
     {
       path: "/admin",
       name: "admin",
       component: AdminView,
-      meta: { requiresAuth: true, role: "admin" }, // <--- ETIQUETA DE SEGURIDAD
+      meta: { requiresAuth: true, role: "admin" },
+    },
+    {
+      path: "/sostenibilidad",
+      name: "sostenibilidad",
+      component: SostenibilidadView,
     },
   ],
 });

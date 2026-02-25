@@ -97,6 +97,21 @@
                 }
             }
         },
+        "/api/products/featured": {
+            "get": {
+                "tags": [
+                    "Catálogo"
+                ],
+                "summary": "Obtener productos destacados (Inteligencia)",
+                "description": "Devuelve una recomendación inteligente de los 4 productos más Premium (mayor precio) que actualmente tienen stock.",
+                "operationId": "getFeaturedProducts",
+                "responses": {
+                    "200": {
+                        "description": "Operación exitosa"
+                    }
+                }
+            }
+        },
         "/api/products/{id}": {
             "get": {
                 "tags": [

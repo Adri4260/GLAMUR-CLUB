@@ -7,12 +7,16 @@ use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
+use App\Models\Role; // Importado para evitar errores al asignar roles
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user()->load('roles'); // <--- AÑADE ESTO
+    return $request->user()->load('roles');
 });
 
 Route::get('/products', [ProductController::class, 'apiIndex']);
+Route::get('/products/featured', [ProductController::class, 'featured']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/reviews/{product_id}', [ReviewController::class, 'index']);
 
@@ -32,13 +36,8 @@ Route::post('/login', function (Request $request) {
         return response()->json(['message' => 'Credenciales incorrectas'], 401);
     }
 
-    // Borramos tokens anteriores por seguridad
     $user->tokens()->delete();
-
-    // Generamos el nuevo Token
     $token = $user->createToken('spa-token')->plainTextToken;
-
-    // Cargamos los roles del usuario para enviarlos a Vue
     $user->load('roles');
 
     return response()->json([
@@ -54,12 +53,10 @@ Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
 
 // --- RUTAS DE DETALLE Y COMENTARIOS (SPA) ---
 
-// 1. Ver un producto individual y cargar sus comentarios con el nombre del usuario
 Route::get('/products/{id}', function ($id) {
     return \App\Models\Product::with('reviews.user')->findOrFail($id);
 });
 
-// 2. Crear un comentario (Protegido por Token)
 Route::middleware('auth:sanctum')->post('/products/{id}/reviews', function (Request $request, $id) {
     $request->validate([
         'rating' => 'required|integer|min:1|max:5',
@@ -74,17 +71,54 @@ Route::middleware('auth:sanctum')->post('/products/{id}/reviews', function (Requ
         'comment' => $request->comment,
     ]);
 
-    // Devolvemos el comentario recién creado con los datos del usuario para que Vue lo pinte al instante
     return response()->json($review->load('user'));
 });
 
-// 3. Borrar un comentario (Protegido por Token y Rol)
 Route::middleware('auth:sanctum')->delete('/reviews/{id}', function (Request $request, $id) {
-    // Solo dejamos borrar si tiene permiso de 'moderate' (que lo pusimos para Admin y Editor)
     if (!$request->user()->hasRole('admin') && !$request->user()->hasRole('editor')) {
         return response()->json(['message' => 'No tienes permiso para borrar comentarios'], 403);
     }
 
     \App\Models\Review::destroy($id);
     return response()->json(['message' => 'Comentario borrado correctamente']);
+});
+
+// --- RUTAS OAUTH2 (GOOGLE) ---
+
+Route::get('/oauth/google/redirect', function () {
+    /** @var \Laravel\Socialite\Two\GoogleProvider $driver */
+    $driver = Socialite::driver('google');
+    return response()->json([
+        'url' => $driver->stateless()->redirect()->getTargetUrl()
+    ]);
+});
+
+Route::get('/oauth/google/callback', function () {
+    try {
+        /** @var \Laravel\Socialite\Two\GoogleProvider $driver */
+        $driver = Socialite::driver('google');
+        $googleUser = $driver->stateless()->user();
+
+        $user = User::updateOrCreate(
+            ['email' => $googleUser->getEmail()],
+            [
+                'name' => $googleUser->getName(),
+                'google_id' => $googleUser->getId(),
+                'password' => Hash::make(Str::random(16))
+            ]
+        );
+
+        if ($user->wasRecentlyCreated) {
+            $userRole = Role::where('name', 'user')->first();
+            if ($userRole) {
+                $user->roles()->attach($userRole);
+            }
+        }
+
+        $token = $user->createToken('spa-token')->plainTextToken;
+
+        return redirect('http://localhost:5173/login?token=' . $token);
+    } catch (\Exception $e) {
+        return redirect('http://localhost:5173/login?error=oauth_failed');
+    }
 });

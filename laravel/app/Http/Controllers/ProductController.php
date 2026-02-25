@@ -51,6 +51,27 @@ class ProductController extends Controller
     }
 
     #[OA\Get(
+        path: "/api/products/featured",
+        operationId: "getFeaturedProducts",
+        tags: ["Catálogo"],
+        summary: "Obtener productos destacados (Inteligencia)",
+        description: "Devuelve una recomendación inteligente de los 4 productos más Premium (mayor precio) que actualmente tienen stock.",
+        responses: [
+            new OA\Response(response: 200, description: "Operación exitosa")
+        ]
+    )]
+    public function featured()
+    {
+        // Lógica "Inteligente": filtramos por stock, ordenamos por precio descendente y cogemos 4
+        $featured = Product::where('stock', '>', 0)
+            ->orderBy('price', 'desc')
+            ->take(4)
+            ->get();
+
+        return ProductResource::collection($featured);
+    }
+
+    #[OA\Get(
         path: "/api/products/{id}",
         operationId: "getProductById",
         tags: ["Catálogo"],
@@ -76,6 +97,7 @@ class ProductController extends Controller
         if (!$product) return response()->json(['message' => 'No encontrado'], 404);
         return new ProductResource($product);
     }
+
 
     // --- PARTE ADMIN ---
     public function adminIndex()
