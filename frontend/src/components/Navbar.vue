@@ -3,7 +3,7 @@
 
 <template>
 
-    <nav class="glamur-navbar navbar navbar-expand-lg">
+  <nav class="glamur-navbar navbar navbar-expand-lg">
 
     <div class="container">
 
@@ -245,6 +245,29 @@
 .admin-link:hover::after {
 
   width: 100%;
+}
+
+/* =========================
+   ACTIVE ROUTE
+========================= */
+
+.router-link-active.glamur-link {
+
+  color: #27e0a3 !important;
+
+  font-weight: 700;
+}
+
+.router-link-active.admin-link {
+
+  color: #ff8ea1 !important;
+
+  font-weight: 700;
+}
+
+.router-link-active::after {
+
+  width: 100% !important;
 }
 
 /* =========================
