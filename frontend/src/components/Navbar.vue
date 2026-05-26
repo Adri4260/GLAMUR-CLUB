@@ -1,64 +1,379 @@
 <script setup>
-import { ref } from 'vue'
-import { useAuthStore } from '../modules/auth/store.js'
-import { useRouter } from 'vue-router'
-import RoleBadge from '../modules/roles/components/RoleBadge.vue'
-
-const isMenuOpen = ref(false)
-const authStore = useAuthStore()
-const router = useRouter()
-
-const toggleMenu = () => {
-    isMenuOpen.value = !isMenuOpen.value
-}
-
-const handleLogout = async () => {
-    await authStore.logout()
-    isMenuOpen.value = false
-    router.push('/login')
-}
 </script>
 
 <template>
-    <nav class="navbar shadow-sm">
-        <div class="container">
-            <div class="nav-content d-flex justify-content-between align-items-center w-100 py-3">
 
-                <router-link to="/" class="logo text-decoration-none fw-bold fs-4"
-                    style="font-family: 'Playfair Display', serif; color: var(--text-primary);"
-                    @click="isMenuOpen = false">
-                    GLAMUR CLUB
-                </router-link>
+    <nav class="glamur-navbar navbar navbar-expand-lg">
 
-                <div class="nav-links d-none d-md-flex gap-4">
-                    <router-link to="/" class="text-decoration-none text-muted fw-bold">Inicio</router-link>
-                    <router-link to="/catalogo" class="text-decoration-none text-muted fw-bold">Catálogo</router-link>
+    <div class="container">
 
-                    <router-link v-if="authStore.isAdmin" to="/admin"
-                        class="text-decoration-none text-danger fw-bold">Gestión (Admin)</router-link>
-                </div>
+      <!-- BRAND -->
+      <router-link
+        to="/"
+        class="navbar-brand d-flex align-items-center gap-3"
+      >
 
-                <div class="nav-actions d-flex align-items-center gap-3">
-
-                    <div v-if="authStore.isAuthenticated" class="dropdown">
-                        <button class="btn btn-outline-dark btn-sm dropdown-toggle d-flex align-items-center"
-                            type="button" data-bs-toggle="dropdown">
-                            Hola, {{ authStore.user?.name || 'Usuario' }}
-                            <RoleBadge />
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                            <li><a class="dropdown-item text-danger" href="#" @click.prevent="handleLogout">Cerrar
-                                    Sesión</a></li>
-                        </ul>
-                    </div>
-
-                    <router-link v-else to="/login" class="btn btn-sm fw-bold px-3"
-                        style="background: var(--color-primary); color: #000;">
-                        Entrar
-                    </router-link>
-
-                </div>
-            </div>
+        <div class="brand-icon">
+          GC
         </div>
-    </nav>
+
+        <span class="brand-text">
+          GLAMUR <span>CLUB</span>
+        </span>
+
+      </router-link>
+
+      <!-- MOBILE -->
+      <button
+        class="navbar-toggler custom-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- CONTENT -->
+      <div
+        class="collapse navbar-collapse"
+        id="navbarContent"
+      >
+
+        <!-- LINKS -->
+        <ul class="navbar-nav mx-auto gap-lg-4">
+
+          <li class="nav-item">
+            <router-link
+              to="/"
+              class="nav-link glamur-link"
+            >
+              Inicio
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <router-link
+              to="/catalogo"
+              class="nav-link glamur-link"
+            >
+              Catálogo
+            </router-link>
+          </li>
+
+          <li class="nav-item">
+            <router-link
+              to="/admin"
+              class="nav-link admin-link"
+            >
+              Gestión Admin
+            </router-link>
+          </li>
+
+        </ul>
+
+        <!-- USER -->
+        <div class="navbar-actions">
+
+          <div class="user-pill">
+
+            <span class="user-greeting">
+              Hola, Admin
+            </span>
+
+            <span class="admin-badge">
+              ADMIN
+            </span>
+
+          </div>
+
+          <button class="btn-logout">
+            Salir
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </nav>
+
 </template>
+
+<style scoped>
+
+/* =========================
+   NAVBAR BASE
+========================= */
+
+.glamur-navbar {
+
+  background:
+    rgba(7, 21, 15, 0.88);
+
+  backdrop-filter: blur(18px);
+
+  border-bottom:
+    1px solid rgba(212, 175, 55, 0.12);
+
+  padding:
+    0.75rem 0;
+
+  z-index: 1000;
+}
+
+/* =========================
+   BRAND
+========================= */
+
+.navbar-brand {
+
+  text-decoration: none;
+}
+
+.brand-icon {
+
+  width: 44px;
+  height: 44px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d4af37,
+      #f3dc87
+    );
+
+  color: #07150f;
+
+  font-weight: 700;
+
+  font-size: 0.95rem;
+
+  box-shadow:
+    0 8px 20px rgba(212, 175, 55, 0.18);
+}
+
+.brand-text {
+
+  font-family:
+    'Playfair Display',
+    serif;
+
+  font-size: 1.75rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  color: #f5f1e8;
+}
+
+.brand-text span {
+  color: #d4af37;
+}
+
+/* =========================
+   LINKS
+========================= */
+
+.glamur-link,
+.admin-link {
+
+  font-weight: 500;
+
+  transition:
+    all 0.25s ease;
+
+  position: relative;
+}
+
+.glamur-link {
+
+  color: #d7e3db;
+}
+
+.glamur-link:hover {
+
+  color: #27e0a3;
+}
+
+.admin-link {
+
+  color: #ff6f85;
+
+  font-weight: 600;
+}
+
+.admin-link:hover {
+
+  color: #ff9dad;
+}
+
+.glamur-link::after,
+.admin-link::after {
+
+  content: '';
+
+  position: absolute;
+
+  left: 0;
+  bottom: -4px;
+
+  width: 0;
+  height: 2px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #27e0a3,
+      #d4af37
+    );
+
+  transition:
+    width 0.3s ease;
+}
+
+.glamur-link:hover::after,
+.admin-link:hover::after {
+
+  width: 100%;
+}
+
+/* =========================
+   RIGHT
+========================= */
+
+.navbar-actions {
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-pill {
+
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  padding:
+    0.55rem 1rem;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,0.04);
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+}
+
+.user-greeting {
+
+  color: #d8e3dc;
+
+  font-size: 0.9rem;
+}
+
+.admin-badge {
+
+  background: #ff647c;
+
+  color: white;
+
+  padding:
+    0.25rem 0.65rem;
+
+  border-radius: 999px;
+
+  font-size: 0.72rem;
+
+  font-weight: 700;
+}
+
+.btn-logout {
+
+  border: none;
+
+  padding:
+    0.7rem 1.25rem;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #27e0a3,
+      #1fc98f
+    );
+
+  color: #07150f;
+
+  font-weight: 600;
+
+  transition:
+    all 0.3s ease;
+}
+
+.btn-logout:hover {
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(39, 224, 163, 0.22);
+}
+
+/* =========================
+   TOGGLER
+========================= */
+
+.custom-toggler {
+
+  border:
+    1px solid rgba(212, 175, 55, 0.2);
+
+  background:
+    rgba(255,255,255,0.03);
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 991px) {
+
+  .navbar-collapse {
+
+    padding-top: 1.2rem;
+  }
+
+  .navbar-actions {
+
+    margin-top: 1rem;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .brand-text {
+
+    font-size: 1.4rem;
+  }
+
+}
+
+</style>

@@ -1,29 +1,61 @@
 <script setup>
-import { onMounted } from 'vue'
-import { useAuthStore } from './modules/auth/store'
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
-
-const authStore = useAuthStore()
-
-// Cuando la app arranca, comprobamos si el token guardado sigue siendo válido
-onMounted(() => {
-  authStore.fetchUser()
-})
 </script>
 
 <template>
-  <div class="d-flex flex-column min-vh-100">
+  <div class="app-layout">
+
     <Navbar />
 
-    <main class="flex-grow-1 container py-5">
-      <router-view></router-view>
+    <main class="main-content">
+      <router-view />
     </main>
 
     <Footer />
+
   </div>
 </template>
 
 <style>
-/* Estilos globales si son necesarios */
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+
+  background:
+    linear-gradient(
+      180deg,
+      #101514 0%,
+      #151b19 100%
+    );
+
+  color: white;
+
+  font-family:
+    'Inter',
+    sans-serif;
+}
+
+.app-layout {
+
+  min-height: 100vh;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.main-content {
+
+  flex: 1;
+
+  padding-top: 20px;
+}
+
 </style>
