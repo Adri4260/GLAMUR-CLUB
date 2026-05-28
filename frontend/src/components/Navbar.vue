@@ -1,4 +1,14 @@
 <script setup>
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '../modules/auth/store.js'; // Ajusta esta ruta si es diferente en tu proyecto
+
+const router = useRouter();
+const authStore = useAuthStore();
+
+const handleLogout = async () => {
+  await authStore.logout();
+  router.push('/login'); // O redírigelo a '/' si prefieres que vaya a Inicio al salir
+};
 </script>
 
 <template>
@@ -7,7 +17,6 @@
 
     <div class="container">
 
-      <!-- BRAND -->
       <router-link
         to="/"
         class="navbar-brand d-flex align-items-center gap-3"
@@ -23,7 +32,6 @@
 
       </router-link>
 
-      <!-- MOBILE -->
       <button
         class="navbar-toggler custom-toggler"
         type="button"
@@ -33,13 +41,11 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!-- CONTENT -->
       <div
         class="collapse navbar-collapse"
         id="navbarContent"
       >
 
-        <!-- LINKS -->
         <ul class="navbar-nav mx-auto gap-lg-4">
 
           <li class="nav-item">
@@ -60,7 +66,7 @@
             </router-link>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item" v-if="authStore.isAdmin">
             <router-link
               to="/admin"
               class="nav-link admin-link"
@@ -71,24 +77,31 @@
 
         </ul>
 
-        <!-- USER -->
         <div class="navbar-actions">
 
-          <div class="user-pill">
+          <template v-if="authStore.isAuthenticated">
+            <div class="user-pill">
 
-            <span class="user-greeting">
-              Hola, Admin
-            </span>
+              <span class="user-greeting">
+                Hola, {{ authStore.user?.name || 'Usuario' }}
+              </span>
 
-            <span class="admin-badge">
-              ADMIN
-            </span>
+              <span class="admin-badge" v-if="authStore.isAdmin">
+                ADMIN
+              </span>
 
-          </div>
+            </div>
 
-          <button class="btn-logout">
-            Salir
-          </button>
+            <button class="btn-logout" @click="handleLogout">
+              Salir
+            </button>
+          </template>
+
+          <template v-else>
+            <router-link to="/login" class="btn-logout" style="text-decoration: none; display: inline-block; text-align: center;">
+              Iniciar Sesión
+            </router-link>
+          </template>
 
         </div>
 
