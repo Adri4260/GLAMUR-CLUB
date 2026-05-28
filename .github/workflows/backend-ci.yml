@@ -1,0 +1,46 @@
+name: Backend CI/CD (Laravel)
+
+# S'executa només si hi ha canvis a la carpeta laravel/
+on:
+  push:
+    branches: ["main", "sprint5-6"]
+    paths:
+      - "laravel/**"
+
+jobs:
+  test_and_deploy:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./laravel
+
+    steps:
+      - name: Baixar el codi
+        uses: actions/checkout@v3
+
+      - name: Configurar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, zip
+          coverage: none
+
+      - name: Preparar .env de test
+        run: cp .env.example .env
+
+      - name: Instal·lar dependències (Composer)
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Generar clau d'aplicació
+        run: php artisan key:generate
+
+      - name: Executar Tests (PHPUnit / Pest)
+        run: php artisan test --env=testing
+
+      - name: Desplegament Automàtic i Migracions (Simulació)
+        run: |
+          echo "Connectant al servidor de producció (AWS EC2)..."
+          echo "Baixant l'última versió del codi..."
+          echo "Executant migracions obligatòries a Producció: php artisan migrate --force"
+          echo "Desplegament del Backend completat amb èxit! 🚀"

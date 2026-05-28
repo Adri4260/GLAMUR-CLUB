@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Glamur Club - Sprints 5 i 6" company="IES" webLink="" view-date="2026-05-10" view-index="0" gantt-divider-location="450" resource-divider-location="300" version="3.2.3200" locale="es_ES">
+    <description><![CDATA[Planificació dels últims Sprints del Projecte Intermodular (C1 a C8).]]></description>
+    <view zooming-state="default:3" id="gantt-chart">
+        <field id="tpd3" name="Nom" width="250" order="0"/>
+        <field id="tpd4" name="Data d'inici" width="100" order="1"/>
+        <field id="tpd5" name="Data de fi" width="100" order="2"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Nom" width="210" order="0"/>
+        <field id="1" name="Funció" width="86" order="1"/>
+    </view>
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        
+        <task id="0" name="SPRINT 5: Integracions i Vue Avançat" color="#8cb6ce" meeting="false" start="2026-05-11" duration="11" complete="100" thirdDate="2026-05-11" thirdDate-constraint="0" expand="true">
+            <task id="1" name="C1 - Backend: Auth OAuth2 (Google)" color="#8cb6ce" meeting="false" start="2026-05-11" duration="2" complete="100" thirdDate="2026-05-11" thirdDate-constraint="0" expand="true">
+                <depend id="2" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="2" name="C1 - Frontend: Botó i Lògica Google" color="#8cb6ce" meeting="false" start="2026-05-13" duration="1" complete="100" thirdDate="2026-05-11" thirdDate-constraint="0" expand="true">
+                <depend id="3" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="3" name="C2 - Documentació Swagger (OpenAPI)" color="#8cb6ce" meeting="false" start="2026-05-14" duration="2" complete="100" thirdDate="2026-05-11" thirdDate-constraint="0" expand="true">
+                <depend id="4" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="4" name="C3 - Frontend: Vee-Validate i Yup" color="#8cb6ce" meeting="false" start="2026-05-18" duration="1" complete="100" thirdDate="2026-05-11" thirdDate-constraint="0" expand="true">
+                <depend id="5" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="5" name="C3 - Frontend: Cercador i Watchers" color="#8cb6ce" meeting="false" start="2026-05-19" duration="2" complete="100" thirdDate="2026-05-11" thirdDate-constraint="0" expand="true">
+                <depend id="6" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="6" name="C5 - Backend: Endpoint Destacats (IA)" color="#8cb6ce" meeting="false" start="2026-05-21" duration="1" complete="100" thirdDate="2026-05-11" thirdDate-constraint="0" expand="true">
+                <depend id="7" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="7" name="C5 - Frontend: Integració HomeView" color="#8cb6ce" meeting="false" start="2026-05-22" duration="2" complete="100" thirdDate="2026-05-11" thirdDate-constraint="0" expand="true"/>
+        </task>
+
+        <task id="8" name="SPRINT 6: Cloud, CI/CD i Lliurament" color="#0fe8a7" meeting="false" start="2026-05-26" duration="9" complete="0" thirdDate="2026-05-26" thirdDate-constraint="0" expand="true">
+            <task id="9" name="C4 - Auditoria Accessibilitat (WCAG)" color="#0fe8a7" meeting="false" start="2026-05-26" duration="1" complete="100" thirdDate="2026-05-26" thirdDate-constraint="0" expand="true">
+                <depend id="10" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="10" name="C6 - Sostenibilitat (Badge ASG i Vista)" color="#0fe8a7" meeting="false" start="2026-05-27" duration="1" complete="100" thirdDate="2026-05-26" thirdDate-constraint="0" expand="true">
+                <depend id="11" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="11" name="C7 - Dockerització (Dockerfile i Compose)" color="#0fe8a7" meeting="false" start="2026-05-28" duration="2" complete="100" thirdDate="2026-05-26" thirdDate-constraint="0" expand="true">
+                <depend id="12" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="12" name="C7 - Automatització CI/CD (GitHub Actions)" color="#0fe8a7" meeting="false" start="2026-06-01" duration="1" complete="100" thirdDate="2026-05-26" thirdDate-constraint="0" expand="true">
+                <depend id="13" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="13" name="C7 - Redacció Documentació Cloud AWS" color="#0fe8a7" meeting="false" start="2026-06-02" duration="2" complete="0" thirdDate="2026-05-26" thirdDate-constraint="0" expand="true">
+                <depend id="14" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="14" name="C8 - Manual d'Usuari i README Final" color="#0fe8a7" meeting="false" start="2026-06-04" duration="2" complete="0" thirdDate="2026-05-26" thirdDate-constraint="0" expand="true">
+                <depend id="15" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="15" name="Lliurament del Projecte (v1.0.0)" color="#ff0000" meeting="true" start="2026-06-08" duration="0" complete="0" thirdDate="2026-05-26" thirdDate-constraint="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources>
+        <resource id="0" name="Adrián (Full-Stack &amp; DevOps)" function="Default:1" contacts="" phone=""/>
+        <resource id="1" name="Pepe (Dissenyador UI/UX)" function="Default:0" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="1" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="2" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="3" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="4" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="5" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="6" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="7" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="9" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="10" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="11" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="12" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="13" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+        <allocation task-id="14" resource-id="0" function="Default:1" responsible="true" load="100.0"/>
+    </allocations>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+</project>

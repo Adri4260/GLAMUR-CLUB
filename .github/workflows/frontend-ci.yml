@@ -1,0 +1,40 @@
+name: Frontend CI/CD (Vue)
+
+# S'executa només si hi ha canvis a la carpeta frontend/
+on:
+  push:
+    branches: ["main", "sprint5-6"]
+    paths:
+      - "frontend/**"
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    # Li diem que tots els comandaments s'executin dins la carpeta frontend
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: Baixar el codi
+        uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Instal·lar dependències
+        run: npm install
+
+      - name: Executar Tests (Vitest)
+        run: npm run test
+
+      - name: Build de Producció
+        run: npm run build
+
+      - name: Desplegament Automàtic (Simulació)
+        run: |
+          echo "Desplegant la carpeta /dist al servidor de producció mitjançant SCP/FTP..."
+          echo "Desplegament del Frontend completat amb èxit! 🚀"
