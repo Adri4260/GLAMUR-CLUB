@@ -20,6 +20,12 @@ Route::get('/products/featured', [ProductController::class, 'featured']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/reviews/{product_id}', [ReviewController::class, 'index']);
 
+// --- NUEVAS RUTAS DE ADMINISTRACIÓN (EDITAR Y BORRAR PRODUCTOS) ---
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+});
+
 Route::middleware('auth:sanctum')->post('/reviews', [ReviewController::class, 'store']);
 
 // --- RUTAS DE AUTENTICACIÓN SPA ---

@@ -1,5 +1,10 @@
 <script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import RoleGuard from '../modules/roles/components/RoleGuard.vue'
+import http from '../services/http' // Importamos tu cliente HTTP
+
+const router = useRouter()
 
 const props = defineProps({
     product: {
@@ -8,23 +13,59 @@ const props = defineProps({
     }
 })
 
-const getImageUrl = (path) => {
+// Declaramos el evento que enviaremos a CatalogoView cuando se borre un producto
+const emit = defineEmits(['product-deleted'])
 
+const isDeleting = ref(false)
+
+const getImageUrl = (path) => {
     if (!path)
         return 'http://localhost:8000/img/prod1.jpg'
-
     if (path.startsWith('http'))
         return path
-
     let cleanPath =
         path
             .replace('/public/', '')
             .replace('public/', '')
-
     if (!cleanPath.startsWith('img/'))
         cleanPath = 'img/' + cleanPath
-
     return `http://localhost:8000/${cleanPath}`
+}
+
+// --- FUNCIONES DE ADMIN ---
+
+const handleEdit = () => {
+    router.push(`/admin/products/${props.product.id}/edit`);
+}
+
+const handleDelete = async () => {
+    if (confirm(`¿Estás seguro de que deseas eliminar "${props.product.name}"? Esta acción es irreversible.`)) {
+        isDeleting.value = true
+        try {
+            await http.delete(`/products/${props.product.id}`)
+            emit('product-deleted', props.product.id)
+            
+        } catch (error) {
+            // Imprimimos el error completo en consola
+            console.error("Error DETALLADO:", error.response || error);
+            
+            // Analizamos la respuesta de Laravel
+            let alertMsg = "Error desconocido.";
+            if (error.response) {
+                const status = error.response.status;
+                const serverMessage = error.response.data?.message || '';
+                
+                if (status === 404) alertMsg = `Error 404: La ruta DELETE /products/${props.product.id} no existe en api.php.`;
+                else if (status === 401 || status === 403) alertMsg = "Error 401/403: No tienes permisos o el token no es válido.";
+                else if (status === 500) alertMsg = "Error 500: Fallo en la base de datos (Probablemente el producto tenga valoraciones asociadas y no se pueda borrar).";
+                else alertMsg = `Error ${status}: ${serverMessage}`;
+            }
+            
+            alert(alertMsg);
+        } finally {
+            isDeleting.value = false
+        }
+    }
 }
 </script>
 
@@ -32,12 +73,10 @@ const getImageUrl = (path) => {
 
     <div class="card product-card h-100 position-relative">
 
-        <!-- BADGE -->
         <span class="eco-badge">
             🌱 Eco-Packaging
         </span>
 
-        <!-- IMAGE -->
         <div class="image-wrapper">
 
             <img :src="getImageUrl(product.image)" class="product-image"
@@ -45,7 +84,6 @@ const getImageUrl = (path) => {
 
         </div>
 
-        <!-- BODY -->
         <div class="card-body d-flex flex-column text-center">
 
             <span class="sku-badge">
@@ -64,7 +102,6 @@ const getImageUrl = (path) => {
                 {{ product.price }} €
             </div>
 
-            <!-- BUTTONS -->
             <div class="mt-auto d-grid gap-2">
 
                 <router-link :to="'/producto/' + product.id" class="details-btn">
@@ -75,7 +112,7 @@ const getImageUrl = (path) => {
 
                     <RoleGuard requirePermission="edit">
 
-                        <button class="edit-btn flex-fill" aria-label="Editar producto">
+                        <button class="edit-btn flex-fill" aria-label="Editar producto" @click="handleEdit">
                             ✏️ Editar
                         </button>
 
@@ -83,8 +120,9 @@ const getImageUrl = (path) => {
 
                     <RoleGuard requirePermission="delete">
 
-                        <button class="delete-btn flex-fill" aria-label="Borrar producto">
-                            🗑️ Borrar
+                        <button class="delete-btn flex-fill" aria-label="Borrar producto" @click="handleDelete" :disabled="isDeleting">
+                            <span v-if="isDeleting" class="spinner-border spinner-border-sm me-1"></span>
+                            {{ isDeleting ? 'Borrando...' : '🗑️ Borrar' }}
                         </button>
 
                     </RoleGuard>
@@ -371,10 +409,15 @@ const getImageUrl = (path) => {
     transition: all 0.3s ease;
 }
 
-.delete-btn:hover {
+.delete-btn:hover:not(:disabled) {
 
     background:
         rgba(255, 100, 124, 0.08);
+}
+
+.delete-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* =========================

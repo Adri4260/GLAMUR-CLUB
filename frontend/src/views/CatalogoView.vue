@@ -12,30 +12,20 @@ const selectedCategory = ref('')
 
 onMounted(async () => {
     try {
-
         const response = await http.get('/products')
-
         products.value = response.data.data || response.data
-
         filteredProducts.value = products.value
-
     } catch (error) {
-
         console.error("Error al cargar:", error)
-
     } finally {
-
         loading.value = false
     }
 })
 
 watch([searchQuery, selectedCategory], () => {
-
     filteredProducts.value = products.value.filter(p => {
-
         const matchesSearch =
             p.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-
             (
                 p.description &&
                 p.description.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -48,8 +38,14 @@ watch([searchQuery, selectedCategory], () => {
 
         return matchesSearch && matchesCategory
     })
-
 })
+
+// === NUEVO: FUNCIÓN PARA QUITAR EL PRODUCTO DE LA PANTALLA ===
+const handleProductDeleted = (deletedId) => {
+    // Filtramos la lista original y la lista filtrada para excluir el producto borrado
+    products.value = products.value.filter(p => p.id !== deletedId)
+    filteredProducts.value = filteredProducts.value.filter(p => p.id !== deletedId)
+}
 </script>
 
 <template>
@@ -67,8 +63,6 @@ watch([searchQuery, selectedCategory], () => {
                 </h1>
 
             </div>
-
-            <!-- SEARCH -->
 
             <div class="search-container row mb-5 mx-0">
 
@@ -120,8 +114,6 @@ watch([searchQuery, selectedCategory], () => {
 
             </div>
 
-            <!-- LOADING -->
-
             <div
                 v-if="loading"
                 class="text-center py-5"
@@ -133,8 +125,6 @@ watch([searchQuery, selectedCategory], () => {
                 ></div>
 
             </div>
-
-            <!-- PRODUCTS -->
 
             <div v-else>
 
@@ -148,8 +138,7 @@ watch([searchQuery, selectedCategory], () => {
                         :key="product.id"
                         class="col"
                     >
-
-                        <CardProducte :product="product" />
+                        <CardProducte :product="product" @product-deleted="handleProductDeleted" />
 
                     </div>
 

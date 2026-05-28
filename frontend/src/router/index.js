@@ -6,6 +6,8 @@ import AdminView from "../views/AdminView.vue";
 import DetalleView from "../views/DetalleView.vue";
 import HomeView from "../views/HomeView.vue";
 import SostenibilidadView from "../views/SostenibilidadView.vue";
+// IMPORTAMOS LA NUEVA VISTA DE EDICIÓN
+import EditProductView from "../modules/auth/views/EditProductView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +20,13 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: AdminView,
+      meta: { requiresAuth: true, role: "admin" },
+    },
+    // NUEVA RUTA DE EDICIÓN PROTEGIDA
+    {
+      path: "/admin/products/:id/edit",
+      name: "EditProduct",
+      component: EditProductView,
       meta: { requiresAuth: true, role: "admin" },
     },
     {

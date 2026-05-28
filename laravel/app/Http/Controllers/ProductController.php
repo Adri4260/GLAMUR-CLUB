@@ -111,23 +111,47 @@ class ProductController extends Controller
         return view('admin.products.edit', compact('product'));
     }
 
-    public function update(Request $request, Product $product)
+    // ====== MODIFICADO PARA COMPATIBILIDAD CON API / VUE ======
+
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
+        $product = Product::find($id);
+        
+        if (!$product) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
+        $request->validate([
             'name' => 'required|string|max:255',
+            'sku' => 'nullable|string|max:100',
             'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
             'description' => 'nullable|string',
         ]);
 
-        $product->update($validated);
+        $product->update($request->all());
 
-        return redirect()->route('admin.products.index')->with('success', 'Actualizado');
+        // Devolvemos JSON en lugar de redireccionar
+        return response()->json([
+            'message' => 'Producto actualizado correctamente', 
+            'data' => $product
+        ], 200);
     }
 
-    public function destroy(Product $product)
+    public function destroy($id)
     {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
+        // IMPORTANTE: Borramos primero las valoraciones asociadas para evitar Error 500 de llaves foráneas
+        $product->reviews()->delete();
+        
+        // Ahora borramos el producto
         $product->delete();
-        return redirect()->route('admin.products.index')->with('success', 'Eliminado');
+
+        // Devolvemos JSON afirmativo a Vue
+        return response()->json(['message' => 'Producto eliminado correctamente'], 200);
     }
 }
