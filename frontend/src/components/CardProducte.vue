@@ -11,7 +11,7 @@ const props = defineProps({
 const getImageUrl = (path) => {
 
     if (!path)
-        return 'http://localhost/img/prod1.jpg'
+        return 'http://localhost:8000/img/prod1.jpg'
 
     if (path.startsWith('http'))
         return path
@@ -24,7 +24,7 @@ const getImageUrl = (path) => {
     if (!cleanPath.startsWith('img/'))
         cleanPath = 'img/' + cleanPath
 
-    return `http://localhost/${cleanPath}`
+    return `http://localhost:8000/${cleanPath}`
 }
 </script>
 
@@ -40,11 +40,8 @@ const getImageUrl = (path) => {
         <!-- IMAGE -->
         <div class="image-wrapper">
 
-            <img
-                :src="getImageUrl(product.image)"
-                class="product-image"
-                :alt="'Fotografía del producto ' + product.name"
-            >
+            <img :src="getImageUrl(product.image)" class="product-image"
+                :alt="'Fotografía del producto ' + product.name">
 
         </div>
 
@@ -70,10 +67,7 @@ const getImageUrl = (path) => {
             <!-- BUTTONS -->
             <div class="mt-auto d-grid gap-2">
 
-                <router-link
-                    :to="'/producto/' + product.id"
-                    class="details-btn"
-                >
+                <router-link :to="'/producto/' + product.id" class="details-btn">
                     Ver Detalles
                 </router-link>
 
@@ -81,10 +75,7 @@ const getImageUrl = (path) => {
 
                     <RoleGuard requirePermission="edit">
 
-                        <button
-                            class="edit-btn flex-fill"
-                            aria-label="Editar producto"
-                        >
+                        <button class="edit-btn flex-fill" aria-label="Editar producto">
                             ✏️ Editar
                         </button>
 
@@ -92,10 +83,7 @@ const getImageUrl = (path) => {
 
                     <RoleGuard requirePermission="delete">
 
-                        <button
-                            class="delete-btn flex-fill"
-                            aria-label="Borrar producto"
-                        >
+                        <button class="delete-btn flex-fill" aria-label="Borrar producto">
                             🗑️ Borrar
                         </button>
 
@@ -112,7 +100,6 @@ const getImageUrl = (path) => {
 </template>
 
 <style scoped>
-
 /* =========================
    CARD
 ========================= */
@@ -120,14 +107,12 @@ const getImageUrl = (path) => {
 .product-card {
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #18201d 0%,
-            #111715 100%
-        ) !important;
+            #111715 100%) !important;
 
     border:
-        1px solid rgba(255,255,255,0.06) !important;
+        1px solid rgba(255, 255, 255, 0.06) !important;
 
     border-radius: 22px;
 
@@ -139,7 +124,7 @@ const getImageUrl = (path) => {
         border-color 0.3s ease;
 
     box-shadow:
-        0 12px 35px rgba(0,0,0,0.28);
+        0 12px 35px rgba(0, 0, 0, 0.28);
 }
 
 .product-card:hover {
@@ -148,10 +133,10 @@ const getImageUrl = (path) => {
         translateY(-8px);
 
     border-color:
-        rgba(39,224,163,0.25) !important;
+        rgba(39, 224, 163, 0.25) !important;
 
     box-shadow:
-        0 18px 45px rgba(0,0,0,0.38);
+        0 18px 45px rgba(0, 0, 0, 0.38);
 }
 
 /* =========================
@@ -181,7 +166,7 @@ const getImageUrl = (path) => {
     font-size: 0.75rem;
 
     box-shadow:
-        0 8px 20px rgba(39,224,163,0.25);
+        0 8px 20px rgba(39, 224, 163, 0.25);
 }
 
 /* =========================
@@ -235,13 +220,13 @@ const getImageUrl = (path) => {
     align-self: center;
 
     background:
-        rgba(255,255,255,0.06);
+        rgba(255, 255, 255, 0.06);
 
     border:
-        1px solid rgba(255,255,255,0.08);
+        1px solid rgba(255, 255, 255, 0.08);
 
     color:
-        rgba(255,255,255,0.75);
+        rgba(255, 255, 255, 0.75);
 
     padding:
         0.4rem 0.9rem;
@@ -275,7 +260,7 @@ const getImageUrl = (path) => {
 .product-description {
 
     color:
-        rgba(255,255,255,0.68);
+        rgba(255, 255, 255, 0.68);
 
     font-size: 0.95rem;
 
@@ -310,11 +295,9 @@ const getImageUrl = (path) => {
     border: none;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #27e0a3,
-            #1fc98f
-        );
+            #1fc98f);
 
     color: #07150f;
 
@@ -336,7 +319,7 @@ const getImageUrl = (path) => {
         translateY(-2px);
 
     box-shadow:
-        0 12px 24px rgba(39,224,163,0.25);
+        0 12px 24px rgba(39, 224, 163, 0.25);
 
     color: #07150f;
 }
@@ -346,10 +329,10 @@ const getImageUrl = (path) => {
 .edit-btn {
 
     border:
-        1px solid rgba(255,255,255,0.12);
+        1px solid rgba(255, 255, 255, 0.12);
 
     background:
-        rgba(255,255,255,0.03);
+        rgba(255, 255, 255, 0.03);
 
     color: white;
 
@@ -365,7 +348,7 @@ const getImageUrl = (path) => {
 .edit-btn:hover {
 
     background:
-        rgba(255,255,255,0.08);
+        rgba(255, 255, 255, 0.08);
 }
 
 /* DELETE */
@@ -373,7 +356,7 @@ const getImageUrl = (path) => {
 .delete-btn {
 
     border:
-        1px solid rgba(255,100,124,0.35);
+        1px solid rgba(255, 100, 124, 0.35);
 
     background: transparent;
 
@@ -391,7 +374,7 @@ const getImageUrl = (path) => {
 .delete-btn:hover {
 
     background:
-        rgba(255,100,124,0.08);
+        rgba(255, 100, 124, 0.08);
 }
 
 /* =========================
@@ -411,5 +394,4 @@ const getImageUrl = (path) => {
     }
 
 }
-
 </style>

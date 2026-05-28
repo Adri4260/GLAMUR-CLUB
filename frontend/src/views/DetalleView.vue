@@ -29,11 +29,11 @@ onMounted(async () => {
 
 // Función para arreglar la imagen
 const getImageUrl = (path) => {
-    if (!path) return 'http://localhost/img/prod1.jpg'
+    if (!path) return 'http://localhost:8000/img/prod1.jpg'
     if (path.startsWith('http')) return path
     let cleanPath = path.replace('/public/', '').replace('public/', '')
     if (!cleanPath.startsWith('img/')) cleanPath = 'img/' + cleanPath
-    return `http://localhost/${cleanPath}`
+    return `http://localhost:8000/${cleanPath}`
 }
 
 // Enviar nuevo comentario a Laravel
@@ -88,15 +88,9 @@ const deleteReview = async (reviewId, index) => {
         <div class="container py-5">
 
             <!-- LOADING -->
-            <div
-                v-if="loading"
-                class="text-center py-5"
-            >
+            <div v-if="loading" class="text-center py-5">
 
-                <div
-                    class="spinner-border"
-                    style="color: #27e0a3;"
-                ></div>
+                <div class="spinner-border" style="color: #27e0a3;"></div>
 
             </div>
 
@@ -110,11 +104,7 @@ const deleteReview = async (reviewId, index) => {
 
                         <div class="product-image-wrapper">
 
-                            <img
-                                :src="getImageUrl(product.image)"
-                                class="product-image"
-                                :alt="product.name"
-                            >
+                            <img :src="getImageUrl(product.image)" class="product-image" :alt="product.name">
 
                         </div>
 
@@ -165,10 +155,7 @@ const deleteReview = async (reviewId, index) => {
                         </h3>
 
                         <!-- FORM -->
-                        <div
-                            v-if="authStore.isAuthenticated"
-                            class="review-form-card"
-                        >
+                        <div v-if="authStore.isAuthenticated" class="review-form-card">
 
                             <h5 class="mb-3">
                                 Escribe tu opinión
@@ -178,10 +165,7 @@ const deleteReview = async (reviewId, index) => {
 
                                 <div class="mb-3">
 
-                                    <select
-                                        v-model="newReview.rating"
-                                        class="custom-select"
-                                    >
+                                    <select v-model="newReview.rating" class="custom-select">
 
                                         <option value="5">
                                             ⭐⭐⭐⭐⭐ (5/5) - Excelente
@@ -209,21 +193,12 @@ const deleteReview = async (reviewId, index) => {
 
                                 <div class="mb-3">
 
-                                    <textarea
-                                        v-model="newReview.comment"
-                                        class="custom-textarea"
-                                        rows="4"
-                                        placeholder="¿Qué te ha parecido este producto?"
-                                        required
-                                    ></textarea>
+                                    <textarea v-model="newReview.comment" class="custom-textarea" rows="4"
+                                        placeholder="¿Qué te ha parecido este producto?" required></textarea>
 
                                 </div>
 
-                                <button
-                                    type="submit"
-                                    class="publish-btn"
-                                    :disabled="submitting"
-                                >
+                                <button type="submit" class="publish-btn" :disabled="submitting">
 
                                     {{
                                         submitting
@@ -238,17 +213,11 @@ const deleteReview = async (reviewId, index) => {
                         </div>
 
                         <!-- LOGIN -->
-                        <div
-                            v-else
-                            class="login-alert"
-                        >
+                        <div v-else class="login-alert">
 
                             Debes
 
-                            <router-link
-                                to="/login"
-                                class="login-link"
-                            >
+                            <router-link to="/login" class="login-link">
                                 iniciar sesión
                             </router-link>
 
@@ -257,19 +226,11 @@ const deleteReview = async (reviewId, index) => {
                         </div>
 
                         <!-- REVIEWS LIST -->
-                        <div
-                            v-if="product.reviews && product.reviews.length > 0"
-                        >
+                        <div v-if="product.reviews && product.reviews.length > 0">
 
-                            <div
-                                v-for="(review, index) in product.reviews"
-                                :key="review.id"
-                                class="review-card"
-                            >
+                            <div v-for="(review, index) in product.reviews" :key="review.id" class="review-card">
 
-                                <div
-                                    class="d-flex justify-content-between align-items-center mb-2"
-                                >
+                                <div class="d-flex justify-content-between align-items-center mb-2">
 
                                     <h6 class="review-user">
                                         {{
@@ -291,10 +252,8 @@ const deleteReview = async (reviewId, index) => {
 
                                     <div class="text-end mt-3">
 
-                                        <button
-                                            @click="deleteReview(review.id, index)"
-                                            class="btn btn-sm btn-outline-danger"
-                                        >
+                                        <button @click="deleteReview(review.id, index)"
+                                            class="btn btn-sm btn-outline-danger">
                                             🗑️ Borrar
                                         </button>
 
@@ -306,10 +265,7 @@ const deleteReview = async (reviewId, index) => {
 
                         </div>
 
-                        <p
-                            v-else
-                            class="empty-review-text"
-                        >
+                        <p v-else class="empty-review-text">
 
                             Sé el primero en valorar esta joya.
 
@@ -328,7 +284,6 @@ const deleteReview = async (reviewId, index) => {
 </template>
 
 <style scoped>
-
 /* =========================
    PAGE
 ========================= */
@@ -336,11 +291,9 @@ const deleteReview = async (reviewId, index) => {
 .product-detail-page {
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #101514 0%,
-            #151b19 100%
-        );
+            #151b19 100%);
 
     min-height: 100vh;
 
@@ -354,21 +307,19 @@ const deleteReview = async (reviewId, index) => {
 .product-image-wrapper {
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #1a2220 0%,
-            #202927 100%
-        );
+            #202927 100%);
 
     border:
-        1px solid rgba(255,255,255,0.05);
+        1px solid rgba(255, 255, 255, 0.05);
 
     border-radius: 24px;
 
     padding: 2rem;
 
     box-shadow:
-        0 15px 40px rgba(0,0,0,0.25);
+        0 15px 40px rgba(0, 0, 0, 0.25);
 }
 
 .product-image {
@@ -386,7 +337,7 @@ const deleteReview = async (reviewId, index) => {
 
 .product-category {
 
-    color: rgba(255,255,255,0.55);
+    color: rgba(255, 255, 255, 0.55);
 
     text-transform: uppercase;
 
@@ -424,7 +375,7 @@ const deleteReview = async (reviewId, index) => {
 
 .product-description {
 
-    color: rgba(255,255,255,0.82);
+    color: rgba(255, 255, 255, 0.82);
 
     line-height: 1.9;
 
@@ -433,7 +384,7 @@ const deleteReview = async (reviewId, index) => {
 
 .product-stock {
 
-    color: rgba(255,255,255,0.6);
+    color: rgba(255, 255, 255, 0.6);
 
     margin-top: 1.5rem;
 }
@@ -451,11 +402,9 @@ const deleteReview = async (reviewId, index) => {
     border: none;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #27e0a3,
-            #1fc98f
-        );
+            #1fc98f);
 
     color: #07150f;
 
@@ -475,7 +424,7 @@ const deleteReview = async (reviewId, index) => {
         translateY(-3px);
 
     box-shadow:
-        0 15px 35px rgba(39,224,163,0.25);
+        0 15px 35px rgba(39, 224, 163, 0.25);
 }
 
 /* =========================
@@ -487,12 +436,10 @@ const deleteReview = async (reviewId, index) => {
     height: 1px;
 
     background:
-        linear-gradient(
-            90deg,
+        linear-gradient(90deg,
             transparent,
-            rgba(255,255,255,0.12),
-            transparent
-        );
+            rgba(255, 255, 255, 0.12),
+            transparent);
 
     margin:
         4rem 0;
@@ -519,14 +466,12 @@ const deleteReview = async (reviewId, index) => {
 .review-card {
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #1a2220 0%,
-            #202927 100%
-        );
+            #202927 100%);
 
     border:
-        1px solid rgba(255,255,255,0.06);
+        1px solid rgba(255, 255, 255, 0.06);
 
     border-radius: 20px;
 
@@ -535,7 +480,7 @@ const deleteReview = async (reviewId, index) => {
     margin-bottom: 1.5rem;
 
     box-shadow:
-        0 10px 30px rgba(0,0,0,0.18);
+        0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
 /* =========================
@@ -574,11 +519,9 @@ const deleteReview = async (reviewId, index) => {
     border: none;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #27e0a3,
-            #1fc98f
-        );
+            #1fc98f);
 
     color: #07150f;
 
@@ -598,7 +541,7 @@ const deleteReview = async (reviewId, index) => {
         translateY(-2px);
 
     box-shadow:
-        0 12px 24px rgba(39,224,163,0.25);
+        0 12px 24px rgba(39, 224, 163, 0.25);
 }
 
 /* =========================
@@ -621,7 +564,7 @@ const deleteReview = async (reviewId, index) => {
 
 .review-comment {
 
-    color: rgba(255,255,255,0.78);
+    color: rgba(255, 255, 255, 0.78);
 
     margin: 0;
 }
@@ -633,10 +576,10 @@ const deleteReview = async (reviewId, index) => {
 .login-alert {
 
     background:
-        rgba(255,255,255,0.05);
+        rgba(255, 255, 255, 0.05);
 
     border:
-        1px solid rgba(255,255,255,0.08);
+        1px solid rgba(255, 255, 255, 0.08);
 
     padding: 1.5rem;
 
@@ -644,7 +587,7 @@ const deleteReview = async (reviewId, index) => {
 
     text-align: center;
 
-    color: rgba(255,255,255,0.8);
+    color: rgba(255, 255, 255, 0.8);
 
     margin-bottom: 2rem;
 }
@@ -664,7 +607,7 @@ const deleteReview = async (reviewId, index) => {
 
 .empty-review-text {
 
-    color: rgba(255,255,255,0.55);
+    color: rgba(255, 255, 255, 0.55);
 
     text-align: center;
 
@@ -683,5 +626,4 @@ const deleteReview = async (reviewId, index) => {
     }
 
 }
-
 </style>

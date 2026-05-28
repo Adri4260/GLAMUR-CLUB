@@ -2,7 +2,7 @@ import axios from "axios";
 import router from "../router";
 
 const http = axios.create({
-  baseURL: "http://localhost/api",
+  baseURL: "http://localhost:8000/api", // <-- AQUÍ ESTÁ LA MAGIA
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

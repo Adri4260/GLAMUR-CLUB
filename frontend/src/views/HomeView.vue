@@ -36,11 +36,7 @@ onMounted(async () => {
         <!-- HERO -->
         <section class="hero-section">
 
-            <img
-                src="http://localhost/img/hero.jpg"
-                class="hero-image"
-                alt="Glamur Club Hero"
-            >
+            <img src="http://localhost:8000/img/hero.jpg" class="hero-image" alt="Glamur Club Hero">
 
             <div class="hero-overlay"></div>
 
@@ -54,10 +50,7 @@ onMounted(async () => {
                     Exclusividad, elegancia y lujo a tu alcance.
                 </p>
 
-                <router-link
-                    to="/catalogo"
-                    class="hero-btn"
-                >
+                <router-link to="/catalogo" class="hero-btn">
                     Descubrir Colección
                 </router-link>
 
@@ -80,28 +73,15 @@ onMounted(async () => {
 
             </div>
 
-            <div
-                v-if="loading"
-                class="text-center py-5"
-            >
+            <div v-if="loading" class="text-center py-5">
 
-                <div
-                    class="spinner-border"
-                    style="color: #27e0a3;"
-                ></div>
+                <div class="spinner-border" style="color: #27e0a3;"></div>
 
             </div>
 
-            <div
-                v-else
-                class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4"
-            >
+            <div v-else class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
 
-                <div
-                    v-for="product in featuredProducts"
-                    :key="'feat-' + product.id"
-                    class="col"
-                >
+                <div v-for="product in featuredProducts" :key="'feat-' + product.id" class="col">
 
                     <CardProducte :product="product" />
 
@@ -116,7 +96,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-
 /* =========================
    PAGE
 ========================= */
@@ -124,11 +103,9 @@ onMounted(async () => {
 .home-page {
 
     background:
-        linear-gradient(
-            180deg,
+        linear-gradient(180deg,
             #101514 0%,
-            #151b19 100%
-        );
+            #151b19 100%);
 
     min-height: 100vh;
 }
@@ -152,7 +129,7 @@ onMounted(async () => {
     margin-bottom: 5rem;
 
     box-shadow:
-        0 20px 60px rgba(0,0,0,0.35);
+        0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
 .hero-image {
@@ -172,12 +149,10 @@ onMounted(async () => {
     inset: 0;
 
     background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,0.65) 0%,
-            rgba(0,0,0,0.35) 40%,
-            rgba(0,0,0,0.65) 100%
-        );
+        linear-gradient(90deg,
+            rgba(0, 0, 0, 0.65) 0%,
+            rgba(0, 0, 0, 0.35) 40%,
+            rgba(0, 0, 0, 0.65) 100%);
 }
 
 /* Content */
@@ -223,14 +198,14 @@ onMounted(async () => {
         serif;
 
     text-shadow:
-        0 10px 40px rgba(0,0,0,0.5);
+        0 10px 40px rgba(0, 0, 0, 0.5);
 }
 
 .hero-subtitle {
 
     font-size: 1.35rem;
 
-    color: rgba(255,255,255,0.92);
+    color: rgba(255, 255, 255, 0.92);
 
     margin-bottom: 2rem;
 
@@ -244,11 +219,9 @@ onMounted(async () => {
     display: inline-block;
 
     background:
-        linear-gradient(
-            135deg,
+        linear-gradient(135deg,
             #27e0a3,
-            #1fc98f
-        );
+            #1fc98f);
 
     border: none;
 
@@ -274,7 +247,7 @@ onMounted(async () => {
         translateY(-3px);
 
     box-shadow:
-        0 15px 35px rgba(39,224,163,0.3);
+        0 15px 35px rgba(39, 224, 163, 0.3);
 
     color: #07150f;
 }
@@ -300,7 +273,7 @@ onMounted(async () => {
 
 .section-subtitle {
 
-    color: rgba(255,255,255,0.72);
+    color: rgba(255, 255, 255, 0.72);
 
     font-size: 1.05rem;
 }
@@ -334,5 +307,4 @@ onMounted(async () => {
     }
 
 }
-
 </style>

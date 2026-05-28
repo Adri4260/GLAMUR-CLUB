@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  # 1. BASE DE DATOS
+  db:
+    image: mysql:8.0
+    container_name: glamur_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: glamur_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql # Esto asegura la persistencia de datos (Requisito C7)
+
+  # 2. BACKEND (LARAVEL)
+  backend:
+    build:
+      context: ./laravel
+      dockerfile: Dockerfile
+    container_name: glamur_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./laravel:/app
+    depends_on:
+      - db
+
+  # 3. FRONTEND (VUE)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: glamur_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  db_data:
