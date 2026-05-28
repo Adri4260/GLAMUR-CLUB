@@ -12,6 +12,7 @@ const selectedCategory = ref('')
 
 onMounted(async () => {
     try {
+
         const response = await http.get('/products')
 
         products.value = response.data.data || response.data
@@ -53,123 +54,138 @@ watch([searchQuery, selectedCategory], () => {
 
 <template>
 
-    <section class="catalog-page container py-4">
+    <div class="catalog-wrapper">
 
-        <div class="text-center mb-5">
+        <section class="catalog-page container py-4">
 
-            <h1
-                class="display-4 fw-bold catalog-title"
-            >
-                Catálogo Completo
-            </h1>
+            <div class="text-center mb-5">
 
-        </div>
+                <h1
+                    class="display-4 fw-bold catalog-title"
+                >
+                    Catálogo Completo
+                </h1>
 
-        <!-- SEARCH BAR -->
+            </div>
 
-        <div class="search-container row mb-5 mx-0">
+            <!-- SEARCH -->
 
-            <div class="col-md-8 mb-3 mb-md-0">
+            <div class="search-container row mb-5 mx-0">
 
-                <div class="custom-search">
+                <div class="col-md-8 mb-3 mb-md-0">
 
-                    <span class="search-icon">
-                        🔍
-                    </span>
+                    <div class="custom-search">
 
-                    <input
-                        type="text"
-                        v-model="searchQuery"
-                        class="search-input"
-                        placeholder="Buscar producto..."
+                        <span class="search-icon">
+                            🔍
+                        </span>
+
+                        <input
+                            type="text"
+                            v-model="searchQuery"
+                            class="search-input"
+                            placeholder="Buscar producto..."
+                        >
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <select
+                        v-model="selectedCategory"
+                        class="custom-select"
                     >
 
-                </div>
+                        <option value="">
+                            Todas las categorías
+                        </option>
 
-            </div>
+                        <option value="PER">
+                            Perfumes
+                        </option>
 
-            <div class="col-md-4">
+                        <option value="CRE">
+                            Cosmética y Cremas
+                        </option>
 
-                <select
-                    v-model="selectedCategory"
-                    class="custom-select"
-                    aria-label="Filtrar por categoría"
-                >
-                    <option value="">
-                        Todas las categorías
-                    </option>
+                        <option value="MAQ">
+                            Maquillaje
+                        </option>
 
-                    <option value="PER">
-                        Perfumes
-                    </option>
-
-                    <option value="CRE">
-                        Cosmética y Cremas
-                    </option>
-
-                    <option value="MAQ">
-                        Maquillaje
-                    </option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-        <!-- LOADING -->
-
-        <div
-            v-if="loading"
-            class="text-center py-5"
-        >
-
-            <div
-                class="spinner-border"
-                style="color: #27e0a3;"
-            ></div>
-
-        </div>
-
-        <!-- PRODUCTS -->
-
-        <div v-else>
-
-            <div
-                v-if="filteredProducts.length > 0"
-                class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4"
-            >
-
-                <div
-                    v-for="product in filteredProducts"
-                    :key="product.id"
-                    class="col"
-                >
-
-                    <CardProducte :product="product" />
+                    </select>
 
                 </div>
 
             </div>
 
+            <!-- LOADING -->
+
             <div
-                v-else
+                v-if="loading"
                 class="text-center py-5"
             >
 
-                <h4 class="text-white">
-                    No hemos encontrado nada 😢
-                </h4>
+                <div
+                    class="spinner-border"
+                    style="color: #27e0a3;"
+                ></div>
 
             </div>
 
-        </div>
+            <!-- PRODUCTS -->
 
-    </section>
+            <div v-else>
+
+                <div
+                    v-if="filteredProducts.length > 0"
+                    class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4"
+                >
+
+                    <div
+                        v-for="product in filteredProducts"
+                        :key="product.id"
+                        class="col"
+                    >
+
+                        <CardProducte :product="product" />
+
+                    </div>
+
+                </div>
+
+                <div
+                    v-else
+                    class="text-center py-5"
+                >
+
+                    <h4 class="text-white">
+                        No hemos encontrado nada 😢
+                    </h4>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
 
 </template>
 
 <style scoped>
+
+/* =========================
+   FULL BACKGROUND
+========================= */
+
+.catalog-wrapper {
+
+    min-height: 100vh;
+
+    background: #0d1413;
+}
 
 /* =========================
    PAGE
@@ -177,7 +193,7 @@ watch([searchQuery, selectedCategory], () => {
 
 .catalog-page {
 
-    min-height: 100vh;
+    padding-bottom: 5rem;
 }
 
 /* =========================
@@ -200,17 +216,17 @@ watch([searchQuery, selectedCategory], () => {
 .search-container {
 
     background:
-        rgba(10, 15, 14, 0.95);
+        #111918;
 
     border:
-        1px solid rgba(39,224,163,0.12);
+        1px solid rgba(39,224,163,0.08);
 
     border-radius: 20px;
 
     padding: 1.5rem;
 
     box-shadow:
-        0 10px 35px rgba(0,0,0,0.28);
+        0 10px 30px rgba(0,0,0,0.25);
 }
 
 /* =========================
@@ -224,10 +240,10 @@ watch([searchQuery, selectedCategory], () => {
     align-items: center;
 
     background:
-        #0b1110;
+        #0a0f0f;
 
     border:
-        1px solid rgba(39,224,163,0.25);
+        1px solid rgba(39,224,163,0.18);
 
     border-radius: 14px;
 
@@ -241,9 +257,6 @@ watch([searchQuery, selectedCategory], () => {
 
     border-color:
         #27e0a3;
-
-    box-shadow:
-        0 0 0 3px rgba(39,224,163,0.12);
 }
 
 .search-icon {
@@ -253,9 +266,6 @@ watch([searchQuery, selectedCategory], () => {
 
     color:
         #27e0a3;
-
-    font-size:
-        1rem;
 }
 
 .search-input {
@@ -276,9 +286,6 @@ watch([searchQuery, selectedCategory], () => {
 
     padding:
         1rem 1rem 1rem 0;
-
-    font-size:
-        1rem;
 }
 
 .search-input::placeholder {
@@ -296,13 +303,13 @@ watch([searchQuery, selectedCategory], () => {
     width: 100%;
 
     background:
-        #0b1110;
+        #0a0f0f;
 
     color:
         white;
 
     border:
-        1px solid rgba(39,224,163,0.25);
+        1px solid rgba(39,224,163,0.18);
 
     border-radius: 14px;
 
@@ -311,18 +318,12 @@ watch([searchQuery, selectedCategory], () => {
 
     outline:
         none;
-
-    transition:
-        all 0.25s ease;
 }
 
 .custom-select:focus {
 
     border-color:
         #27e0a3;
-
-    box-shadow:
-        0 0 0 3px rgba(39,224,163,0.12);
 }
 
 /* =========================
