@@ -1,114 +1,125 @@
-# 💜 GLAMUR CLUB
+# 💜 GLAMUR CLUB - Arquitectura Cloud & SPA
 
-![Status](https://img.shields.io/badge/Estat-En%20Desenvolupament-green?style=flat-square) ![Version](https://img.shields.io/badge/Versió-Sprint%202-purple?style=flat-square) ![License](https://img.shields.io/badge/Llicència-Educational-blue?style=flat-square)
+![Status](https://img.shields.io/badge/Estat-Finalitzat-success?style=flat-square) ![Version](https://img.shields.io/badge/Versió-v1.0.0 (Sprint 6)-purple?style=flat-square) ![License](https://img.shields.io/badge/Llicència-MIT-blue?style=flat-square)
 
-## 🧴 Descripció del projecte
-**GLAMUR CLUB** és un e-commerce exclusiu dedicat a la venda de **perfums i productes de bellesa i higiene**.
-El lloc destaca per la seva funcionalitat innovadora: la possibilitat de **crear el teu propi perfum personalitzat**, combinant aromes segons els gustos de l’usuari o mitjançant suggeriments basats en **Intel·ligència Artificial**.
+## 🧴 Descripción del Proyecto
+**GLAMUR CLUB** es un e-commerce exclusivo dedicado a la venta de **perfumes, cosmética y maquillaje premium**. 
+Esta versión final culmina el Proyecto Intermodular (Sprints 1 al 6), evolucionando de una aplicación monolítica tradicional a una **Arquitectura Desacoplada** profesional. 
 
-Aquesta rama forma part de la **Iteració 4: Client SPA amb Vue i control de rols**, desenvolupat dins del curs **DAW 2n – CIPFP Batoi**.
+El proyecto consta de una **API REST (Backend)** securizada y documentada, consumida por una **Single Page Application (Frontend)** reactiva y sostenible, con todo el entorno orquestado e independizado mediante **Docker** para su fácil despliegue en infraestructuras Cloud (AWS).
+
+Desarrollado dentro del curso **DAW 2n – CIPFP Batoi**.
 
 ## 👥 Equipo de Desarrollo
-* **Pepe** 🧑‍💻
-* **Adri** 👨‍💻 
-
-## 📊 Planificación y Seguimiento
-Para visualizar la organización temporal y la asignación de tareas de esta fase, puedes consultar nuestros paneles de seguimiento:
-* 📅 **[Ver Diagrama de Gantt del Sprint 4](https://github.com/Adri4260/GLAMUR-CLUB/blob/sprint4/ganttSprint4.gan)**
-* 📋 **[Ver Tablero Kanban del Sprint 4](https://github.com/users/Adri4260/projects/8)**
+* **Adrián** 👨‍💻 (Full-Stack, DevOps & Cloud Architecture)
+* **Pepe** 🧑‍💻 (UI/UX Design)
 
 ---
 
-## 🎯 Objetivos y Funcionalidades del Sprint
+## 🎯 Mejoras Clave (Sprints 5 y 6)
 
-### ⚡ C1. Interfaz de usuario avanzada con Vue.js
-Hemos migrado nuestro frontend clásico (HTML/Vanilla JS) a un proyecto moderno impulsado por **Vite** y **Vue 3**.
-* **SPA y Enrutamiento:** Implementación de navegación dinámica sin recargas completas de página utilizando `vue-router`.
-* **Modularidad:** Refactorización de la interfaz en componentes reutilizables (`Navbar.vue`, `ProductCard.vue`, `Footer.vue`).
-* **Conectividad:** Sustitución de llamadas estáticas por peticiones dinámicas a la API REST mediante `Axios`.
+### ☁️ 1. Orquestación DevOps y Cloud (C7)
+* **Dockerización Independiente:** Creación de `Dockerfile` específicos para Vue y Laravel.
+* **Orquestador Maestro:** Implementación de `docker-compose.yml` para levantar Backend, Frontend y Base de Datos (con volúmenes de persistencia) en contenedores aislados.
+* **Integración Continua (CI/CD):** Creación de *Pipelines* en GitHub Actions para automatizar el testeo de Laravel y la compilación de Vue ante nuevos *commits* en las ramas principales.
+* **Arquitectura AWS:** Diseño documentado de infraestructura de Alta Disponibilidad (Load Balancer, Auto Scaling, RDS Multi-AZ y Subredes Privadas).
 
-### 🔐 C2. Integración de la autenticación mediante API
-El sistema de autenticación de sesiones web tradicional se ha transformado en un sistema robusto mediante tokens.
-* **Backend:** Configuración de **Laravel Sanctum** para gestionar el login/logout y emitir tokens API (`Bearer token`).
-* **Gestión de Estado:** Integración de **Pinia** en el frontend (`authStore`) para almacenar de forma persistente el usuario y el token (`localStorage`).
-* **Interceptors:** Configuración global de *Axios* para inyectar el token en las cabeceras de cada petición y desloguear automáticamente al usuario si la API devuelve un error `401 Unauthorized`.
-* **Router Guards:** Protección de rutas privadas en Vue para redirigir al login a usuarios no autenticados.
+### 🔗 2. Integraciones y Documentación API (C1 y C2)
+* **OAuth2 con Google:** Integración de Laravel Socialite en el backend para permitir un inicio de sesión seguro, rápido y *stateless* a través de Google.
+* **Swagger / OpenAPI:** Documentación interactiva de todos los endpoints de la API (Catálogo, Auth, Reviews) generada automáticamente en `/api/documentation`.
 
-### 👥 C3. Gestión de roles de usuario y permisos
-Implementación de un sistema RBAC (Control de Acceso Basado en Roles) granular tanto del lado del cliente como del servidor.
-* **Roles soportados:** `Admin` (control total), `Vendor` (gestión de sus productos), `Editor` (moderación de valoraciones) y `User` (acceso básico).
-* **Protección Backend:** Creación de migraciones de roles (`roles`, `role_user`) y uso de *Middlewares* / *Policies* en Laravel para denegar accesos no permitidos (`403 Forbidden`).
-* **Control Visual Frontend:** Creación del *composable* `useRole.js` en Vue, permitiendo ocultar botones o menús mediante directivas (`v-if="can('delete')"`) según el rol del usuario activo.
+### 🌱 3. Sostenibilidad ASG y Ecodiseño (C6)
+* **Distintivo Ecológico:** Implementación de etiquetas visuales (`🌱 Eco-Packaging`) en el catálogo para destacar productos responsables.
+* **Política ASG:** Inclusión de una vista dedicada que justifica la eficiencia digital de la SPA (carga asíncrona, menor consumo energético) y las políticas ambientales de la marca.
+
+### 🤖 4. Frontend Avanzado y Filtros Reactivos (C3 y C5)
+* **Filtros en Tiempo Real:** Catálogo impulsado por `watchers` de Vue 3 que filtran productos por búsqueda de texto y prefijos de categoría (SKU) sin retardo.
+* **Algoritmo de Recomendación:** Endpoint en Laravel que suministra los productos "Prèmium" más destacados de forma inteligente para la página de inicio.
+* **Validaciones Robustas:** Integración de `Vee-Validate` y `Yup` en los formularios para feedback instantáneo y seguro.
 
 ---
 
-## 🛠️ Tecnologías y Herramientas
+## 🛠️ Stack Tecnológico
 
-**Frontend:**
+**Frontend (Client SPA):**
 * Vue.js 3 (Composition API)
-* Vite (Bundler)
-* Vue Router (Navegación)
+* Vite
 * Pinia (State Management)
-* Axios (HTTP Client)
+* Vue Router
+* Vee-Validate / Yup
 
-**Backend:**
-* PHP 8 / Laravel 11
+**Backend (REST API):**
+* PHP 8.2 / Laravel 11
+* MySQL 8.0
 * Laravel Sanctum (Token Auth)
-* MySQL (Base de Datos)
-* Docker y Sail (Entorno de despliegue)
+* Laravel Socialite (OAuth2)
+* L5-Swagger (OpenAPI)
+
+**Infraestructura & DevOps:**
+* Docker & Docker Compose
+* GitHub Actions (CI/CD)
+* AWS (EC2, VPC, RDS, ALB)
 
 ---
 
-## 🚀 Guía de Instalación y Despliegue en Desarrollo
+## 🚀 Guía de Puesta en Marcha (Entorno Dockerizado)
 
-Dado que el proyecto ahora tiene una clara separación entre cliente y servidor, es necesario levantar ambos entornos de forma independiente:
+Gracias a la orquestación con Docker Compose, levantar toda la infraestructura del proyecto (Frontend, Backend y Base de datos) ahora es extremadamente sencillo. 
 
-### 1. Despliegue del Backend (Laravel API)
+### Requisitos previos:
+* Tener **Docker** y **Docker Desktop** instalados y ejecutándose en tu máquina.
+* Asegurarte de que los puertos `8000`, `5173` y `3306` están libres.
 
-1. Entra en el directorio del backend:
-   ```bash
-   cd laravel
-   ```
+### Pasos de ejecución:
 
-2. Instala las dependencias de Composer:
-   ```bash
-   composer install
-   ```
+**1. Preparar las variables de entorno del Backend**
+Navega a la carpeta de Laravel y crea tu archivo `.env`:
+```bash
+cd laravel
+cp .env.example .env
+> **Nota:** Asegúrate de que las credenciales de BD en el `.env` apuntan al host `db`, tal y como se configuró para Docker.
 
-3. Prepara tu archivo de entorno y la clave de la app:
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
+**2. Levantar los contenedores**
 
-4. Levanta el entorno con Docker (Sail):
-   ```bash
-   ./vendor/bin/sail up -d
-   ```
+Vuelve a la raíz principal del proyecto (donde se encuentra el archivo `docker-compose.yml`) y ejecuta el comando maestro:
 
-5. Ejecuta las migraciones y puebla la base de datos (vital para cargar los nuevos roles y usuarios de prueba):
-   ```bash
-   ./vendor/bin/sail artisan migrate:fresh --seed
-   ```
+```bash
+docker compose up -d --build
+```
 
-### 2. Despliegue del Frontend (Vue SPA)
+Docker descargará las imágenes oficiales, instalará las dependencias (NPM y Composer) y levantará los 3 servicios.
 
-1. Navega al directorio raíz del nuevo cliente web:
-   ```bash
-   cd frontend
-   ```
+**3. Generar la clave de Laravel y poblar la Base de Datos**
 
-2. Instala las dependencias de Node:
-   ```bash
-   npm install
-   ```
+Una vez los contenedores estén en verde, entra al contenedor del backend para configurar Laravel e inyectar los datos semilla (Productos y Usuarios de prueba):
 
-3. Ejecuta el servidor de desarrollo:
-   ```bash
-   npm run dev
-   ```
-
-4. Accede a la aplicación desde tu navegador, generalmente en `http://localhost:5173`.
+```bash
+docker compose exec backend php artisan key:generate
+docker compose exec backend php artisan migrate:fresh --seed
+```
 
 ---
-*Glamur Club - Proyecto Intermodular desarrollado por Pepe y Adri.*
+
+## 🌐 Accesos del Sistema
+
+| Servicio | URL |
+|---|---|
+| 🖥️ Frontend SPA (Catálogo y Tienda) | http://localhost:5173 |
+| ⚙️ Backend API | http://localhost:8000 |
+| 📖 Documentación Interactiva (Swagger) | http://localhost:8000/api/documentation |
+
+---
+
+## 👤 Usuarios de Prueba
+
+Puedes probar el sistema de control de accesos (RBAC) utilizando los siguientes usuarios semilla:
+
+| Perfil | Correo de Acceso | Contraseña | Permisos |
+|---|---|---|---|
+| 👑 Administrador | admin@glamur.com | password123 | Control total, edición y borrado de catálogo y reseñas. |
+| 🛡️ Moderador | moderador@glamur.com | password123 | Puede moderar y borrar comentarios de usuarios. |
+| 🛍️ Cliente | cliente@glamur.com | password123 | Navegación, carrito y publicación de reseñas. |
+
+---
+
+*Glamur Club – Entrega Final v1.0.0 (Sprint 6)*
