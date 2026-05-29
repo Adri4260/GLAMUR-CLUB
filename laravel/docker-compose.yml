@@ -1,0 +1,52 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: glamur_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: glamur_db
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: glamur_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # Sincroniza tu carpeta local con el contenedor
+      - ./:/app
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: glamur_db
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    depends_on:
+      - db
+    # 🔥 LA MAGIA AUTOMÁTICA
+    # 1. Espera 10s a que MySQL esté listo
+    # 2. Lanza las migraciones a la BD
+    # 3. Instala paquetes NPM
+    # 4. Compila los assets de Vite para que no dé error visual
+    # 5. Levanta la API
+    command: >
+      bash -c "sleep 10 && 
+      php artisan migrate --force && 
+      npm install && 
+      npm run build && 
+      php artisan serve --host=0.0.0.0 --port=8000"
+
+# Usamos la red externa para que pueda verse con el frontend de Vue
+networks:
+  default:
+    name: glamur_network
+    external: true
+
+volumes:
+  db_data:

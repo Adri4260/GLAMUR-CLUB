@@ -1,0 +1,22 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: glamur_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      # ¡EL BIND MOUNT DEL FRONTEND!
+      - ./:/app
+      # Protegemos los node_modules del contenedor para que no choquen con tu PC
+      - /app/node_modules
+    environment:
+      # Al estar expuesto el puerto 8000 en el backend, tu navegador atacará aquí
+      VITE_API_BASE_URL: http://localhost:8000/api
+
+# Nos enganchamos a la misma red externa para que pueda ver al backend si fuera necesario
+networks:
+  default:
+    name: glamur_network
+    external: true

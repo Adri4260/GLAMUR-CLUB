@@ -122,4 +122,130 @@ Puedes probar el sistema de control de accesos (RBAC) utilizando los siguientes 
 
 ---
 
+# 🚀 Guía de Arranque Rápido: Glamur Club (Local)
+
+Sigue estos pasos en orden estricto. Solo tendrás que hacer la configuración inicial la primera vez.
+
+---
+
+## 🛠️ Requisitos Previos
+
+Asegúrate de tener instalados en tu ordenador:
+
+- **Docker Desktop** (encendido y funcionando)
+- **Git** (para clonar el código)
+
+## 🟢 PASO 0: Limpieza
+
+```bash
+docker compose down -v
+docker system prune -f
+```
+
+## 🟢 PASO 1: Descargar el Código
+
+Abre tu terminal y clona los repositorios del proyecto. Si ya los tienes, asegúrate de hacer un `git pull` para tener la última versión.
+
+```bash
+# Ejemplo:
+git clone https://github.com/Adri4260/GLAMUR-CLUB
+```
+
+---
+
+## 🌉 PASO 2: Crear el Puente de Red *(Solo la primera vez)*
+
+Para que el Frontend y el Backend puedan "hablar" entre ellos en tu ordenador, necesitamos crear una red en Docker. Abre tu terminal (da igual en qué carpeta) y lanza:
+
+```bash
+docker network create glamur_network
+```
+
+> ℹ️ Si te dice que ya existe, ignóralo y sigue.
+
+---
+
+## 🐘 PASO 3: Arrancar el Backend (Laravel + BD)
+
+El Backend siempre va primero, porque levanta la Base de Datos que necesita el Frontend.
+
+**1.** Abre una terminal y entra en la carpeta del backend:
+
+```bash
+cd backend
+```
+
+**2.** Levanta los contenedores en segundo plano:
+
+```bash
+docker compose up -d --build
+```
+
+**3.** Espera unos **15 segundos**. MySQL tarda un poco en arrancar por primera vez.
+
+**4.** Inyecta los datos de prueba — rellena la base de datos con los productos, usuarios y categorías iniciales:
+
+```bash
+docker compose exec backend php artisan migrate:fresh --seed
+```
+
+✅ **Resultado:** Tu API está viva y respondiendo en `http://localhost:8000`.
+
+---
+
+## 💻 PASO 4: Arrancar el Frontend (Vue)
+
+Ahora le toca el turno a la web que verán los usuarios.
+
+**1.** Abre una **nueva pestaña** en tu terminal y entra en la carpeta del frontend:
+
+```bash
+cd frontend
+```
+
+**2.** Levanta el contenedor en segundo plano:
+
+```bash
+docker compose up -d --build
+```
+
+✅ **Resultado:** Tu web está viva y respondiendo en `http://localhost:5173`.
+
+---
+
+## 🛑 ¿Cómo apagar el proyecto al terminar de trabajar?
+
+Cuando acabes tu jornada, **NUNCA** cierres la terminal a lo bruto. Debes apagar los contenedores correctamente para no corromper la base de datos.
+
+**1.** Ve a la terminal del **Frontend** y ejecuta:
+
+```bash
+docker compose down
+```
+
+**2.** Ve a la terminal del **Backend** y ejecuta:
+
+```bash
+docker compose down
+```
+
+> 💾 Tranquilo, tus datos no se borrarán porque hemos configurado un volumen persistente.
+
+---
+
+## 🆘 Solución de Problemas Frecuentes
+
+### Error 500 en Vue
+Significa que el Frontend no encuentra la API. Comprueba en tu navegador que `http://localhost:8000/api` responde algo (aunque sea un error de Laravel). Si no responde, tu Backend no está bien arrancado.
+
+### `Table 'glamur_db.sessions' doesn't exist`
+Te has saltado el **Paso 3.4**. Ejecuta:
+
+```bash
+docker compose exec backend php artisan migrate:fresh --seed
+```
+
+### Cambios en el código no se ven (Hot Reload)
+Refresca la página manualmente con `Ctrl+F5`. Si sigues sin verlo, asegúrate de que estás modificando los archivos dentro de la carpeta local correcta, porque los bind mounts sincronizan al instante.
+
 *Glamur Club – Entrega Final v1.0.0 (Sprint 6)*

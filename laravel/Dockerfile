@@ -1,24 +1,19 @@
-# Usamos PHP 8.2 (el estándar actual y más estable para Laravel 11)
 FROM php:8.4-cli
 
-# Instalamos extensiones del sistema necesarias para Laravel y MySQL
-RUN apt-get update && apt-get install -y \
-    libzip-dev zip unzip git curl libonig-dev default-mysql-client \
-    libpng-dev libjpeg-dev libfreetype6-dev \
+# Instalamos dependencias de PHP y utilidades básicas (incluido curl)
+RUN apt-get update -y && apt-get install -y \
+    libzip-dev zip unzip git libpng-dev libjpeg-dev libfreetype6-dev curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql zip mbstring gd
+    && docker-php-ext-install pdo_mysql zip gd
 
-# Instalamos Composer
+# ¡PREVISIÓN! Instalamos Node.js y NPM para que Laravel pueda compilar Vite
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Directorio de trabajo
 WORKDIR /app
-
-# Copiamos el código
 COPY . .
+RUN composer install --no-interaction
 
-# Exponemos el puerto de Artisan
 EXPOSE 8000
-
-# Comando para iniciar Laravel en el contenedor
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
