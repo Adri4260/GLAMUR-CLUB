@@ -27,13 +27,18 @@ onMounted(async () => {
     }
 })
 
-// Función para arreglar la imagen
+// --- FIX PARA IMÁGENES EN PRODUCCIÓN Y LOCAL ---
 const getImageUrl = (path) => {
-    if (!path) return 'http://localhost:8000/img/prod1.jpg'
+    const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+    const serverUrl = apiBase.replace(/\/api$/, '');
+
+    if (!path) return `${serverUrl}/img/prod1.jpg`
     if (path.startsWith('http')) return path
+
     let cleanPath = path.replace('/public/', '').replace('public/', '')
     if (!cleanPath.startsWith('img/')) cleanPath = 'img/' + cleanPath
-    return `http://localhost:8000/${cleanPath}`
+
+    return `${serverUrl}/${cleanPath}`
 }
 
 // Enviar nuevo comentario a Laravel

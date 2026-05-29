@@ -6,6 +6,9 @@ import CardProducte from '../components/CardProducte.vue'
 const featuredProducts = ref([])
 const loading = ref(true)
 
+// Calculamos la URL de la imagen del Hero una sola vez
+const heroImageUrl = `${(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}/img/hero.jpg`;
+
 onMounted(async () => {
     try {
 
@@ -36,7 +39,7 @@ onMounted(async () => {
         <!-- HERO -->
         <section class="hero-section">
 
-            <img src="http://localhost:8000/img/hero.jpg" class="hero-image" alt="Glamur Club Hero">
+            <img :src="heroImageUrl" alt="Hero" class="hero-image">
 
             <div class="hero-overlay"></div>
 

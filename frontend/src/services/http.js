@@ -2,7 +2,7 @@ import axios from "axios";
 import router from "../router";
 
 const http = axios.create({
-  baseURL: "http://localhost:8000/api", // <-- AQUÍ ESTÁ LA MAGIA
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

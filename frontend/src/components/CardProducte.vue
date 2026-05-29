@@ -18,18 +18,23 @@ const emit = defineEmits(['product-deleted'])
 
 const isDeleting = ref(false)
 
+// --- FIX PARA IMÁGENES EN PRODUCCIÓN Y LOCAL ---
 const getImageUrl = (path) => {
+    const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+
+    const serverUrl = apiBase.replace(/\/api$/, '');
+
     if (!path)
-        return 'http://localhost:8000/img/prod1.jpg'
+        return `${serverUrl}/img/prod1.jpg`
+
     if (path.startsWith('http'))
         return path
-    let cleanPath =
-        path
-            .replace('/public/', '')
-            .replace('public/', '')
+
+    let cleanPath = path.replace('/public/', '').replace('public/', '')
     if (!cleanPath.startsWith('img/'))
         cleanPath = 'img/' + cleanPath
-    return `http://localhost:8000/${cleanPath}`
+
+    return `${serverUrl}/${cleanPath}`
 }
 
 // --- FUNCIONES DE ADMIN ---
@@ -44,23 +49,23 @@ const handleDelete = async () => {
         try {
             await http.delete(`/products/${props.product.id}`)
             emit('product-deleted', props.product.id)
-            
+
         } catch (error) {
             // Imprimimos el error completo en consola
             console.error("Error DETALLADO:", error.response || error);
-            
+
             // Analizamos la respuesta de Laravel
             let alertMsg = "Error desconocido.";
             if (error.response) {
                 const status = error.response.status;
                 const serverMessage = error.response.data?.message || '';
-                
+
                 if (status === 404) alertMsg = `Error 404: La ruta DELETE /products/${props.product.id} no existe en api.php.`;
                 else if (status === 401 || status === 403) alertMsg = "Error 401/403: No tienes permisos o el token no es válido.";
                 else if (status === 500) alertMsg = "Error 500: Fallo en la base de datos (Probablemente el producto tenga valoraciones asociadas y no se pueda borrar).";
                 else alertMsg = `Error ${status}: ${serverMessage}`;
             }
-            
+
             alert(alertMsg);
         } finally {
             isDeleting.value = false
@@ -120,7 +125,8 @@ const handleDelete = async () => {
 
                     <RoleGuard requirePermission="delete">
 
-                        <button class="delete-btn flex-fill" aria-label="Borrar producto" @click="handleDelete" :disabled="isDeleting">
+                        <button class="delete-btn flex-fill" aria-label="Borrar producto" @click="handleDelete"
+                            :disabled="isDeleting">
                             <span v-if="isDeleting" class="spinner-border spinner-border-sm me-1"></span>
                             {{ isDeleting ? 'Borrando...' : '🗑️ Borrar' }}
                         </button>
