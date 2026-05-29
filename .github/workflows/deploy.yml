@@ -1,0 +1,41 @@
+name: Deploy to AWS Production
+
+# El robot se activa ÚNICAMENTE cada vez que haces push a la rama sprint5-6
+on:
+  push:
+    branches:
+      - sprint5-6
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+        with:
+          ref: sprint5-6 # Forzamos a que el entorno de GitHub lea esta rama
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            # Creamos la carpeta si no existe y entramos
+            mkdir -p ~/glamur-club
+            cd ~/glamur-club
+
+            # Si la carpeta .git no existe, es la primera vez: clonamos directamente la rama sprint5-6
+            if [ ! -d ".git" ]; then
+              git clone -b sprint5-6 https://github.com/Adri4260/GLAMUR-CLUB.git .
+            else
+              # Si ya existe, nos aseguramos de estar en la rama correcta y traemos los cambios
+              git fetch origin
+              git checkout sprint5-6
+              git pull origin sprint5-6
+            fi
+
+            # Levantamos los contenedores en producción reconstruyendo las imágenes
+            docker compose up -d --build
