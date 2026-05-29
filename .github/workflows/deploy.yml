@@ -23,19 +23,19 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            # Creamos la carpeta si no existe y entramos
             mkdir -p ~/glamur-club
             cd ~/glamur-club
-
-            # Si la carpeta .git no existe, es la primera vez: clonamos directamente la rama sprint5-6
+            
             if [ ! -d ".git" ]; then
               git clone -b sprint5-6 https://github.com/Adri4260/GLAMUR-CLUB.git .
             else
-              # Si ya existe, nos aseguramos de estar en la rama correcta y traemos los cambios
               git fetch origin
               git checkout sprint5-6
               git pull origin sprint5-6
             fi
-
-            # Levantamos los contenedores en producción reconstruyendo las imágenes
+          
+            # APAGAR Y LIMPIAR PRIMERO (Esto soluciona tu error)
+            docker compose down
+          
+            # LEVANTAR EN LIMPIO
             docker compose up -d --build
