@@ -4,7 +4,9 @@ FROM php:8.4-cli
 # Instalamos extensiones del sistema necesarias para Laravel y MySQL
 RUN apt-get update && apt-get install -y \
     libzip-dev zip unzip git curl libonig-dev default-mysql-client \
-    && docker-php-ext-install pdo_mysql zip mbstring
+    libpng-dev libjpeg-dev libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql zip mbstring gd
 
 # Instalamos Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
