@@ -1,0 +1,22 @@
+FROM php:8.4-cli
+
+# Instalamos las dependencias del sistema operativo
+RUN apt-get update -y && apt-get install -y \
+    libzip-dev zip unzip git libpng-dev libjpeg-dev libfreetype6-dev curl \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql zip gd
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /app
+
+# Copiamos todo el código de Laravel a la imagen
+COPY . .
+
+# Instalamos SOLO los paquetes de producción (sin herramientas de debug)
+RUN composer install --no-interaction --optimize-autoloader --no-dev
+
+# Damos permisos a Laravel para que no explote al escribir cachés o logs
+RUN chown -R www-data:www-data storage bootstrap/cache
+
+EXPOSE 8000

@@ -1,0 +1,15 @@
+services:
+  frontend_prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      args:
+        # Inyectamos la URL segura HTTPS de tu API real
+        - VITE_API_BASE_URL=https://api.projecte04.ddaw.es/api
+    container_name: glamur_frontend_prod
+    restart: unless-stopped
+    ports:
+      # TRUCO PRO DE AISLAMIENTO:
+      # Al poner 127.0.0.1, obligamos a que el contenedor sea invisible desde Internet.
+      # Solo el Nginx maestro de la EC2 podrá enviarle visitas a este puerto 3000.
+      - "127.0.0.1:3000:80"

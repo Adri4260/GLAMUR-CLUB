@@ -1,0 +1,21 @@
+services:
+  backend_prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: glamur_backend_prod
+    restart: unless-stopped
+    ports:
+      # AISLAMIENTO CUMPLIDO:
+      # Bindeado a localhost. Solo el Nginx maestro de la EC2 podrá enviarle tráfico.
+      - "127.0.0.1:8000:8000"
+
+    # OJO: Las variables de entorno de la BD (DB_HOST, etc.) no están aquí.
+    # En producción, Docker las leerá de un archivo .env secreto que dejaremos en la EC2.
+
+    command: >
+      bash -c "php artisan config:cache &&
+      php artisan route:cache &&
+      php artisan view:cache &&
+      php artisan migrate --force &&
+      php artisan serve --host=0.0.0.0 --port=8000"
