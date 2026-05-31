@@ -11,9 +11,37 @@ use App\Models\Role; // Importado para evitar errores al asignar roles
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
 
+// --- RUTAS DE USUARIO ---
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user()->load('roles');
 });
+
+Route::middleware('auth:sanctum')->put('/user', function (Request $request) {
+    // Validamos que envíen el nombre, y opcionalmente la contraseña (mínimo 8 chars y confirmada)
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'password' => 'nullable|string|min:8|confirmed',
+    ]);
+
+    $user = $request->user();
+    $user->name = $request->name;
+
+    // Solo actualizamos la contraseña si el usuario ha escrito una nueva
+    if ($request->filled('password')) {
+        $user->password = Hash::make($request->password);
+    }
+
+    $user->save();
+
+    return response()->json([
+        'message' => 'Perfil actualizado correctamente', 
+        'user' => $user
+    ]);
+});
+
+
+// --- RUTAS DE CATÁLOGO ---
 
 Route::get('/products', [ProductController::class, 'apiIndex']);
 Route::get('/products/featured', [ProductController::class, 'featured']);
@@ -27,6 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->post('/reviews', [ReviewController::class, 'store']);
+
 
 // --- RUTAS DE AUTENTICACIÓN SPA ---
 
@@ -56,6 +85,7 @@ Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
     $request->user()->currentAccessToken()->delete();
     return response()->json(['message' => 'Sesión cerrada']);
 });
+
 
 // --- RUTAS DE DETALLE Y COMENTARIOS (SPA) ---
 
@@ -88,6 +118,7 @@ Route::middleware('auth:sanctum')->delete('/reviews/{id}', function (Request $re
     \App\Models\Review::destroy($id);
     return response()->json(['message' => 'Comentario borrado correctamente']);
 });
+
 
 // --- RUTAS OAUTH2 (GOOGLE) ---
 

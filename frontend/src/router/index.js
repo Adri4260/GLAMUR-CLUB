@@ -6,8 +6,8 @@ import AdminView from "../views/AdminView.vue";
 import DetalleView from "../views/DetalleView.vue";
 import HomeView from "../views/HomeView.vue";
 import SostenibilidadView from "../views/SostenibilidadView.vue";
-// IMPORTAMOS LA NUEVA VISTA DE EDICIÓN
 import EditProductView from "../modules/auth/views/EditProductView.vue";
+import ProfileView from "../views/ProfileView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +33,12 @@ const router = createRouter({
       path: "/sostenibilidad",
       name: "sostenibilidad",
       component: SostenibilidadView,
+    },
+    { 
+      path: "/perfil", 
+      name: "perfil", 
+      component: ProfileView,
+      meta: { requiresAuth: true }
     },
   ],
 });

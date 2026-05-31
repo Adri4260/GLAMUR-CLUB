@@ -1,13 +1,13 @@
 <script setup>
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../modules/auth/store.js'; // Ajusta esta ruta si es diferente en tu proyecto
+import { useAuthStore } from '../modules/auth/store.js';
 
 const router = useRouter();
 const authStore = useAuthStore();
 
 const handleLogout = async () => {
   await authStore.logout();
-  router.push('/login'); // O redírigelo a '/' si prefieres que vaya a Inicio al salir
+  router.push('/login');
 };
 </script>
 
@@ -17,6 +17,7 @@ const handleLogout = async () => {
 
     <div class="container">
 
+      <!-- BRAND -->
       <router-link
         to="/"
         class="navbar-brand d-flex align-items-center gap-3"
@@ -32,6 +33,7 @@ const handleLogout = async () => {
 
       </router-link>
 
+      <!-- MOBILE -->
       <button
         class="navbar-toggler custom-toggler"
         type="button"
@@ -41,11 +43,13 @@ const handleLogout = async () => {
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <!-- CONTENT -->
       <div
         class="collapse navbar-collapse"
         id="navbarContent"
       >
 
+        <!-- LINKS -->
         <ul class="navbar-nav mx-auto gap-lg-4">
 
           <li class="nav-item">
@@ -66,6 +70,7 @@ const handleLogout = async () => {
             </router-link>
           </li>
 
+          <!-- Sólo se muestra si es administrador -->
           <li class="nav-item" v-if="authStore.isAdmin">
             <router-link
               to="/admin"
@@ -77,8 +82,10 @@ const handleLogout = async () => {
 
         </ul>
 
+        <!-- USER -->
         <div class="navbar-actions">
 
+          <!-- SI EL USUARIO ESTÁ LOGUEADO -->
           <template v-if="authStore.isAuthenticated">
             <div class="user-pill">
 
@@ -86,21 +93,36 @@ const handleLogout = async () => {
                 Hola, {{ authStore.user?.name || 'Usuario' }}
               </span>
 
+              <!-- El badge de admin sólo se muestra si realmente tiene el rol -->
               <span class="admin-badge" v-if="authStore.isAdmin">
                 ADMIN
               </span>
 
             </div>
 
+            <!-- NUEVO: Botón de Perfil -->
+            <router-link to="/perfil" class="btn-profile">
+              👤 Perfil
+            </router-link>
+
+            <!-- Botón de Salir -->
             <button class="btn-logout" @click="handleLogout">
               Salir
             </button>
           </template>
 
+          <!-- SI EL USUARIO NO ESTÁ LOGUEADO -->
           <template v-else>
-            <router-link to="/login" class="btn-logout" style="text-decoration: none; display: inline-block; text-align: center;">
-              Iniciar Sesión
-            </router-link>
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <router-link 
+                  to="/login" 
+                  class="nav-link glamur-link"
+                >
+                  Iniciar Sesión
+                </router-link>
+              </li>
+            </ul>
           </template>
 
         </div>
@@ -333,6 +355,28 @@ const handleLogout = async () => {
   font-size: 0.72rem;
 
   font-weight: 700;
+}
+
+/* NUEVO BOTÓN PERFIL */
+.btn-profile {
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 0.7rem 1.25rem;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #d4af37;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-profile:hover {
+  background: rgba(212, 175, 55, 0.15);
+  color: #f3dc87;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
 }
 
 .btn-logout {
