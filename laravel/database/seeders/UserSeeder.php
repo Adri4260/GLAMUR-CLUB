@@ -29,5 +29,13 @@ class UserSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
         $cliente->roles()->attach($userRole);
+
+        // 4. Crear un cliente pobre y asignarle el rol
+        $cliente = User::factory()->create([
+            'name' => 'Cliente Pobre',
+            'email' => 'clientePobre@glamur.com',
+            'password' => bcrypt('password'),
+        ]);
+        $cliente->roles()->attach($userRole);
     }
 }

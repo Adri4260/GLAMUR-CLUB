@@ -8,6 +8,9 @@ import HomeView from "../views/HomeView.vue";
 import SostenibilidadView from "../views/SostenibilidadView.vue";
 import EditProductView from "../modules/auth/views/EditProductView.vue";
 import ProfileView from "../views/ProfileView.vue";
+import AboutView from "../views/AboutView.vue";
+import ContactView from "../views/ContactView.vue";
+import FaqView from "../views/FaqView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,6 +43,9 @@ const router = createRouter({
       component: ProfileView,
       meta: { requiresAuth: true }
     },
+    { path: "/about", name: "about", component: AboutView },
+    { path: "/contacto", name: "contacto", component: ContactView },
+    { path: "/faqs", name: "faqs", component: FaqView },
   ],
 });
 
