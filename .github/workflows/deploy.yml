@@ -1,31 +1,59 @@
-name: Deploy to AWS Production
+name: Deploy Backend to AWS Production
 
-# El robot se activa ÚNICAMENTE cada vez que haces push a la rama sprint5-6
+# Se activa ÚNICAMENTE al hacer push a sprint5-6 y si hay cambios en la API
 on:
   push:
     branches:
       - sprint5-6
+    paths:
+      - "laravel/**" # Opcional pero recomendado: solo ejecuta si tocas el backend
 
 jobs:
-  deploy:
+  test_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # --- 1. FASE DE TESTS (Requisito obligatorio de la rúbrica) ---
       - name: Checkout del código
         uses: actions/checkout@v3
         with:
-          ref: sprint5-6 # Forzamos a que el entorno de GitHub lea esta rama
+          ref: sprint5-6
 
+      - name: Configurar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, zip, gd, pdo, libxml
+          coverage: none
+
+      - name: Preparar entorno de test
+        working-directory: ./laravel
+        run: cp .env.example .env
+
+      - name: Instal·lar dependències
+        working-directory: ./laravel
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Generar clau d'aplicació
+        working-directory: ./laravel
+        run: php artisan key:generate
+
+      - name: Executar Tests (PHPUnit / Pest)
+        working-directory: ./laravel
+        run: php artisan test --env=testing
+
+      # --- 2. FASE DE DESPLIEGUE (Solo se ejecuta si los tests pasan) ---
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             mkdir -p ~/glamur-club
             cd ~/glamur-club
             
+            # Actualizamos el código en la EC2
             if [ ! -d ".git" ]; then
               git clone -b sprint5-6 https://github.com/Adri4260/GLAMUR-CLUB.git .
             else
@@ -33,9 +61,12 @@ jobs:
               git checkout sprint5-6
               git pull origin sprint5-6
             fi
-          
-            # APAGAR Y LIMPIAR PRIMERO (Esto soluciona tu error)
-            docker compose down
-          
-            # LEVANTAR EN LIMPIO
-            docker compose up -d --build
+            
+            # Entramos a la carpeta del Backend
+            cd laravel
+            
+            # APAGAR Y LIMPIAR EL ENTORNO DE PRODUCCIÓN
+            docker compose -f docker-compose.prod.yml down
+            
+            # LEVANTAR EN LIMPIO CON LA RECETA DE PRODUCCIÓN
+            docker compose -f docker-compose.prod.yml up -d --build
