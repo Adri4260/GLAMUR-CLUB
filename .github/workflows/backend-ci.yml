@@ -22,8 +22,10 @@ jobs:
       - name: Configurar PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "8.2"
-          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, zip
+          # ACTUALITZAT: Forcem PHP 8.4 per a coincidir amb el teu composer.lock
+          php-version: "8.4"
+          # ACTUALITZAT: Afegim 'gd', 'pdo', 'libxml' necessaris per a phpspreadsheet i Laravel 12
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, zip, gd, pdo, libxml
           coverage: none
 
       - name: Preparar .env de test
@@ -39,6 +41,7 @@ jobs:
         run: php artisan test --env=testing
 
       - name: Desplegament Automàtic i Migracions (Simulació)
+        # NOTA: Això ara és una simulació. A la Fase 3 ho canviarem pels comandaments SSH reals cap a la EC2.
         run: |
           echo "Connectant al servidor de producció (AWS EC2)..."
           echo "Baixant l'última versió del codi..."
