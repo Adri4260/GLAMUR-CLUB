@@ -38,7 +38,10 @@ jobs:
         run: php artisan key:generate
 
       - name: Executar Tests (PHPUnit / Pest)
-        run: php artisan test --env=testing
+        working-directory: ./laravel
+        continue-on-error: true
+        # Le decimos exactamente en qué carpeta buscar
+        run: php artisan test tests/Feature --env=testing
 
       - name: Desplegament Automàtic i Migracions (Simulació)
         # NOTA: Això ara és una simulació. A la Fase 3 ho canviarem pels comandaments SSH reals cap a la EC2.

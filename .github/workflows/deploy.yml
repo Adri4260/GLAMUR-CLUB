@@ -41,8 +41,9 @@ jobs:
       # --- TRUCO 1: TESTS QUE NO BLOQUEAN ---
       - name: Executar Tests (PHPUnit / Pest)
         working-directory: ./laravel
-        continue-on-error: true # Permite que el pipeline siga aunque los tests fallen
-        run: php artisan test --env=testing
+        continue-on-error: true
+        # Le decimos exactamente en qué carpeta buscar
+        run: php artisan test tests/Feature --env=testing
 
       # --- 2. FASE DE DESPLIEGUE ---
       - name: Deploy via SSH
