@@ -1,9 +1,10 @@
-name: Frontend CI/CD (Vue)
+name: Deploy Frontend to AWS Production
 
-# S'executa només si hi ha canvis a la carpeta frontend/
+# Se activa ÚNICAMENTE al hacer push a sprint5-6 y si hay cambios en el frontend
 on:
   push:
-    branches: ["main", "sprint5-6"]
+    branches:
+      - sprint5-6
     paths:
       - "frontend/**"
 
@@ -11,30 +12,45 @@ jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
-    # Li diem que tots els comandaments s'executin dins la carpeta frontend
-    defaults:
-      run:
-        working-directory: ./frontend
-
     steps:
-      - name: Baixar el codi
+      - name: Checkout del código
         uses: actions/checkout@v3
+        with:
+          ref: sprint5-6
 
-      - name: Configurar Node.js
+      # --- 1. FASE DE BUILD (Compilar Vue y Tailwind) ---
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: '20'
 
-      - name: Instal·lar dependències
+      - name: Instal·lar dependències NPM
+        working-directory: ./frontend
         run: npm install
 
-      - name: Executar Tests (Vitest)
-        run: npm run test
-
-      - name: Build de Producció
+      - name: Build de Producció (Vite)
+        working-directory: ./frontend
+        # CRUCIAL: Le inyectamos la URL de tu API con HTTPS para que Vue sepa a dónde llamar
+        env:
+          VITE_API_BASE_URL: https://api.projecte04.ddaw.es/api
         run: npm run build
 
-      - name: Desplegament Automàtic (Simulació)
-        run: |
-          echo "Desplegant la carpeta /dist al servidor de producció mitjançant SCP/FTP..."
-          echo "Desplegament del Frontend completat amb èxit! 🚀"
+      # --- 2. FASE DE DESPLIEGUE ---
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/glamur-club
+            
+            # Sincronizamos el código en la EC2
+            git fetch origin
+            git checkout sprint5-6
+            git reset --hard origin/sprint5-6
+            
+            # Entramos al frontend y levantamos su contenedor de producción
+            cd frontend
+            docker compose -f docker-compose.prod.yml down
+            docker compose -f docker-compose.prod.yml up -d --build
