@@ -1,9 +1,11 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../modules/auth/store.js';
+import { useShopStore } from '../store/shopStore.js';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const shopStore = useShopStore();
 
 const handleLogout = async () => {
   await authStore.logout();
@@ -82,8 +84,25 @@ const handleLogout = async () => {
 
         </ul>
 
-        <!-- USER -->
+        <!-- USER & SHOP ACTIONS -->
         <div class="navbar-actions">
+
+          <!-- ICONOS TIENDA (Favoritos y Carrito) -->
+          <div class="shop-icons-container">
+            <router-link to="/favoritos" class="shop-icon-btn position-relative">
+              <i class="bi bi-heart"></i>
+              <span v-if="shopStore.favoritesCount > 0" class="shop-badge">
+                {{ shopStore.favoritesCount }}
+              </span>
+            </router-link>
+
+            <router-link to="/carrito" class="shop-icon-btn position-relative">
+              <i class="bi bi-cart3"></i>
+              <span v-if="shopStore.cartCount > 0" class="shop-badge">
+                {{ shopStore.cartCount }}
+              </span>
+            </router-link>
+          </div>
 
           <!-- SI EL USUARIO ESTÁ LOGUEADO -->
           <template v-if="authStore.isAuthenticated">
@@ -100,7 +119,7 @@ const handleLogout = async () => {
 
             </div>
 
-            <!-- NUEVO: Botón de Perfil -->
+            <!-- Botón de Perfil -->
             <router-link to="/perfil" class="btn-profile">
               👤 Perfil
             </router-link>
@@ -306,7 +325,7 @@ const handleLogout = async () => {
 }
 
 /* =========================
-   RIGHT
+   RIGHT ACTIONS
 ========================= */
 
 .navbar-actions {
@@ -316,6 +335,41 @@ const handleLogout = async () => {
   gap: 1rem;
 }
 
+/* --- ICONOS TIENDA --- */
+.shop-icons-container {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding-right: 0.5rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shop-icon-btn {
+  color: #d8e3dc;
+  font-size: 1.3rem;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.shop-icon-btn:hover {
+  color: #27e0a3;
+  transform: translateY(-2px);
+}
+
+.shop-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: linear-gradient(135deg, #d4af37, #f3dc87);
+  color: #07150f;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.15em 0.45em;
+  border-radius: 50px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+/* --- USER PILL --- */
 .user-pill {
 
   display: flex;
@@ -357,7 +411,7 @@ const handleLogout = async () => {
   font-weight: 700;
 }
 
-/* NUEVO BOTÓN PERFIL */
+/* --- BOTONES --- */
 .btn-profile {
   border: 1px solid rgba(212, 175, 55, 0.4);
   padding: 0.7rem 1.25rem;
@@ -447,6 +501,14 @@ const handleLogout = async () => {
     flex-direction: column;
 
     align-items: flex-start;
+  }
+
+  .shop-icons-container {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
   }
 
   .brand-text {

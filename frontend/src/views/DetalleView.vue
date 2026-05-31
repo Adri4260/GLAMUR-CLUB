@@ -1,12 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../modules/auth/store'
+import { useShopStore } from '../store/shopStore'
 import http from '../services/http'
 import RoleGuard from '../modules/roles/components/RoleGuard.vue'
 
 const route = useRoute()
+const router = useRouter()
 const authStore = useAuthStore()
+const shopStore = useShopStore()
 
 const product = ref(null)
 const loading = ref(true)
@@ -14,6 +17,11 @@ const loading = ref(true)
 // Formulario del nuevo comentario
 const newReview = ref({ rating: 5, comment: '' })
 const submitting = ref(false)
+
+// Comprueba si el producto está en favoritos
+const isFavorite = computed(() => {
+    return product.value ? shopStore.favorites.some(item => item.id === product.value.id) : false
+})
 
 // Cargar el producto al entrar
 onMounted(async () => {
@@ -39,6 +47,25 @@ const getImageUrl = (path) => {
     if (!cleanPath.startsWith('img/')) cleanPath = 'img/' + cleanPath
 
     return `${serverUrl}/${cleanPath}`
+}
+
+// --- FUNCIONES DE TIENDA ---
+const toggleFavorite = () => {
+    if (!authStore.isAuthenticated) {
+        alert("Debes iniciar sesión para añadir a favoritos.")
+        router.push('/login')
+        return
+    }
+    shopStore.toggleFavorite(product.value)
+}
+
+const addToCart = () => {
+    if (!authStore.isAuthenticated) {
+        alert("Debes iniciar sesión para añadir al carrito.")
+        router.push('/login')
+        return
+    }
+    shopStore.addToCart(product.value, 1)
 }
 
 // Enviar nuevo comentario a Laravel
@@ -119,7 +146,7 @@ const deleteReview = async (reviewId, index) => {
                     <div class="col-md-6">
 
                         <span class="product-category">
-                            {{ product.category }}
+                            {{ product.category || 'Catálogo Exclusivo' }}
                         </span>
 
                         <h1 class="product-title">
@@ -139,9 +166,15 @@ const deleteReview = async (reviewId, index) => {
                             {{ product.stock }} unidades
                         </p>
 
-                        <button class="add-cart-btn">
-                            Añadir al Carrito
-                        </button>
+                        <div class="d-flex gap-3 mt-4">
+                            <button class="add-cart-btn flex-grow-1 mt-0" @click="addToCart">
+                                <i class="bi bi-cart-plus me-2"></i> Añadir al Carrito
+                            </button>
+
+                            <button class="favorite-detail-btn mt-0" @click="toggleFavorite" :class="{'active': isFavorite}" :title="isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'">
+                                <i class="bi" :class="isFavorite ? 'bi-heart-fill' : 'bi-heart'"></i>
+                            </button>
+                        </div>
 
                     </div>
 
@@ -395,7 +428,7 @@ const deleteReview = async (reviewId, index) => {
 }
 
 /* =========================
-   BUTTON
+   BUTTONS
 ========================= */
 
 .add-cart-btn {
@@ -430,6 +463,32 @@ const deleteReview = async (reviewId, index) => {
 
     box-shadow:
         0 15px 35px rgba(39, 224, 163, 0.25);
+}
+
+.favorite-detail-btn {
+    background: transparent;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    color: #d4af37;
+    border-radius: 16px;
+    width: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.favorite-detail-btn:hover {
+    background: rgba(212, 175, 55, 0.1);
+    transform: translateY(-3px);
+}
+
+.favorite-detail-btn.active {
+    border-color: #ff647c;
+}
+
+.favorite-detail-btn.active i {
+    color: #ff647c;
 }
 
 /* =========================

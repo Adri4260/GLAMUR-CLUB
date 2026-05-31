@@ -1,10 +1,14 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '../modules/auth/store'
+import { useShopStore } from '../store/shopStore'
 import RoleGuard from '../modules/roles/components/RoleGuard.vue'
-import http from '../services/http' // Importamos tu cliente HTTP
+import http from '../services/http' 
 
 const router = useRouter()
+const authStore = useAuthStore()
+const shopStore = useShopStore()
 
 const props = defineProps({
     product: {
@@ -17,6 +21,31 @@ const props = defineProps({
 const emit = defineEmits(['product-deleted'])
 
 const isDeleting = ref(false)
+
+// Comprueba en tiempo real si el producto actual ya está en favoritos
+const isFavorite = computed(() => {
+    return shopStore.favorites.some(item => item.id === props.product.id)
+})
+
+// --- FUNCIONES DE TIENDA ---
+
+const toggleFavorite = () => {
+    if (!authStore.isAuthenticated) {
+        alert("Debes iniciar sesión para añadir a favoritos.")
+        router.push('/login')
+        return
+    }
+    shopStore.toggleFavorite(props.product)
+}
+
+const addToCart = () => {
+    if (!authStore.isAuthenticated) {
+        alert("Debes iniciar sesión para añadir al carrito.")
+        router.push('/login')
+        return
+    }
+    shopStore.addToCart(props.product, 1)
+}
 
 // --- FIX PARA IMÁGENES EN PRODUCCIÓN Y LOCAL ---
 const getImageUrl = (path) => {
@@ -51,10 +80,8 @@ const handleDelete = async () => {
             emit('product-deleted', props.product.id)
 
         } catch (error) {
-            // Imprimimos el error completo en consola
             console.error("Error DETALLADO:", error.response || error);
 
-            // Analizamos la respuesta de Laravel
             let alertMsg = "Error desconocido.";
             if (error.response) {
                 const status = error.response.status;
@@ -77,6 +104,10 @@ const handleDelete = async () => {
 <template>
 
     <div class="card product-card h-100 position-relative">
+
+        <button class="fav-badge" @click="toggleFavorite" :title="isFavorite ? 'Quitar de favoritos' : 'Añadir a favoritos'">
+            <i class="bi" :class="isFavorite ? 'bi-heart-fill text-danger' : 'bi-heart'"></i>
+        </button>
 
         <span class="eco-badge">
             🌱 Eco-Packaging
@@ -109,9 +140,15 @@ const handleDelete = async () => {
 
             <div class="mt-auto d-grid gap-2">
 
-                <router-link :to="'/producto/' + product.id" class="details-btn">
-                    Ver Detalles
-                </router-link>
+                <div class="d-flex gap-2">
+                    <router-link :to="'/producto/' + product.id" class="details-btn flex-grow-1">
+                        Ver Detalles
+                    </router-link>
+
+                    <button class="cart-btn" @click="addToCart" title="Añadir al carrito">
+                        <i class="bi bi-cart-plus"></i>
+                    </button>
+                </div>
 
                 <div class="d-flex gap-2 mt-2">
 
@@ -184,7 +221,7 @@ const handleDelete = async () => {
 }
 
 /* =========================
-   BADGE
+   BADGES
 ========================= */
 
 .eco-badge {
@@ -211,6 +248,35 @@ const handleDelete = async () => {
 
     box-shadow:
         0 8px 20px rgba(39, 224, 163, 0.25);
+}
+
+.fav-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 0;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.fav-badge:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
+}
+
+.fav-badge .text-danger {
+    color: #ff647c !important;
 }
 
 /* =========================
@@ -366,6 +432,28 @@ const handleDelete = async () => {
         0 12px 24px rgba(39, 224, 163, 0.25);
 
     color: #07150f;
+}
+
+/* CART BTN CARD */
+.cart-btn {
+    background: rgba(39, 224, 163, 0.1);
+    border: 1px solid rgba(39, 224, 163, 0.3);
+    color: #27e0a3;
+    border-radius: 14px;
+    width: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.cart-btn:hover {
+    background: #27e0a3;
+    color: #07150f;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(39, 224, 163, 0.2);
 }
 
 /* EDIT */

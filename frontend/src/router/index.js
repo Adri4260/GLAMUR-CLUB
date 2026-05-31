@@ -11,6 +11,8 @@ import ProfileView from "../views/ProfileView.vue";
 import AboutView from "../views/AboutView.vue";
 import ContactView from "../views/ContactView.vue";
 import FaqView from "../views/FaqView.vue";
+import FavoritesView from "../views/FavoritesView.vue";
+import CartView from "../views/CartView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +21,9 @@ const router = createRouter({
     { path: "/catalogo", name: "catalogo", component: CatalogoView }, // <-- Nueva ruta
     { path: "/login", name: "login", component: LoginView },
     { path: "/producto/:id", name: "producto-detalle", component: DetalleView },
+    { path: "/about", name: "about", component: AboutView },
+    { path: "/contacto", name: "contacto", component: ContactView },
+    { path: "/faqs", name: "faqs", component: FaqView },
     {
       path: "/admin",
       name: "admin",
@@ -43,9 +48,18 @@ const router = createRouter({
       component: ProfileView,
       meta: { requiresAuth: true }
     },
-    { path: "/about", name: "about", component: AboutView },
-    { path: "/contacto", name: "contacto", component: ContactView },
-    { path: "/faqs", name: "faqs", component: FaqView },
+    {
+      path: "/favoritos",
+      name: "favoritos",
+      component: FavoritesView,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: "/carrito",
+      name: "carrito",
+      component: CartView,
+      meta: { requiresAuth: true }
+    },   
   ],
 });
 
