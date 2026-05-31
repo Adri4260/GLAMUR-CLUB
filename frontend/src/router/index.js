@@ -13,6 +13,7 @@ import ContactView from "../views/ContactView.vue";
 import FaqView from "../views/FaqView.vue";
 import FavoritesView from "../views/FavoritesView.vue";
 import CartView from "../views/CartView.vue";
+import CreateProductView from "../views/CreateProductView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,24 +43,30 @@ const router = createRouter({
       name: "sostenibilidad",
       component: SostenibilidadView,
     },
-    { 
-      path: "/perfil", 
-      name: "perfil", 
+    {
+      path: "/perfil",
+      name: "perfil",
       component: ProfileView,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
     {
       path: "/favoritos",
       name: "favoritos",
       component: FavoritesView,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
     },
     {
       path: "/carrito",
       name: "carrito",
       component: CartView,
-      meta: { requiresAuth: true }
-    },   
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/admin/products/create",
+      name: "create-product",
+      component: CreateProductView,
+      meta: { requiresAuth: true }, // O requiresAdmin si lo tienes configurado
+    },
   ],
 });
 

@@ -166,21 +166,15 @@ import {
 
                 <div class="action-buttons">
 
-                    <button class="admin-btn primary">
-
+                    <router-link to="/admin/products/create" class="admin-btn primary text-decoration-none">
                         <Plus :size="18" />
-
                         Nuevo Producto
+                    </router-link>
 
-                    </button>
-
-                    <button class="admin-btn secondary">
-
+                    <router-link to="/catalogo" class="admin-btn secondary text-decoration-none">
                         <Pencil :size="18" />
-
                         Editar Catálogo
-
-                    </button>
+                    </router-link>
 
                 </div>
 
