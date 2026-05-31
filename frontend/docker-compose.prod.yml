@@ -11,5 +11,5 @@ services:
     ports:
       # TRUCO PRO DE AISLAMIENTO:
       # Al poner 127.0.0.1, obligamos a que el contenedor sea invisible desde Internet.
-      # Solo el Nginx maestro de la EC2 podrá enviarle visitas a este puerto 3000.
+      # Solo el Nginx maestro de la EC2 podrá enviarle visitas a este puerto 3000
       - "127.0.0.1:3000:80"
