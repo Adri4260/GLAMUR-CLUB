@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->put('/user', function (Request $request) {
     $user->save();
 
     return response()->json([
-        'message' => 'Perfil actualizado correctamente', 
+        'message' => 'Perfil actualizado correctamente',
         'user' => $user
     ]);
 });
@@ -154,8 +154,12 @@ Route::get('/oauth/google/callback', function () {
 
         $token = $user->createToken('spa-token')->plainTextToken;
 
-        return redirect('http://localhost:5173/login?token=' . $token);
+        // Lee el .env local en tu PC, o el .env de AWS en producción
+        $frontendUrl = env('FRONTEND_URL', 'https://www.projecte04.ddaw.es');
+
+        return redirect($frontendUrl . '/login?token=' . $token);
     } catch (\Exception $e) {
-        return redirect('http://localhost:5173/login?error=oauth_failed');
+        $frontendUrl = env('FRONTEND_URL', 'https://www.projecte04.ddaw.es');
+        return redirect($frontendUrl . '/login?error=oauth_failed');
     }
 });
