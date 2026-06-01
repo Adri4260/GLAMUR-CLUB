@@ -172,6 +172,9 @@ onMounted(async () => {
     z-index: 2;
 
     width: 100%;
+    
+    /* Añadimos padding para que el texto nunca toque los bordes laterales */
+    padding: 0 1.5rem;
 
     text-align: center;
 
@@ -288,25 +291,30 @@ onMounted(async () => {
 @media (max-width: 768px) {
 
     .hero-section {
-
         height: 65vh;
+        margin-top: -15px;
+        border-radius: 16px; /* Bordes un poco más suaves en móvil */
+        margin-bottom: 3rem;
     }
 
+    /* Hemos quitado el left/right problemático y dejado que el padding base haga su magia */
     .hero-content {
-
-        left: 5%;
-
-        right: 5%;
+        width: 100%;
+        padding: 0 1rem;
     }
 
     .hero-title {
-
         font-size: 3rem;
+        margin-bottom: 1rem;
     }
 
     .hero-subtitle {
-
-        font-size: 1rem;
+        font-size: 1.05rem;
+        padding: 0 10px;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
     }
 
 }
