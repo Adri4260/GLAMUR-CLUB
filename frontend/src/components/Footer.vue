@@ -17,9 +17,7 @@ const currentYear = computed(() => new Date().getFullYear())
         <div class="col-12 col-lg-4">
 
           <div class="d-flex align-items-center mb-3">
-            <div class="brand-logo-text me-3">
-              GC
-            </div>
+            <img src="/img/logo.png" alt="Glamur Club Logo" class="footer-icon-img me-3">
             <h2 class="brand-title mb-0">
               GLAMUR <span class="text-gold">CLUB</span>
             </h2>
@@ -139,16 +137,11 @@ const currentYear = computed(() => new Date().getFullYear())
    BRAND
 ========================= */
 
-.brand-logo-text {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #d4af37, #f3dc87);
-  color: #07150f;
-  font-weight: 700;
+.footer-icon-img {
+  height: 62px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(212, 175, 55, 0.3));
 }
 
 .brand-title {

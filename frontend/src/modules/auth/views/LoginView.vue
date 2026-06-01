@@ -61,7 +61,9 @@ const loginWithGoogle = async () => {
       
       <!-- CABECERA DEL LOGIN -->
       <div class="auth-header text-center mb-4">
-        <div class="auth-brand-icon mx-auto mb-3">GC</div>
+        <!-- AQUÍ SE SUSTITUYE EL CÍRCULO POR TU LOGO MUCHO MÁS GRANDE -->
+        <img src="/img/logo.png" alt="Glamur Club Logo" class="auth-brand-icon-img mx-auto mb-3">
+        
         <h2>GLAMUR <span class="gold-text">CLUB</span></h2>
         <p class="auth-subtitle">Inicia sesión para acceder a tu experiencia exclusiva</p>
       </div>
@@ -153,18 +155,15 @@ const loginWithGoogle = async () => {
 }
 
 /* BRAND & TEXTS */
-.auth-brand-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #d4af37, #f3dc87);
-  color: #07150f;
-  font-weight: 700;
-  font-size: 1.1rem;
-  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+
+/* ESTILOS DEL NUEVO LOGO - MUCHO MÁS GRANDE */
+.auth-brand-icon-img {
+  display: block;
+  height: 130px; /* ¡Aumentado a 130px para que destaque bien! */
+  max-width: 100%; /* Evita que se salga en pantallas enanas */
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(212, 175, 55, 0.3));
 }
 
 h2 {
