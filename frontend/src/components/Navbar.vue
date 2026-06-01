@@ -24,15 +24,10 @@ const handleLogout = async () => {
         to="/"
         class="navbar-brand d-flex align-items-center gap-3"
       >
-
-        <div class="brand-icon">
-          GC
-        </div>
-
+        <img src="/img/logo.png" alt="Glamur Club Logo" class="brand-icon-img">
         <span class="brand-text">
           GLAMUR <span>CLUB</span>
         </span>
-
       </router-link>
 
       <!-- MOBILE -->
@@ -181,50 +176,26 @@ const handleLogout = async () => {
 ========================= */
 
 .navbar-brand {
-
   text-decoration: none;
 }
 
-.brand-icon {
+.brand-icon-img {
+  height: 92px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(212, 175, 55, 0.3));
+  transition: transform 0.3s ease;
+}
 
-  width: 44px;
-  height: 44px;
-
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background:
-    linear-gradient(
-      135deg,
-      #d4af37,
-      #f3dc87
-    );
-
-  color: #07150f;
-
-  font-weight: 700;
-
-  font-size: 0.95rem;
-
-  box-shadow:
-    0 8px 20px rgba(212, 175, 55, 0.18);
+.brand-icon-img:hover {
+  transform: scale(1.05);
 }
 
 .brand-text {
-
-  font-family:
-    'Playfair Display',
-    serif;
-
+  font-family: 'Playfair Display', serif;
   font-size: 1.75rem;
-
   font-weight: 700;
-
   letter-spacing: 1px;
-
   color: #f5f1e8;
 }
 
@@ -509,11 +480,6 @@ const handleLogout = async () => {
     padding-bottom: 1rem;
     margin-bottom: 1rem;
     width: 100%;
-  }
-
-  .brand-text {
-
-    font-size: 1.4rem;
   }
 
 }
