@@ -1,134 +1,177 @@
-# 💜 GLAMUR CLUB - Arquitectura Cloud & SPA
+# 💜 Glamur Club — Arquitectura Cloud & SPA
+
+**Desarrollado en:** DAW 2n – CIPFP Batoi
+**Identificador:** Grupo 04
+
+---
 
 ## 🧴 Descripción del Proyecto
 
-**GLAMUR CLUB** es un e-commerce exclusivo dedicado a la venta de perfumes, cosmética y maquillaje premium.
+**Glamur Club** es un e-commerce exclusivo dedicado a la venta de perfumes, cosmética y maquillaje premium.
 
-Esta versión final culmina el **Proyecto Intermodular (Sprints 1 al 6)**, evolucionando de una aplicación monolítica tradicional a una **Arquitectura Desacoplada** profesional y altamente escalable.
-
-El proyecto consta de una **API REST (Backend)** securizada y documentada, consumida por una **Single Page Application (Frontend)** reactiva y sostenible, con todo el entorno orquestado e independizado mediante **Docker** para su despliegue automatizado en infraestructuras **Cloud (AWS)**.
-
-> Desarrollado dentro del curso **DAW 2n – CIPFP Batoi**.
+Esta versión final culmina el Proyecto Intermodular (Sprints 1 al 6), evolucionando de una aplicación monolítica tradicional a una **arquitectura desacoplada** profesional y altamente escalable. El proyecto consta de una API REST (Backend) securizada y documentada, consumida por una Single Page Application (Frontend) reactiva y sostenible, con todo el entorno orquestado mediante Docker para su despliegue automatizado en infraestructuras Cloud (AWS).
 
 ---
 
-## 👥 Equipo de Desarrollo y Gestión
+## 👥 Equipo de Desarrollo
 
 | Miembro | Rol |
-|---------|------|
-| **Adrián Becerra** 👨‍💻 | Full-Stack, DevOps & Cloud Architecture |
-| **Jose Juan Alemany (Pepe)** 🧑‍💻 | UI/UX Design & Frontend |
+|---|---|
+| **Adrián Becerra** 👨‍💻 | Full-Stack, DevOps, Cloud Architecture & CI/CD |
+| **Jose Juan Alemany (Pepe)** 🧑‍💻 | UI/UX Design & Frontend Development |
 
-📊 **Tablero Kanban del Proyecto:**  
-Sigue nuestra planificación y progreso en [GitHub Projects](https://github.com/projects)
+📊 [Tablero Kanban del Proyecto en GitHub Projects](https://github.com/users/Adri4260/projects/9)
 
 ---
 
-## 🎯 Mejoras Clave (Sprints 5 y 6)
+## 🧠 Arquitectura del Sistema
 
-### ☁️ 1. Infraestructura Cloud y DevOps (C7)
+Uno de los mayores retos técnicos del proyecto ha sido la separación total de responsabilidades entre cliente y servidor.
 
-- **Dockerización Independiente:** Creación de `Dockerfile` específicos para Vue y Laravel, garantizando aislamiento total.
-- **Integración y Despliegue Continuo (CI/CD):** Implementación de dos pipelines independientes en GitHub Actions. Compilan código, ejecutan tests y despliegan automáticamente en producción (incluyendo ejecución de migraciones en servidor).
-- **Arquitectura AWS:** Despliegue real en producción utilizando una instancia **EC2** configurada como proxy inverso con **Nginx**, tráfico cifrado (**HTTPS con Let's Encrypt**) y una base de datos externa privada y segura en **Amazon RDS**.
+### Comunicación Frontend ↔ Backend
 
-### 🔗 2. Integraciones y Documentación API (C1 y C2)
+**API RESTful y CORS:** El Frontend (Vue 3) realiza peticiones asíncronas HTTP (Axios) hacia los endpoints del Backend (Laravel). El sistema está protegido por políticas CORS estrictas, configuradas en Laravel para aceptar únicamente tráfico originado desde el dominio oficial (`www.projecte04.ddaw.es`).
 
-- **OAuth2 con Google:** Integración de Laravel Socialite en el backend para permitir un inicio de sesión seguro, rápido y stateless a través de Google, sin exponer el `client_secret` en el cliente.
-- **Swagger / OpenAPI:** Documentación interactiva de todos los endpoints de la API (Catálogo, Auth, Reviews) generada automáticamente y disponible para pruebas en vivo.
+**Autenticación Stateless (Sanctum):** Las sesiones no se guardan en el servidor. Al hacer login (nativo o vía Google OAuth2), Laravel emite un Bearer Token. Vue lo almacena de forma segura y lo inyecta en las cabeceras de todas las peticiones posteriores que requieran autorización.
 
-### 🧪 3. Mejora Digital: "Crea tu Perfume" (C5)
+**Proxy Inverso en Producción:** En AWS, un único servidor Nginx actúa como director de orquesta. Si un usuario navega por la tienda, Nginx sirve el contenedor estático de Vue. Si la petición incluye el prefijo `/api`, Nginx intercepta la llamada y hace un `proxy_pass` interno hacia el contenedor de Laravel.
 
-- **Configurador Interactivo:** Desarrollo de una herramienta interactiva donde el usuario puede seleccionar sus propias notas olfativas (salida, corazón y fondo). El sistema calcula dinámicamente el perfil y genera un producto a medida listo para añadir al carrito.
+---
 
-### 🌱 4. Sostenibilidad ASG y Ecodiseño (C6)
+## ☁️ Infraestructura en AWS y DevOps
 
-- **Optimización Extrema:** Implementación de compresión **Gzip** en Nginx, minificación de assets con **Vite** y uso de **Lazy Loading** para reducir drásticamente la transferencia de datos y el consumo energético.
-- **Política ASG:** Inclusión de una vista dedicada en la web que justifica la eficiencia digital de la SPA y el compromiso ambiental de la marca.
+El despliegue en producción refleja un entorno empresarial real bajo el siguiente esquema:
 
-### 🤖 5. Frontend Avanzado y Filtros Reactivos (C3)
+| Servicio | Descripción |
+|---|---|
+| **EC2 (Computación)** | Instancia Ubuntu con IP Elástica. Actúa como host de Docker, ejecutando los contenedores de Frontend, Backend y Chatbot |
+| **Amazon RDS** | Motor MySQL 8.0 alojado fuera de la EC2 para garantizar persistencia e integridad. Blindado mediante Security Groups para que únicamente la EC2 pueda conectarse al puerto 3306 |
+| **Route 53** | Gestión del dominio y resolución DNS |
+| **Certbot (Let's Encrypt)** | Certificados SSL/TLS auto-renovables que garantizan tráfico cifrado de extremo a extremo |
 
-- **Filtros en Tiempo Real:** Catálogo impulsado por `watchers` de Vue 3 que filtran productos instantáneamente sin recargar la página.
-- **Validaciones Robustas:** Integración de **Vee-Validate** y **Yup** en los formularios para feedback instantáneo, accesible y seguro.
+Tráfico de entrada restringido a los puertos `80` (HTTP), `443` (HTTPS) y `22` (SSH).
+
+---
+
+## 🔄 Integración y Despliegue Continuo (CI/CD)
+
+El proyecto utiliza flujos de trabajo de **GitHub Actions**. Ante cada nuevo `push` a la rama de producción (`sprint5-6`):
+
+1. Los runners de GitHub acceden vía SSH a la instancia EC2.
+2. Descargan el código actualizado de ambos repositorios.
+3. Reconstruyen las imágenes de Docker (`--build`) de forma desatendida.
+4. Ejecutan las migraciones de Laravel para mantener la base de datos sincronizada sin intervención humana.
+
+---
+
+## 🎯 Mejoras Clave y Funcionalidades (Sprints 5 y 6)
+
+### 🔗 1. Integraciones y Documentación API
+
+**OAuth2 con Google:** Integración de Laravel Socialite para un inicio de sesión seguro y rápido. El flujo redirige el callback al SPA frontend inyectando el token Sanctum sin exponer credenciales.
+
+**Swagger / OpenAPI:** Documentación interactiva de todos los endpoints (Catálogo, Auth, Reviews) generada automáticamente en `/api/documentation`.
+
+### 🧪 2. Mejora Digital: "Crea tu Perfume"
+
+Configurador interactivo donde el usuario selecciona sus propias notas olfativas (salida, corazón y fondo). El sistema calcula dinámicamente el perfil y genera un producto a medida listo para añadir al carrito.
+
+### 🤖 3. Chatbot de Atención al Cliente (n8n)
+
+Flujo de trabajo automatizado orquestado mediante un contenedor de **n8n**, inyectado globalmente en el SPA de Vue para proporcionar asistencia sobre el catálogo de perfumes.
+
+### 🌱 4. Sostenibilidad ASG y Ecodiseño
+
+Implementación de compresión **Gzip** en Nginx, minificación de assets con Vite y **Lazy Loading** para reducir drásticamente la transferencia de datos y el consumo energético (Green IT).
+
+### ⚡ 5. Frontend Avanzado y Filtros Reactivos
+
+**Filtros en Tiempo Real:** Catálogo impulsado por watchers de Vue 3 que filtran productos instantáneamente sin recargar la página.
+
+**Control de Rutas (SPA):** Nginx configurado con `try_files` para delegar el enrutamiento a Vue, evitando errores `404 Not Found` en accesos directos a rutas internas.
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
 | Capa | Tecnologías |
-|------|--------------|
-| **Frontend (Client SPA)** | Vue.js 3 (Composition API), Vite, Pinia, Tailwind CSS, Vee-Validate / Yup |
-| **Backend (REST API)** | PHP 8.4 / Laravel 12, MySQL 8.0, Laravel Sanctum, Laravel Socialite, L5-Swagger (OpenAPI) |
-| **Infraestructura & DevOps** | Docker & Docker Compose, GitHub Actions, AWS (EC2, VPC, RDS Privado), Nginx & Certbot (Let's Encrypt) |
+|---|---|
+| **Frontend (SPA)** | Vue.js 3 (Composition API), Vite, Pinia, Tailwind CSS, Vee-Validate / Yup |
+| **Backend (REST API)** | PHP 8.4 / Laravel 12, MySQL 8.0, Laravel Sanctum, Socialite, L5-Swagger |
+| **Infraestructura & DevOps** | Docker & Docker Compose, GitHub Actions, n8n, AWS (EC2, RDS, Route 53) |
+| **Servidor Web** | Nginx & Certbot (Let's Encrypt) |
 
 ---
 
-## 🚀 Guía de Puesta en Marcha (Entorno Local Dockerizado)
+## 🚀 Guía de Puesta en Marcha (Entorno Local)
 
-Gracias a la orquestación con **Docker Compose**, levantar toda la infraestructura del proyecto para desarrollo es extremadamente sencillo.
+Gracias a la orquestación con Docker Compose, levantar toda la infraestructura para desarrollo es extremadamente sencillo.
 
-### Requisitos previos
+### Requisitos Previos
 
-- Tener **Docker** y **Docker Desktop** instalados y ejecutándose.
-- Asegurarte de que los puertos `8000`, `5173` y `3306` están libres en tu máquina.
+- **Docker Desktop** instalado y en ejecución.
+- Puertos `8000` (API), `5173` (Web), `3306` (BD) y `5678` (n8n) libres en tu máquina.
 
-### Pasos de ejecución
+### Pasos de Ejecución
 
-#### 1. Clonar repositorios y configurar variables de entorno
+**1. Configurar variables de entorno**
 
-Deberás configurar el archivo `.env` tanto en la carpeta del frontend como en la del backend duplicando el archivo `.env.example`.
+Duplica el archivo `.env.example` en las carpetas de ambos microservicios:
 
 ```bash
-# Ejemplo en el Backend:
+# En el Backend:
 cd laravel
 cp .env.example .env
 ```
 
-Asegúrate de que las credenciales de BD en el `.env` apuntan al host `mysql`, tal y como está configurado en Docker.
+> Asegúrate de que `DB_HOST` apunta a `mysql` para que conecte con el contenedor.
 
-#### 2. Levantar la infraestructura
+**2. Levantar la infraestructura**
 
-Vuelve a la raíz principal del proyecto y ejecuta el comando maestro:
+Vuelve a la raíz principal del proyecto y ejecuta:
 
 ```bash
 docker compose up -d --build
 ```
 
-Docker descargará las imágenes oficiales, instalará las dependencias (NPM y Composer) y levantará la Base de Datos, la API y la Web.
+Docker descargará las imágenes oficiales e instalará todas las dependencias (NPM y Composer).
 
-#### 3. Configurar Laravel y poblar la Base de Datos
+**3. Configurar Laravel y poblar la base de datos**
 
-Una vez los contenedores estén activos (espera unos 15 segundos a que arranque MySQL), entra al contenedor del backend para inyectar los datos semilla:
+Una vez los contenedores estén en verde (espera ~15 segundos a que MySQL arranque):
 
 ```bash
 docker compose exec backend php artisan key:generate
 docker compose exec backend php artisan migrate:fresh --seed
 ```
 
+---
+
 ## 🌐 Accesos del Sistema
 
-### Entorno de Producción (AWS)
+### Producción (AWS)
 
-| Servicio | URL Pública |
-|----------|--------------|
-| 🖥️ Tienda Oficial (Frontend) | `https://www.projecte04.ddaw.es` |
-| ⚙️ API REST (Backend) | `https://api.projecte04.ddaw.es/api` |
-| 📖 Documentación Swagger | `https://api.projecte04.ddaw.es/api/documentation` |
+| Servicio | URL |
+|---|---|
+| 🖥️ Tienda Oficial (Frontend) | https://www.projecte04.ddaw.es |
+| ⚙️ API REST (Backend) | https://api.projecte04.ddaw.es |
+| 📖 Documentación Swagger | https://api.projecte04.ddaw.es/api/documentation |
 
-### Entorno de Desarrollo (Local)
+### Desarrollo (Local)
 
-| Servicio | URL Local |
-|----------|-----------|
-| 🖥️ Frontend SPA | `http://localhost:5173` |
-| ⚙️ Backend API | `http://localhost:8000/api` |
+| Servicio | URL |
+|---|---|
+| 🖥️ Frontend SPA | http://localhost:5173 |
+| ⚙️ Backend API | http://localhost:8000 |
+| 📖 Documentación Swagger | http://localhost:8000/api/documentation |
 
 ---
 
-## 👤 Usuarios de Prueba (Evaluación)
+## 👤 Usuarios de Prueba
 
-Para revisar la plataforma sin necesidad de registrar cuentas nuevas o usar correos personales, puedes acceder con los siguientes usuarios pre-sembrados:
+Para revisar la plataforma y probar el Control de Acceso Basado en Roles (RBAC):
 
-| Perfil | Correo de Acceso | Contraseña | Permisos |
-|--------|------------------|------------|----------|
-| 👑 Administrador | `admin@glamurclub.com` | `admin123` | Control total del sistema, catálogo y moderación |
-| 🛍️ Cliente | `cliente2@glamurclub.com` | `password` | Navegación, carrito, compras y publicación de reseñas |
+| Perfil | Correo | Contraseña | Permisos |
+|---|---|---|---|
+| 👑 **Administrador** | `admin@glamurclub.com` | `admin123` | Panel de administración, gestión de catálogo, roles y reseñas |
+| 🛍️ **Cliente** | `cliente2@glamurclub.com` | `password` | Navegación, carrito persistente y publicación de reseñas |
